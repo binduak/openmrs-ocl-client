@@ -16,7 +16,7 @@ COPY package.json ./
 COPY package-lock.json ./
 
 # Set environment to production
-ENV NODE_ENV production
+ENV NODE_ENV development 
 
 # Install the project dependencies and silence the npm output
 RUN npm install
