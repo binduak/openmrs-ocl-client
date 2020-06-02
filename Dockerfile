@@ -13,6 +13,7 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 # Copy the package.json and the package-lock.json to the working directory
 COPY package.json ./
+COPY package-lock.json ./
 
 # Set environment to production
 ENV NODE_ENV production
