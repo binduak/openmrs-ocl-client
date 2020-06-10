@@ -15,4 +15,4 @@ aws ecr get-login-password --region ap-southeast-1|docker login --username AWS -
 echo "Docker push to ECR.."
 docker push ${OCL_FRONTEND_IMG}:latest
 docker push ${OCL_FRONTEND_IMG}:$BUILD_TIME
-echo "Done.."
+echo "Done..."
