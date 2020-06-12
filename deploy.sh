@@ -14,6 +14,9 @@ docker rm ocl-frontend
 echo "aws ecr login .."
 aws ecr get-login-password --region ap-southeast-1|docker login --username AWS --password-stdin ${REPO_LOCATION}
 
+echo "pull docker image"
+docker pull ${OCL_FRONTEND_IMG}:${DOCKER_IMAGE_TAG}
+
 echo "Run the latest docker.."
 docker run --name=ocl-frontend --restart unless-stopped -d -p 80:80 -e OCL_API_HOST=${OCL_API_HOST} ${OCL_FRONTEND_IMG}:${DOCKER_IMAGE_TAG}
 
