@@ -3,6 +3,7 @@
 echo "Start the deploy.."
 OCL_API_HOST="$1"
 OCL_FRONTEND_IMG="$2"
+DOCKER_IMAGE_TAG="$3"
 echo "Stop the running container.."
 docker stop ocl-frontend
 
