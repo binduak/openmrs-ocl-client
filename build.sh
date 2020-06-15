@@ -4,7 +4,7 @@ REPO_LOCATION="$1"
 OCL_FRONTEND_IMG="$2"
 export PATH=/usr/local/bin:$PATH
 echo $PATH
-export JIRA_CARD_NUMBER='1'
+export JIRA_CARD_NUMBER='2'
 echo "JIRA card number - $JIRA_CARD_NUMBER"
 echo "Docker build.."
 docker build --no-cache -t ocl-frontend:latest .
