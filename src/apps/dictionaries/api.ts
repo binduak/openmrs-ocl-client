@@ -65,7 +65,12 @@ const api = {
       dictionaryUrl: string,
       data: DictionaryVersion
     ): Promise<AxiosResponse<APIDictionaryVersion>> =>
-      authenticatedInstance.post(`${dictionaryUrl}versions/`, data)
+      authenticatedInstance.post(`${dictionaryUrl}versions/`, data),
+    edit: (
+      dictionaryUrl: string,
+      data: DictionaryVersion
+    ): Promise<AxiosResponse<APIDictionaryVersion>> =>
+      authenticatedInstance.put(dictionaryUrl, data)
   },
   retrieveMappings: (
     sourceUrl: string,

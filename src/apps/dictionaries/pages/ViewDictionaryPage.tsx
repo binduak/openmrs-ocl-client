@@ -20,6 +20,7 @@ import {
 import { APIOrg, APIProfile, canModifyContainer } from "../../authentication";
 import {
   createDictionaryVersionAction,
+  editDictionaryVersionAction,
   createDictionaryVersionErrorSelector,
   createDictionaryVersionLoadingSelector,
   dictionarySelector,
@@ -44,6 +45,9 @@ interface Props {
   createDictionaryVersion: (
     ...args: Parameters<typeof createDictionaryVersionAction>
   ) => void;
+  editDictionaryVersion: (
+    ...args: Parameters<typeof editDictionaryVersionAction>
+  ) => void;
   versions: APIDictionaryVersion[];
   versionsLoading: boolean;
   createVersionLoading: boolean;
@@ -60,6 +64,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
   versions,
   versionsLoading,
   createDictionaryVersion,
+  editDictionaryVersion,
   createVersionLoading,
   createVersionError,
   retrieveDictionaryErrors
@@ -131,6 +136,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
               }
               createVersionLoading={createVersionLoading}
               createVersionError={createVersionError}
+              editDictionaryVersion={editDictionaryVersion}
               dictionaryUrl={url}
               linkedSource={linkedSource}
             />
@@ -163,7 +169,8 @@ const mapStateToProps = (state: AppState) => ({
 });
 const mapDispatchToProps = {
   retrieveDictionaryAndDetails: retrieveDictionaryAndDetailsAction,
-  createDictionaryVersion: createDictionaryVersionAction
+  createDictionaryVersion: createDictionaryVersionAction,
+  editDictionaryVersion: editDictionaryVersionAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewDictionaryPage);

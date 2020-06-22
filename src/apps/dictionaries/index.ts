@@ -13,6 +13,7 @@ export {
   addConceptsToDictionaryAction,
   removeReferencesFromDictionaryAction,
   createDictionaryVersionAction,
+  editDictionaryVersionAction,
   createDictionaryVersionLoadingSelector,
   createDictionaryVersionErrorSelector
 } from "./redux";

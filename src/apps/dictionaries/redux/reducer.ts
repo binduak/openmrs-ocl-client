@@ -5,6 +5,7 @@ import {
   ADD_CONCEPTS_TO_DICTIONARY,
   CREATE_DICTIONARY_ACTION,
   CREATE_DICTIONARY_VERSION_ACTION,
+  EDIT_DICTIONARY_VERSION_ACTION,
   CREATE_SOURCE_AND_DICTIONARY_ACTION,
   EDIT_DICTIONARY_ACTION,
   EDIT_SOURCE_AND_DICTIONARY_ACTION,
@@ -57,6 +58,16 @@ export const reducer = createReducer(initialState, {
     { actionIndex, payload, meta }
   ) => {
     state.versions = [payload, ...state.versions];
+  },
+  [EDIT_DICTIONARY_VERSION_ACTION]: (
+    state,
+    { actionIndex, payload, meta }
+  ) => {
+    const versionIndex = state.versions.findIndex(
+      version => version.id === payload.id
+    );
+    if (versionIndex !== -1) state.versions[versionIndex] = payload;
+    else state.versions.push(payload);
   }
 });
 export { reducer as default };

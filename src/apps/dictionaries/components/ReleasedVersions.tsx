@@ -5,6 +5,7 @@ import {
   ButtonGroup,
   Dialog,
   Paper,
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -14,15 +15,17 @@ import {
   Typography
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { APIDictionaryVersion } from "../types";
+import { DictionaryVersion, APIDictionaryVersion } from "../types";
 import { BASE_URL } from "../../../utils";
 import DictionaryVersionForm from "./DictionaryVersionForm";
+import ConfirmDialog from "./ConfirmDialog";
 
 interface Props {
   versions: APIDictionaryVersion[];
   subscriptionUrl: string;
   showCreateVersionButton: boolean;
   createDictionaryVersion: Function;
+  editDictionaryVersion: Function;
   createVersionLoading: boolean;
   createVersionError?: { detail: string };
   dictionaryUrl: string;
@@ -34,14 +37,22 @@ const ReleasedVersions: React.FC<Props> = ({
   subscriptionUrl,
   showCreateVersionButton,
   createDictionaryVersion,
+  editDictionaryVersion,
   createVersionLoading,
   createVersionError,
   dictionaryUrl,
   linkedSource
 }) => {
   const versionsToDisplay = versions.filter(row => row.id !== "HEAD");
-
-  const [open, setOpen] = React.useState(false);
+  const [version, setVersion] = React.useState<DictionaryVersion>(
+    {
+    id: "",
+    released: false,
+    description: "",
+    external_id: ""
+  });
+  const [open, setOpen,] = React.useState(false);
+  const [confirmOpen, setConfirmOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -49,6 +60,26 @@ const ReleasedVersions: React.FC<Props> = ({
   const handleClose = () => {
     setOpen(false);
   };
+  const changeStatus = (version: DictionaryVersion) => {
+    console.log(version);
+    setVersion(version);
+    setConfirmOpen(true);
+  }
+  const getDescription = ():string => {
+    if (document.getElementById('version-description') !== null){
+      return (document.getElementById('version-description') as HTMLInputElement).value
+    }
+    return "";
+  }
+
+  const handleEditVersion = (version: DictionaryVersion) => {
+    console.log(version);
+      editDictionaryVersion(`${dictionaryUrl}${version.id}/`, {
+      "released": !version.released,
+      "description": getDescription() || version.description
+    })
+    setConfirmOpen(false);
+  }
 
   return (
     <Paper className="fieldsetParent">
@@ -64,13 +95,17 @@ const ReleasedVersions: React.FC<Props> = ({
                   <TableCell>ID</TableCell>
                   <TableCell>Description</TableCell>
                   <TableCell>Actions</TableCell>
+                  <TableCell>Release Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {versionsToDisplay.map((row: APIDictionaryVersion) => (
                   <TableRow key={row.id}>
                     <TableCell>{row.id}</TableCell>
-                    <TableCell>{row.description || "None"}</TableCell>
+                    <TableCell style={{
+                      whiteSpace: "normal",
+                      wordBreak: "break-word",
+                    }}>{row.description || "None"}</TableCell>
                     <TableCell>
                       <Button
                         // not row.url because the response immediately after creating a new version is missing the url attribute for some reason
@@ -80,8 +115,16 @@ const ReleasedVersions: React.FC<Props> = ({
                         variant="text"
                         color="primary"
                       >
-                        View concepts
+                        View
                       </Button>
+                    </TableCell>
+                    <TableCell>
+                    <Switch
+                      checked={row.released}
+                      onChange={() => changeStatus(row)}
+                      name="releaseStatus"
+                      color="primary"
+                    />
                     </TableCell>
                   </TableRow>
                 ))}
@@ -114,8 +157,18 @@ const ReleasedVersions: React.FC<Props> = ({
           error={createVersionError}
         />
       </Dialog>
+      <ConfirmDialog
+        title="Please Confirm!"
+        message={`Do you want to ${version.released ? "unrelease" : "release"} the version ${version.id}?`}
+        description={`${version.description}`}
+        open={confirmOpen}
+        setOpen={setConfirmOpen}
+        onConfirm={() => handleEditVersion(version)}>
+    </ConfirmDialog>
+
     </Paper>
   );
 };
+
 
 export default ReleasedVersions;

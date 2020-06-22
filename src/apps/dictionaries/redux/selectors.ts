@@ -20,6 +20,7 @@ import {
   ADD_CONCEPTS_TO_DICTIONARY,
   CREATE_DICTIONARY_ACTION,
   CREATE_DICTIONARY_VERSION_ACTION,
+  EDIT_DICTIONARY_VERSION_ACTION,
   CREATE_SOURCE_AND_DICTIONARY_ACTION,
   EDIT_DICTIONARY_ACTION,
   EDIT_SOURCE_AND_DICTIONARY_ACTION,
@@ -83,7 +84,12 @@ export const createDictionaryVersionLoadingSelector = loadingSelector(
 export const createDictionaryVersionErrorSelector = errorSelector(
   CREATE_DICTIONARY_VERSION_ACTION
 );
-
+export const editDictionaryVersionLoadingSelector = loadingSelector(
+  EDIT_DICTIONARY_VERSION_ACTION
+);
+export const editDictionaryVersionErrorSelector = errorSelector(
+  EDIT_DICTIONARY_VERSION_ACTION
+);
 export const retrievePublicDictionariesLoadingSelector = loadingSelector(
   RETRIEVE_DICTIONARIES_ACTION
 );
