@@ -14,6 +14,12 @@ import {
   Tooltip,
   Typography
 } from "@material-ui/core";
+
+import IconButton from "@material-ui/core/IconButton";
+import { Menu, MenuItem } from "@material-ui/core";
+import {
+  MoreVert as MoreVertIcon,
+} from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { DictionaryVersion, APIDictionaryVersion } from "../types";
 import { BASE_URL } from "../../../utils";
@@ -53,6 +59,7 @@ const ReleasedVersions: React.FC<Props> = ({
   });
   const [open, setOpen,] = React.useState(false);
   const [confirmOpen, setConfirmOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -81,6 +88,16 @@ const ReleasedVersions: React.FC<Props> = ({
     setConfirmOpen(false);
   }
 
+  const handleClick = (event: React.MouseEvent<HTMLElement>, version: DictionaryVersion) => {
+    setAnchorEl(event.currentTarget);
+    setVersion(version);
+  };
+
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Paper className="fieldsetParent">
       <fieldset>
@@ -92,39 +109,68 @@ const ReleasedVersions: React.FC<Props> = ({
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>ID</TableCell>
+                  <TableCell>Version</TableCell>
                   <TableCell>Description</TableCell>
-                  <TableCell>Actions</TableCell>
                   <TableCell>Release Status</TableCell>
+                  <TableCell>Action</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {versionsToDisplay.map((row: APIDictionaryVersion) => (
                   <TableRow key={row.id}>
-                    <TableCell>{row.id}</TableCell>
-                    <TableCell style={{
-                      whiteSpace: "normal",
-                      wordBreak: "break-word",
-                    }}>{row.description || "None"}</TableCell>
                     <TableCell>
-                      <Button
-                        // not row.url because the response immediately after creating a new version is missing the url attribute for some reason
-                        to={`${dictionaryUrl}${row.id}/concepts/?linkedSource=${linkedSource}`}
-                        component={Link}
-                        size="small"
-                        variant="text"
-                        color="primary"
-                      >
-                        View
-                      </Button>
+                      <Tooltip title="View Concepts" enterDelay={700}>
+                        <Link
+                          onClick={e => e.stopPropagation()}
+                          to={`${dictionaryUrl}${row.id}/concepts/?linkedSource=${linkedSource}`}>
+                          {row.id}
+                        </Link>
+                      </Tooltip>
+                    </TableCell>
+                    <TableCell style={{
+                        whiteSpace: "normal",
+                        wordBreak: "break-word",
+                      }}>{row.description || "None"}
                     </TableCell>
                     <TableCell>
-                    <Switch
-                      checked={row.released}
-                      onChange={() => changeStatus(row)}
-                      name="releaseStatus"
-                      color="primary"
-                    />
+                      <Tooltip title={`${row.released?"Released" : "Unreleased"} Version`} enterDelay={700}>
+                        <Switch
+                          checked={row.released}
+                          onChange={() => changeStatus(row)}
+                          name="releaseStatus"
+                          color="primary"
+                        />
+                      </Tooltip>
+                    </TableCell>
+                    <TableCell>
+                        <Tooltip title="More actions" enterDelay={700}>
+                          <IconButton
+                            aria-label="more"
+                            aria-controls="menu"
+                            aria-haspopup="true"
+                            onClick={(e) => handleClick(e,row)}
+                          >
+                            <MoreVertIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Menu
+                          id="long-menu"
+                          anchorEl={anchorEl}
+                          keepMounted
+                          open={Boolean(anchorEl)}
+                          onClose={handleCloseMenu}>
+                          <MenuItem onClick={handleCloseMenu}>
+                            <CopyToClipboard text={`${version.released ? `${BASE_URL}${subscriptionUrl}${version.id}/` : null}`}>
+                              <Tooltip title={`${version.released ? `Copy ${BASE_URL}${subscriptionUrl}${version.id}/` : "This is NOT a Released Version"}`} enterDelay={700}>
+                                <span>
+                                  <Button disabled={!version.released}>
+                                    Copy subscription URL
+                                  </Button>
+                                </span>
+                              </Tooltip>
+                            </CopyToClipboard>
+                          </MenuItem>
+                        </Menu>
                     </TableCell>
                   </TableRow>
                 ))}
