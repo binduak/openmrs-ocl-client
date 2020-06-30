@@ -9,17 +9,19 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
   Tooltip,
   Typography
 } from "@material-ui/core";
-
+import {makeStyles} from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import { Menu, MenuItem } from "@material-ui/core";
 import {
   MoreVert as MoreVertIcon,
 } from "@material-ui/icons";
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { Link } from "react-router-dom";
 import { DictionaryVersion, APIDictionaryVersion } from "../types";
 import { BASE_URL } from "../../../utils";
@@ -37,6 +39,12 @@ interface Props {
   dictionaryUrl: string;
   linkedSource: string;
 }
+
+const useStyles = makeStyles({
+  container: {
+    maxHeight: 400,
+  },
+});
 
 const ReleasedVersions: React.FC<Props> = ({
   versions,
@@ -60,6 +68,7 @@ const ReleasedVersions: React.FC<Props> = ({
   const [open, setOpen,] = React.useState(false);
   const [confirmOpen, setConfirmOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const classes = useStyles();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -106,7 +115,8 @@ const ReleasedVersions: React.FC<Props> = ({
         </Typography>
         {versionsToDisplay.length > 0 ? (
           <div>
-            <Table>
+          <TableContainer className={classes.container}>
+            <Table stickyHeader>
               <TableHead>
                 <TableRow>
                   <TableCell>Version</TableCell>
@@ -164,6 +174,7 @@ const ReleasedVersions: React.FC<Props> = ({
                               <Tooltip title={`${version.released ? `Copy ${BASE_URL}${subscriptionUrl}${version.id}/` : "This is NOT a Released Version"}`} enterDelay={700}>
                                 <span>
                                   <Button disabled={!version.released}>
+                                    <FileCopyIcon />
                                     Copy subscription URL
                                   </Button>
                                 </span>
@@ -176,19 +187,13 @@ const ReleasedVersions: React.FC<Props> = ({
                 ))}
               </TableBody>
             </Table>
+            </TableContainer>
           </div>
         ) : (
           <Typography align="center">No released versions</Typography>
         )}
         <br />
         <ButtonGroup fullWidth variant="text" color="primary">
-          <CopyToClipboard text={`${BASE_URL}${subscriptionUrl}`}>
-            <Tooltip title={`Copy ${BASE_URL}${subscriptionUrl}`}>
-              <Button disabled={!versionsToDisplay.length}>
-                Copy subscription URL
-              </Button>
-            </Tooltip>
-          </CopyToClipboard>
           {!showCreateVersionButton ? null : (
             <Button onClick={handleClickOpen}>Release new version</Button>
           )}
