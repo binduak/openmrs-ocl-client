@@ -21,4 +21,8 @@ export interface APISource extends BaseAPISource {
   supported_locales: string[];
 }
 
+export interface SourceState {
+    sources: { items: APISource[]; responseMeta?: {} }[];
+}
+
 export {};
