@@ -29,8 +29,4 @@ export interface SourceState {
     sources: { items: APISource[]; responseMeta?: {} }[];
 }
 
-export interface SourceState {
-    sources: { items: APISource[]; responseMeta?: {} }[];
-}
-
 export {};
