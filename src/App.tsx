@@ -34,19 +34,13 @@ const AuthenticatedRoutes: React.FC = () => {
         </Header>
       </Route>
       <Route exact path="/user/collections/">
-        <Header title="Your Dictionaries">
-          <ViewPersonalDictionariesPage />
-        </Header>
+        <ViewPersonalDictionariesPage />
       </Route>
       <Route exact path="/user/orgs/collections/">
-        <Header title="Your Organizations' Dictionaries">
-          <ViewOrgDictionariesPage />
-        </Header>
+        <ViewOrgDictionariesPage />
       </Route>
       <Route exact path="/collections/">
-        <Header title="Public Dictionaries">
-          <ViewPublicDictionariesPage />
-        </Header>
+        <ViewPublicDictionariesPage />
       </Route>
       <Route exact path="/user/sources/">
         <Header title="Sources">
