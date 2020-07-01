@@ -16,5 +16,5 @@ export const retrievePersonalSourcesAction = createActionThunk(
         RETRIEVE_SOURCES_ACTION,
         PERSONAL_SOURCES_ACTION_INDEX
     ),
-    api.retrieve
+    api.sources.retrieve.private
 );

@@ -20,6 +20,9 @@ export interface APISource extends BaseAPISource {
   concepts_url: string;
   extras?: {};
   supported_locales: string[];
+  owner: string;
+  owner_type: string;
+  owner_url: string;
 }
 
 export interface SourceState {
