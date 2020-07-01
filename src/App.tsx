@@ -22,6 +22,7 @@ import {
   ViewOrgDictionariesPage,
   ViewPersonalDictionariesPage
 } from "./apps/dictionaries/pages";
+import { ViewPersonalSourcesPage } from "./apps/sources/pages";
 
 const AuthenticatedRoutes: React.FC = () => {
   return (
@@ -45,6 +46,11 @@ const AuthenticatedRoutes: React.FC = () => {
       <Route exact path="/collections/">
         <Header title="Public Dictionaries">
           <ViewPublicDictionariesPage />
+        </Header>
+      </Route>
+      <Route exact path="/user/sources/">
+        <Header title="Sources">
+          <ViewPersonalSourcesPage />
         </Header>
       </Route>
       <Route path="/:ownerType/:owner/sources/:source/concepts">
