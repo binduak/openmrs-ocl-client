@@ -80,9 +80,7 @@ const ViewDictionaryPage: React.FC<Props> = ({
     profile,
     usersOrgs
   );
-  const showEditButton = canEditDictionary;
-
-  const linkedSource = dictionary?.extras?.source || "";
+  const showEditButton = canEditDictionary; // redundant, yes, but we don't want to couple them
 
   return (
     <ProgressOverlay
@@ -124,7 +122,6 @@ const ViewDictionaryPage: React.FC<Props> = ({
           ) : (
             <ReleasedVersions
               versions={versions}
-              subscriptionUrl={url}
               showCreateVersionButton={canEditDictionary}
               createDictionaryVersion={(data: DictionaryVersion) =>
                 createDictionaryVersion(url, data)
@@ -132,7 +129,6 @@ const ViewDictionaryPage: React.FC<Props> = ({
               createVersionLoading={createVersionLoading}
               createVersionError={createVersionError}
               dictionaryUrl={url}
-              linkedSource={linkedSource}
             />
           )}
         </Grid>
