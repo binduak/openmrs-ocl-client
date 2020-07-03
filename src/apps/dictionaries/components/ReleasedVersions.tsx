@@ -96,7 +96,7 @@ const ReleasedVersions: React.FC<Props> = ({
                                   data-testid={row.id}
                                   checked={row.released}
                                    // onChange={handleChange}
-                                  name="checkedB"
+                                  name="checkedReleaseStatus"
                                   color="primary"
                               />
                       </TableCell>

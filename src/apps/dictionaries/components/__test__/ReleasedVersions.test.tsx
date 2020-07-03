@@ -10,14 +10,12 @@ type releasedVersionProps = React.ComponentProps<typeof ReleasedVersions>;
 
 const baseProps: releasedVersionProps = {
     versions: [],
-    subscriptionUrl: "Subscription URL",
     showCreateVersionButton: true,
     createDictionaryVersion: function createDictonaryVersion() {
     },
     createVersionLoading: true,
     createVersionError: {detail: "error"},
-    dictionaryUrl: "Dictionary url",
-    linkedSource: "linked source"
+    dictionaryUrl: "Dictionary url"
 };
 
 function renderUI(props: Partial<releasedVersionProps> = {}) {
