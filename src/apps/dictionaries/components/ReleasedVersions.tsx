@@ -22,6 +22,7 @@ import {
   MoreVert as MoreVertIcon,
 } from "@material-ui/icons";
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 import { Link } from "react-router-dom";
 import { DictionaryVersion, APIDictionaryVersion } from "../types";
 import { BASE_URL } from "../../../utils";
@@ -43,6 +44,10 @@ interface Props {
 const useStyles = makeStyles({
   container: {
     maxHeight: 400,
+  },
+  buttonLink: {
+    textDecoration: "none",
+    color: "inherit"
   },
 });
 
@@ -129,13 +134,7 @@ const ReleasedVersions: React.FC<Props> = ({
                 {versionsToDisplay.map((row: APIDictionaryVersion) => (
                   <TableRow key={row.id}>
                     <TableCell>
-                      <Tooltip title="View Concepts" enterDelay={700}>
-                        <Link
-                          onClick={e => e.stopPropagation()}
-                          to={`${dictionaryUrl}${row.id}/concepts/?linkedSource=${linkedSource}`}>
-                          {row.id}
-                        </Link>
-                      </Tooltip>
+                      {row.id}
                     </TableCell>
                     <TableCell style={{
                         whiteSpace: "normal",
@@ -166,21 +165,26 @@ const ReleasedVersions: React.FC<Props> = ({
                         <Menu
                           id="long-menu"
                           anchorEl={anchorEl}
-                          keepMounted
                           open={Boolean(anchorEl)}
-                          onClose={handleCloseMenu}>
+                          onClose={handleCloseMenu}
+                        >
                           <MenuItem onClick={handleCloseMenu}>
-                            <CopyToClipboard text={`${version.released ? `${BASE_URL}${subscriptionUrl}${version.id}/` : null}`}>
-                              <Tooltip title={`${version.released ? `Copy ${BASE_URL}${subscriptionUrl}${version.id}/` : "This is NOT a Released Version"}`} enterDelay={700}>
-                                <span>
-                                  <Button disabled={!version.released}>
-                                    <FileCopyIcon />
-                                    Copy subscription URL
-                                  </Button>
-                                </span>
-                              </Tooltip>
-                            </CopyToClipboard>
+                            <Link
+                              className={classes.buttonLink}
+                              to={`${dictionaryUrl}${row.id}/concepts/?linkedSource=${linkedSource}`}
+                            >
+                              <VisibilityIcon /> View Concepts
+                            </Link>
                           </MenuItem>
+                          {!version.released ? null : (
+                            <MenuItem onClick={handleCloseMenu}>
+                            <CopyToClipboard text={`${version.released ? `${BASE_URL}${subscriptionUrl}${version.id}/` : null}`}>
+                              <span>
+                                  <FileCopyIcon /> Copy Subscription URL
+                              </span>
+                            </CopyToClipboard>
+                            </MenuItem>
+                          )}
                         </Menu>
                     </TableCell>
                   </TableRow>
