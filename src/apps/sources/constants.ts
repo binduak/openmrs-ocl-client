@@ -1,4 +1,4 @@
-const OCL_SOURCE_TYPE = "OCLClientSource";
+const OCL_SOURCE_TYPE = "Dictionary";
 
 const CONTEXT = {
     view: "view",

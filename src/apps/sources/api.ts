@@ -26,8 +26,7 @@ const api = {
               limit,
               page,
               q: buildPartialSearchQuery(q),
-              collection_type: OCL_SOURCE_TYPE,
-              customValidationSchema: CUSTOM_VALIDATION_SCHEMA,
+              sourceType: OCL_SOURCE_TYPE,
               timestamp: new Date().getTime() // work around seemingly unhelpful caching
             }
           })
