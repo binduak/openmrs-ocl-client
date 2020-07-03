@@ -80,7 +80,7 @@ const ViewSources: React.FC<Props> = ({
       {!title ? (
         ""
       ) : (
-        <Grid item xs={12}>
+        <Grid item xs={12} data-testid="sourcesTitle" >
           <Typography
             align="center"
             className={classes.title}
@@ -104,9 +104,10 @@ const ViewSources: React.FC<Props> = ({
             type="search"
             fullWidth
             placeholder="Search Sources"
+            data-testid="sourcesSearch"
             endAdornment={
               <InputAdornment position="end">
-                <IconButton onClick={() => onSearch(q)}>
+                <IconButton data-testid="sourcesSearchButton" onClick={() => onSearch(q)}>
                   <SearchIcon />
                 </IconButton>
               </InputAdornment>
@@ -114,7 +115,7 @@ const ViewSources: React.FC<Props> = ({
           />
         </form>
       </Grid>
-      <Grid item xs={12} container spacing={2} justify="center">
+      <Grid item xs={12} container spacing={2} justify="center" data-testid="sources">
         {sources.length === 0 ? (
           <Typography component="span" variant="h6">
             No Sources Found
@@ -132,13 +133,14 @@ const ViewSources: React.FC<Props> = ({
             url
           }) => (
             <Grid item key={shortCode} xs={4}>
-              <Card>
+              <Card data-testid={shortCode}>
                 <CardContent>
                   <Typography
                     noWrap
                     variant="body1"
                     color="textSecondary"
                     gutterBottom
+                    data-testid={"sourceShortCode - " + shortCode}
                   >
                     {shortCode}
                   </Typography>
@@ -146,14 +148,12 @@ const ViewSources: React.FC<Props> = ({
                     className={classes.sourceName}
                     noWrap
                     variant="h5"
+                    data-testid={"sourceName - " + shortCode}
                   >
                     {name}
                   </Typography>
-                  <Typography noWrap variant="body2" color="textSecondary">
+                  <Typography noWrap variant="body2" color="textSecondary" data-testid={"sourceOwnerTypeAndOwner - " + shortCode}>
                     {ownerType}/{owner}
-                  </Typography>
-                  <Typography noWrap variant="body1" component="p">
-                    {description}
                   </Typography>
                 </CardContent>
                 <CardActions>
@@ -164,6 +164,7 @@ const ViewSources: React.FC<Props> = ({
                     variant="text"
                     color="primary"
                     disabled={true}
+                    data-testid="viewButton"
                   >
                     View
                   </Button>
@@ -193,6 +194,7 @@ const ViewSources: React.FC<Props> = ({
           nextIconButtonProps={{
             "aria-label": "next page"
           }}
+          data-testid="sourcesPagination"
           onChangePage={(_: any, page: number) => onPageChange(page + 1)}
         />
       </Grid>
