@@ -1,6 +1,5 @@
 import {createActionThunk, indexedAction} from "../../../redux";
 import {CREATE_SOURCE_ACTION, EDIT_SOURCE_ACTION, RETRIEVE_SOURCES_ACTION} from "./actionTypes";
-import {} from "../../dictionaries/redux/constants";
 import api from "../api";
 import {PERSONAL_SOURCES_ACTION_INDEX} from "./constants";
 
