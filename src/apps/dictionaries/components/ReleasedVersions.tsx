@@ -11,7 +11,7 @@ import {
   TableHead,
   TableRow,
   Tooltip,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { APIDictionaryVersion } from "../types";
@@ -33,9 +33,9 @@ const ReleasedVersions: React.FC<Props> = ({
   createDictionaryVersion,
   createVersionLoading,
   createVersionError,
-  dictionaryUrl
+  dictionaryUrl,
 }) => {
-  const versionsToDisplay = versions.filter(row => row.id !== "HEAD");
+  const versionsToDisplay = versions.filter((row) => row.id !== "HEAD");
 
   const [open, setOpen] = React.useState(false);
 
@@ -47,9 +47,9 @@ const ReleasedVersions: React.FC<Props> = ({
   };
 
   return (
-    <Paper className="fieldsetParent">
+    <Paper className='fieldsetParent'>
       <fieldset>
-        <Typography component="legend" variant="h5" gutterBottom>
+        <Typography component='legend' variant='h5' gutterBottom>
           Releases
         </Typography>
         {versionsToDisplay.length > 0 ? (
@@ -73,17 +73,21 @@ const ReleasedVersions: React.FC<Props> = ({
                         // not row.url because the response immediately after creating a new version is missing the url attribute for some reason
                         to={`${dictionaryUrl}${row.id}/concepts/`}
                         component={Link}
-                        size="small"
-                        variant="text"
-                        color="primary"
+                        size='small'
+                        variant='text'
+                        color='primary'
                       >
                         View concepts
                       </Button>
                     </TableCell>
                     <TableCell>
-                      <CopyToClipboard text={`${dictionaryUrl}${row.id}/`}>
-                        <Tooltip title={`${dictionaryUrl}${row.id}/`}>
-                          <Button size="small" variant="text" color="primary">
+                      <CopyToClipboard
+                        text={`${BASE_URL}${dictionaryUrl}${row.id}/`}
+                      >
+                        <Tooltip
+                          title={`${BASE_URL}${dictionaryUrl}${row.id}/`}
+                        >
+                          <Button size='small' variant='text' color='primary'>
                             Copy
                           </Button>
                         </Tooltip>
@@ -95,10 +99,10 @@ const ReleasedVersions: React.FC<Props> = ({
             </Table>
           </div>
         ) : (
-          <Typography align="center">No released versions</Typography>
+          <Typography align='center'>No released versions</Typography>
         )}
         <br />
-        <ButtonGroup fullWidth variant="text" color="primary">
+        <ButtonGroup fullWidth variant='text' color='primary'>
           {!showCreateVersionButton ? null : (
             <Button onClick={handleClickOpen}>Release new version</Button>
           )}

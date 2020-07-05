@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Redirect
+  Redirect,
 } from "react-router-dom";
 import { AuthenticationRequired, LoginPage } from "./apps/authentication";
 import { Provider } from "react-redux";
@@ -11,43 +11,41 @@ import store from "./redux";
 import { Header, InProgressPage, NavDrawer } from "./components";
 import DictionaryRoutes, {
   CreateDictionaryPage,
-  ViewPublicDictionariesPage
+  ViewPublicDictionariesPage,
 } from "./apps/dictionaries";
 import ConceptRoutes, {
   DICTIONARY_CONTAINER,
-  DICTIONARY_VERSION_CONTAINER
+  DICTIONARY_VERSION_CONTAINER,
 } from "./apps/concepts";
 import { SOURCE_CONTAINER } from "./apps/concepts/constants";
 import {
   ViewOrgDictionariesPage,
-  ViewPersonalDictionariesPage
+  ViewPersonalDictionariesPage,
 } from "./apps/dictionaries/pages";
 import { ViewPersonalSourcesPage } from "./apps/sources/pages";
 
 const AuthenticatedRoutes: React.FC = () => {
   return (
     <Switch>
-      <Route exact path="/actions/" component={InProgressPage} />
-      <Route exact path="/collections/new/">
-        <Header title="Create Dictionary">
+      <Route exact path='/actions/' component={InProgressPage} />
+      <Route exact path='/collections/new/'>
+        <Header title='Create Dictionary'>
           <CreateDictionaryPage />
         </Header>
       </Route>
-      <Route exact path="/user/collections/">
+      <Route exact path='/user/collections/'>
         <ViewPersonalDictionariesPage />
       </Route>
-      <Route exact path="/user/orgs/collections/">
+      <Route exact path='/user/orgs/collections/'>
         <ViewOrgDictionariesPage />
       </Route>
-      <Route exact path="/collections/">
+      <Route exact path='/collections/'>
         <ViewPublicDictionariesPage />
       </Route>
-      <Route exact path="/user/sources/">
-        <Header title="Sources">
-          <ViewPersonalSourcesPage />
-        </Header>
+      <Route exact path='/user/sources/'>
+        <ViewPersonalSourcesPage />
       </Route>
-      <Route path="/:ownerType/:owner/sources/:source/concepts">
+      <Route path='/:ownerType/:owner/sources/:source/concepts'>
         <ConceptRoutes
           containerType={SOURCE_CONTAINER}
           editConcept={true}
@@ -56,27 +54,27 @@ const AuthenticatedRoutes: React.FC = () => {
           viewConcepts={true}
         />
       </Route>
-      <Route path="/:ownerType/:owner/collections/:collection/concepts">
+      <Route path='/:ownerType/:owner/collections/:collection/concepts'>
         <ConceptRoutes
           containerType={DICTIONARY_CONTAINER}
           viewConcepts={true}
         />
       </Route>
-      <Route path="/:ownerType/:owner/collections/:collection/concepts">
+      <Route path='/:ownerType/:owner/collections/:collection/concepts'>
         <ConceptRoutes
           containerType={DICTIONARY_VERSION_CONTAINER}
           viewConcepts={true}
         />
       </Route>
-      <Route path="/concepts">
+      <Route path='/concepts'>
         <ConceptRoutes containerType={SOURCE_CONTAINER} viewConcepts={true} />
       </Route>
       <Route
-        path="/:ownerType/:owner/collections"
+        path='/:ownerType/:owner/collections'
         component={DictionaryRoutes}
       />
-      <Route exact path="/">
-        <Redirect to="/user/collections/" />
+      <Route exact path='/'>
+        <Redirect to='/user/collections/' />
       </Route>
     </Switch>
   );
@@ -90,10 +88,10 @@ const Routes: React.FC = () => {
   return (
     <Router>
       <Switch>
-        <Route exact path="/login">
+        <Route exact path='/login'>
           <LoginPage />
         </Route>
-        <Route path="/">
+        <Route path='/'>
           <AuthenticationRequired>
             {() => (
               <NavDrawer>

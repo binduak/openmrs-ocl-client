@@ -9,6 +9,8 @@ import { Fab, Tooltip } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import ViewSources from "./ViewSources";
+import { SourceOwnerTabs } from "./SourceOwnerTabs";
+import { Header } from "../../../components";
 
 const PER_PAGE = 20;
 
@@ -26,7 +28,7 @@ const ViewPersonalSourcesPage: React.FC<Props> = ({
   sources = [],
   loading,
   meta = {},
-  retrieveSources
+  retrieveSources,
 }) => {
   const { push: goTo } = useHistory();
   const { pathname: url } = useLocation();
@@ -42,29 +44,32 @@ const ViewPersonalSourcesPage: React.FC<Props> = ({
   const gimmeAUrl = (params: { page?: number; q?: string }) => {
     const newParams: { page?: number; q?: string } = {
       ...queryParams,
-      ...params
+      ...params,
     };
     return `${url}?${qs.stringify(newParams)}`;
   };
 
   return (
-    <ProgressOverlay loading={loading}>
-      <ViewSources
-        initialQ={initialQ}
-        page={page}
-        onSearch={(q: string) => goTo(gimmeAUrl({ q }))}
-        onPageChange={(page: number) => goTo(gimmeAUrl({ page }))}
-        sources={sources}
-        numFound={numFound}
-      />
-      <Link to={`/sources/new/`}>
-        <Tooltip title="Create new source">
-          <Fab color="primary" className="fab">
-            <AddIcon />
-          </Fab>
-        </Tooltip>
-      </Link>
-    </ProgressOverlay>
+    <Header title='Sources'>
+      <SourceOwnerTabs currentPageUrl={url} />
+      <ProgressOverlay loading={loading}>
+        <ViewSources
+          initialQ={initialQ}
+          page={page}
+          onSearch={(q: string) => goTo(gimmeAUrl({ q }))}
+          onPageChange={(page: number) => goTo(gimmeAUrl({ page }))}
+          sources={sources}
+          numFound={numFound}
+        />
+        <Link to={`/sources/new/`}>
+          <Tooltip title='Create new source'>
+            <Fab color='primary' className='fab'>
+              <AddIcon />
+            </Fab>
+          </Tooltip>
+        </Link>
+      </ProgressOverlay>
+    </Header>
   );
 };
 
