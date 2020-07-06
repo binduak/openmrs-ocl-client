@@ -5,9 +5,6 @@ import { useQueryParams } from "../../../utils";
 import { useHistory, useLocation } from "react-router";
 import qs from "qs";
 import { retrievePersonalSourcesAction } from "../redux";
-import { Fab, Tooltip } from "@material-ui/core";
-import { Add as AddIcon } from "@material-ui/icons";
-import { Link } from "react-router-dom";
 import ViewSources from "./ViewSources";
 
 const PER_PAGE = 20;
@@ -57,13 +54,6 @@ const ViewPersonalSourcesPage: React.FC<Props> = ({
         sources={sources}
         numFound={numFound}
       />
-      <Link to={`/sources/new/`}>
-        <Tooltip title="Create new source">
-          <Fab color="primary" className="fab">
-            <AddIcon />
-          </Fab>
-        </Tooltip>
-      </Link>
     </ProgressOverlay>
   );
 };
