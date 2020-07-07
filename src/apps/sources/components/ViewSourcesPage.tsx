@@ -4,7 +4,7 @@ import { ProgressOverlay } from "../../../utils/components";
 import { useQueryParams } from "../../../utils";
 import { useHistory, useLocation } from "react-router";
 import qs from "qs";
-import { retrievePersonalSourcesAction } from "../redux";
+import { retrievePublicSourcesAction } from "../redux";
 import { Fab, Tooltip } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
@@ -20,11 +20,11 @@ interface Props {
   meta?: { num_found?: number };
   // not nice, but better than not typing it
   retrieveSources: (
-    ...args: Parameters<typeof retrievePersonalSourcesAction>
+    ...args: Parameters<typeof retrievePublicSourcesAction>
   ) => void;
 }
 
-const ViewPersonalSourcesPage: React.FC<Props> = ({
+const ViewPublicSourcesPage: React.FC<Props> = ({
   sources = [],
   loading,
   meta = {},
@@ -73,4 +73,4 @@ const ViewPersonalSourcesPage: React.FC<Props> = ({
   );
 };
 
-export default ViewPersonalSourcesPage;
+export default ViewPublicSourcesPage;

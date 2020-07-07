@@ -4,6 +4,7 @@ export {
   createSourceErrorSelector,
   editSourceAction,
   editSourceErrorSelector,
-  retrievePersonalSourcesLoadingSelector
+  retrievePersonalSourcesLoadingSelector,
 } from "./redux";
 export * from "./types";
+export { ViewPublicSourcesPage } from "./pages";
