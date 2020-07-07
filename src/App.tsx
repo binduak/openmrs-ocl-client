@@ -43,9 +43,7 @@ const AuthenticatedRoutes: React.FC = () => {
         <ViewPublicDictionariesPage />
       </Route>
       <Route exact path="/user/sources/">
-        <Header title="Sources">
           <ViewPersonalSourcesPage />
-        </Header>
       </Route>
       <Route path="/:ownerType/:owner/sources/:source/concepts">
         <ConceptRoutes

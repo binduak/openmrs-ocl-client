@@ -38,24 +38,24 @@ const useStyles = makeStyles((theme: Theme) =>
       display: "grid",
       position: "fixed",
       bottom: 0,
-      background: theme.palette.background.default
-    },
-    paginationDouble: {
+      background: theme.palette.background.default,
       width: "100%"
-    },
-    paginationSingle: {
-      width: "50%"
     },
     title: {
       marginBottom: "2vw"
     },
-    search: {
+    searchInput: {
+      textAlign: "center",
+      fontSize: "larger"
+    },
+    searchContainer: {
       justifyItems: "center",
       display: "grid",
       position: "sticky",
       background: "transparent",
       width: "100%",
-      marginBottom: "2vw"
+      margin: theme.spacing(2),
+      padding: theme.spacing(2)
     },
     sourceName: {
       overflowX: "auto"
@@ -77,21 +77,7 @@ const ViewSources: React.FC<Props> = ({
 
   return (
     <>
-      {!title ? (
-        ""
-      ) : (
-        <Grid item xs={12} data-testid="sourcesTitle" >
-          <Typography
-            align="center"
-            className={classes.title}
-            gutterBottom
-            variant="h5"
-          >
-            {title}
-          </Typography>
-        </Grid>
-      )}
-      <Grid className={classes.search} item xs={12}>
+      <Grid className={classes.searchContainer} item xs={12} >
         <form
           onSubmit={e => {
             e.preventDefault();
@@ -99,6 +85,9 @@ const ViewSources: React.FC<Props> = ({
           }}
         >
           <Input
+            inputProps={{
+                  className: classes.searchInput
+            }}
             onChange={e => setQ(e.target.value)}
             value={q}
             type="search"
@@ -174,14 +163,7 @@ const ViewSources: React.FC<Props> = ({
           )
         )}
       </Grid>
-      <Grid
-        item
-        xs={12}
-        className={clsx(
-          classes.pagination,
-          title ? classes.paginationSingle : classes.paginationDouble
-        )}
-      >
+        <Grid item xs={12} className={classes.pagination}>
         <TablePagination
           rowsPerPageOptions={[PER_PAGE]}
           component="div"

@@ -6,6 +6,8 @@ import { useHistory, useLocation } from "react-router";
 import qs from "qs";
 import { retrievePersonalSourcesAction } from "../redux";
 import ViewSources from "./ViewSources";
+import {SourceOwnerTabs} from "./SourceOwnerTabs";
+import Header from "../../../components/Header";
 
 const PER_PAGE = 20;
 
@@ -45,6 +47,8 @@ const ViewPersonalSourcesPage: React.FC<Props> = ({
   };
 
   return (
+    <Header title="Sources">
+    <SourceOwnerTabs currentPageUrl={url} />
     <ProgressOverlay loading={loading}>
       <ViewSources
         initialQ={initialQ}
@@ -55,6 +59,7 @@ const ViewPersonalSourcesPage: React.FC<Props> = ({
         numFound={numFound}
       />
     </ProgressOverlay>
+    </Header>
   );
 };
 

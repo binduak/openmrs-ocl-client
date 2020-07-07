@@ -112,17 +112,6 @@ describe('ViewSources', () => {
 
     });
 
-    it('should display "Sources" as Title', () => {
-        const {container} = renderUI({
-            title: "Sources"
-        });
-        const title: HTMLElement | null = container.querySelector("[data-testid='sourcesTitle']");
-
-        expect(title).not.toBeNull();
-        expect(title).toHaveTextContent("Sources");
-
-    });
-
     it('should display "View" option for sources', () => {
         const {container} = renderUI({
             sources: [msfSource]

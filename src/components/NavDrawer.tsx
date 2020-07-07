@@ -164,12 +164,12 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
                 to="/user/sources/"
                 key="Your Sources"
             >
-              <Tooltip title="Your Sources">
+              <Tooltip title="Sources">
                   <ListItemIcon className="list-item-icon">
                       <AccountTreeOutlined />
                   </ListItemIcon>
               </Tooltip>
-                <ListItemText primary="Your Sources" />
+                <ListItemText primary="Sources" />
             </ListItem>
         </List>
         <Divider component="hr" />
