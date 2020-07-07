@@ -1,27 +1,31 @@
 import React from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import {
-  Button,
-  ButtonGroup,
-  Dialog,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-  Switch
+    Button,
+    ButtonGroup,
+    Dialog,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Tooltip,
+    Typography,
+    Switch,
+    DialogTitle,
+    DialogActions
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { APIDictionaryVersion } from "../types";
+import {APIDictionaryVersion, DictionaryVersion} from "../types";
 import DictionaryVersionForm from "./DictionaryVersionForm";
+import { BASE_URL } from "../../../utils";
 
 interface Props {
   versions: APIDictionaryVersion[];
   showCreateVersionButton: boolean;
   createDictionaryVersion: Function;
+  editDictionaryVersion: Function;
   createVersionLoading: boolean;
   createVersionError?: { detail: string };
   dictionaryUrl: string;
@@ -31,6 +35,7 @@ const ReleasedVersions: React.FC<Props> = ({
   versions,
   showCreateVersionButton,
   createDictionaryVersion,
+  editDictionaryVersion,
   createVersionLoading,
   createVersionError,
   dictionaryUrl
@@ -46,7 +51,27 @@ const ReleasedVersions: React.FC<Props> = ({
     setOpen(false);
   };
 
-  return (
+  const handleReleaseVersionChange = () => {
+     editDictionaryVersion({id:dictionaryVersion.id, released: !dictionaryVersion.released});
+     setConfirmDialogOpen(false);
+  };
+
+  const openDialog = (row: APIDictionaryVersion) => {
+      setConfirmDialogOpen(true);
+      setDictionaryVersion(row);
+  };
+
+    const [confirmDialogOpen, setConfirmDialogOpen] = React.useState(false);
+
+    const [dictionaryVersion, setDictionaryVersion] = React.useState<DictionaryVersion>(
+        {
+            id: "",
+            released: false,
+            description: "",
+            external_id: ""
+        });
+
+    return (
     <Paper className="fieldsetParent">
       <fieldset>
         <Typography component="legend" variant="h5" gutterBottom>
@@ -82,8 +107,8 @@ const ReleasedVersions: React.FC<Props> = ({
                       </Button>
                     </TableCell>
                     <TableCell>
-                      <CopyToClipboard text={`${dictionaryUrl}${row.id}/`}>
-                        <Tooltip title={`${dictionaryUrl}${row.id}/`}>
+                      <CopyToClipboard text={`${BASE_URL}${dictionaryUrl}${row.id}/`}>
+                        <Tooltip title={`${BASE_URL}${dictionaryUrl}${row.id}/`}>
                           <Button size="small" variant="text" color="primary">
                             Copy
                           </Button>
@@ -91,14 +116,13 @@ const ReleasedVersions: React.FC<Props> = ({
                       </CopyToClipboard>
                     </TableCell>
                       <TableCell>
-                              <Switch
-                                  id={row.id}
-                                  data-testid={row.id}
-                                  checked={row.released}
-                                   // onChange={handleChange}
-                                  name="checkedReleaseStatus"
-                                  color="primary"
-                              />
+                        <Switch
+                          data-testid={row.id}
+                          checked={row.released}
+                          onChange={() => openDialog(row)}
+                          name="checkReleaseStatus"
+                          color="primary"
+                        />
                       </TableCell>
                   </TableRow>
                 ))}
@@ -115,7 +139,36 @@ const ReleasedVersions: React.FC<Props> = ({
           )}
         </ButtonGroup>
       </fieldset>
-
+        <Dialog
+            data-testid="confirm-dialog"
+            maxWidth="xs"
+            aria-labelledby="confirmation-dialog-title"
+            open={confirmDialogOpen}
+            onClose={() => setConfirmDialogOpen(false)}
+        >
+            <DialogTitle style={{textAlign: "center"}} id="confirmation-dialog-title">
+                Are you sure to mark&nbsp;
+                <span style={{fontStyle: 'italic'}}>
+                    v{dictionaryVersion.id}
+                </span>&nbsp;as {dictionaryVersion.released ? <span style={{color: '#f50057'}}>unreleased</span> :
+                <span style={{color: '#f50057'}}>released</span>}?
+            </DialogTitle>
+            <DialogActions style={{textAlign: "center"}}>
+                <ButtonGroup
+                    fullWidth
+                    color="primary"
+                    variant="text"
+                    size="medium"
+                >
+                    <Button onClick={() => setConfirmDialogOpen(false)} color="secondary">
+                        No
+                    </Button>
+                    <Button onClick={handleReleaseVersionChange} color="primary">
+                        Yes
+                    </Button>
+                </ButtonGroup>
+            </DialogActions>
+        </Dialog>
       <Dialog onClose={handleClose} open={open}>
         <DictionaryVersionForm
           onSubmit={createDictionaryVersion}
