@@ -30,7 +30,7 @@ const ViewDictionaries: React.FC<Props> = ({
   return (
     <>
       <ContainerSearch title={title} onSearch={onSearch} initialQ={initialQ} />
-      <ContainerCards collections={dictionaries} title={title} />
+      <ContainerCards cards={dictionaries} title={title} />
       <ContainerPagination
         num_found={Number(numFound)}
         per_page={Number(perPage)}

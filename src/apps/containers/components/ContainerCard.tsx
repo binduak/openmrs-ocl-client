@@ -39,18 +39,18 @@ const ContainerCard: React.FC<Props> = ({
 
   return (
     <Grid item xs={4}>
-      <Card>
+      <Card data-testid='card'>
         <CardContent>
-          <Typography noWrap variant='body1' color='textSecondary' gutterBottom>
+          <Typography noWrap variant='body1' color='textSecondary' gutterBottom data-testid='shortCode'>
             {short_code}
           </Typography>
-          <Typography className={classes.containerName} noWrap variant='h5'>
+          <Typography className={classes.containerName} noWrap variant='h5' data-testid='name'>
             {name}
           </Typography>
-          <Typography noWrap variant='body2' color='textSecondary'>
+          <Typography noWrap variant='body2' color='textSecondary' data-testid='owner'>
             {owner_type}/{owner}
           </Typography>
-          <Typography noWrap variant='body1' component='p'>
+          <Typography noWrap variant='body1' component='p' data-testid='description'>
             {description}
           </Typography>
         </CardContent>
@@ -61,6 +61,7 @@ const ContainerCard: React.FC<Props> = ({
             size='small'
             variant='text'
             color='primary'
+            data-testid='viewButton'
           >
             View
           </Button>

@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 import ContainerCard from "./ContainerCard";
 
-interface Collection {
+export interface Card {
   name: string;
   short_code: string;
   owner: string;
@@ -12,21 +12,21 @@ interface Collection {
 }
 
 interface Props {
-  collections: Collection[];
+  cards: Card[];
   title: string;
 }
 
-const ContainerCards: React.FC<Props> = ({ collections, title }) => {
+const ContainerCards: React.FC<Props> = ({ cards, title }) => {
   return (
     <Grid item xs={12} container spacing={2} justify='center'>
-      {collections.length === 0 ? (
-        <Typography component='span' variant='h6'>
+      {cards.length === 0 ? (
+        <Typography component='span' variant='h6' data-testid='noCards'>
           No {title}
         </Typography>
       ) : (
         ""
       )}
-      {collections.map(
+      {cards.map(
         (
           {
             name,
@@ -49,7 +49,6 @@ const ContainerCards: React.FC<Props> = ({ collections, title }) => {
           />
         )
       )}
-      ;
     </Grid>
   );
 };

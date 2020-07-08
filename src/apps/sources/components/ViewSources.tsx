@@ -30,7 +30,7 @@ const ViewSources: React.FC<Props> = ({
   return (
     <>
       <ContainerSearch title={title} onSearch={onSearch} initialQ={initialQ} />
-      <ContainerCards collections={sources} title={title} />
+      <ContainerCards cards={sources} title={title} />
       <ContainerPagination
         num_found={Number(numFound)}
         per_page={Number(perPage)}
