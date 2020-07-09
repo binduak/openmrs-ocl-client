@@ -1,6 +1,6 @@
 import React from 'react';
 import ReleasedVersions from '../../../../apps/dictionaries/components/ReleasedVersions';
-import {render, fireEvent, getByText} from '@testing-library/react';
+import {render, fireEvent, getByText} from '../../../../test-utils';
 import '@testing-library/jest-dom'
 import {
     BrowserRouter as Router,
@@ -145,6 +145,8 @@ describe("toggleButton for dictionary release status", () => {
         const dialog = getByTestId('confirm-dialog');
         getByText(dialog,"Yes").click();
         expect(spyOnEditDictionaryVersion).toBeCalledWith({"id": "2", "released": false});
+        // fireEvent.click(getByText(dialog, 'Yes'));
+        // expect(getByRole('checkbox')).toHaveAttribute('checked');
     });
 
     it('check if onclick of unreleased dictionary dialog no button does not change the status to released', () => {
