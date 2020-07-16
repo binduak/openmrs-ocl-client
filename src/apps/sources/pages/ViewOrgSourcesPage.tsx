@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { ViewSourcesPage} from "../components";
 import { ORG_SOURCES_ACTION_INDEX } from "../redux/constants";
 
-const mapStateToProps = (state: AppState) => ({
+export const mapStateToProps = (state: AppState) => ({
     loading: retrieveOrgSourcesLoadingSelector(state),
     sources:
     state.sources.sources[ORG_SOURCES_ACTION_INDEX]?.items,
@@ -15,7 +15,7 @@ const mapStateToProps = (state: AppState) => ({
     state.sources.sources[ORG_SOURCES_ACTION_INDEX]?.responseMeta
 });
 
-const mapDispatchToProps = {
+export const mapDispatchToProps = {
     retrieveSources: retrieveOrgSourcesAction
 };
 
