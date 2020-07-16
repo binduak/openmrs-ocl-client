@@ -1,6 +1,6 @@
-import {reducer} from "../reducer";
+import {reducer} from "../../redux/reducer";
 import {APISource, SourceState} from "../../types";
-import {RETRIEVE_SOURCES_ACTION} from "../actionTypes";
+import {RETRIEVE_SOURCES_ACTION} from "../../redux/actionTypes";
 
 describe('sources reducer', () => {
 
@@ -82,7 +82,7 @@ describe('sources reducer', () => {
             type: RETRIEVE_SOURCES_ACTION,
             actionIndex: 1,
             payload: [source1],
-            responseMeta: false
+            responseMeta: {key: false}
         };
         const expectedState = {
             sources: [
@@ -92,7 +92,7 @@ describe('sources reducer', () => {
                 },
                 {
                     items: [source1],
-                    responseMeta: false
+                    responseMeta: {key: false}
                 }
             ]
         };

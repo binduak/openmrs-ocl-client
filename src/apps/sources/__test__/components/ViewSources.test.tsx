@@ -1,6 +1,6 @@
 ///<reference path="../../../../../node_modules/@types/testing-library__dom/queries.d.ts"/>
 import React from 'react';
-import ViewSources from '../../../../apps/sources/components/ViewSources';
+import ViewSources from '../../components/ViewSources';
 import {render} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import {
