@@ -6,7 +6,7 @@ import {APISource} from "../../types";
 import {render} from "@testing-library/react";
 import {Provider} from "react-redux";
 import store from "../../../../redux";
-import {ViewSourcePage} from "../index";
+import {ViewSourcePage} from "../../pages";
 import {APIOrg, APIProfile} from "../../../authentication";
 import * as React from "react";
 

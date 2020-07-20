@@ -1,5 +1,5 @@
 import React from "react";
-import SourceForm from "../SourceForm";
+import SourceForm from "../../components/SourceForm";
 import {APIOrg, APIProfile} from "../../../authentication";
 import {Source} from "../../types";
 import {render} from "@testing-library/react";
