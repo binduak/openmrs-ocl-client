@@ -12,7 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
 //    "noUnusedLocals": true,  // todo, we'd like to make stuff even more strict, but pausing this work for the moment
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": false,
 //    "noImplicitReturns": true,  // todo, we'd like to make stuff even more strict, but pausing this work for the moment
     "module": "esnext",
     "moduleResolution": "node",

@@ -3,22 +3,32 @@ import React from 'react';
 import '@testing-library/jest-dom'
 import {render} from "../../../../test-utils";
 
-import {ViewSourcesPage} from "../../components/index";
+import SourcesLayout from '../../components/SourcesLayout';
+import routeData from 'react-router';
 
+type sourcesLayoutProps = React.ComponentProps<typeof SourcesLayout>;
 
-type viewSourcesPageProps = React.ComponentProps<typeof ViewSourcesPage>;
-
-const baseProps: viewSourcesPageProps = {
+const baseProps: sourcesLayoutProps = {
     sources: [],
     loading: false,
     meta: {},
     retrieveSources: function () {}
 };
 
-function renderUI(props: Partial<viewSourcesPageProps> = {}) {
-    return render(<ViewSourcesPage {...baseProps} {...props}  />);
+const mockLocation = {
+    pathname: '/sources/',
+    hash: '',
+    search: '',
+    state: ''
 }
-describe('ViewSourcesPage', () => {
+beforeEach(() => {
+    jest.spyOn(routeData, 'useLocation').mockReturnValue(mockLocation)
+});
+
+function renderUI(props: Partial<sourcesLayoutProps> = {}) {
+    return render(<SourcesLayout {...baseProps} {...props}  />);
+}
+describe('SourcesLayout', () => {
     it('should match snapshot and it should have all the child components', () => {
         const {container} = renderUI({
             loading:true

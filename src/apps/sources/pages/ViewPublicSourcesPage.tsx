@@ -4,7 +4,7 @@ import {
     retrievePublicSourcesLoadingSelector
 } from "../redux";
 import { connect } from "react-redux";
-import { ViewSourcesPage} from "../components";
+import SourcesLayout from "../components/SourcesLayout";
 import { PUBLIC_SOURCES_ACTION_INDEX } from "../redux/constants";
 
 export const mapStateToProps = (state: AppState) => ({
@@ -22,4 +22,4 @@ export const mapDispatchToProps = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(ViewSourcesPage);
+)(SourcesLayout);
