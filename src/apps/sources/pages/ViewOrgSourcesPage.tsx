@@ -4,8 +4,8 @@ import {
     retrieveOrgSourcesLoadingSelector
 } from "../redux";
 import { connect } from "react-redux";
-import { ViewSourcesPage} from "../components";
 import { ORG_SOURCES_ACTION_INDEX } from "../redux/constants";
+import SourcesLayout from '../components/SourcesLayout';
 
 export const mapStateToProps = (state: AppState) => ({
     loading: retrieveOrgSourcesLoadingSelector(state),
@@ -22,4 +22,4 @@ export const mapDispatchToProps = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(ViewSourcesPage);
+)(SourcesLayout);

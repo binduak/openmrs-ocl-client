@@ -21,7 +21,7 @@ interface Props {
   ) => void;
 }
 
-const ViewPersonalSourcesPage: React.FC<Props> = ({
+const SourcesLayout: React.FC<Props> = ({
   sources = [],
   loading,
   meta = {},
@@ -65,4 +65,4 @@ const ViewPersonalSourcesPage: React.FC<Props> = ({
   );
 };
 
-export default ViewPersonalSourcesPage;
+export default SourcesLayout;

@@ -6,7 +6,7 @@ import {
 import { connect } from "react-redux";
 
 import { PERSONAL_SOURCES_ACTION_INDEX } from "../redux/constants";
-import {ViewSourcesPage} from "../components";
+import SourcesLayout from "../components/SourcesLayout";
 
 export const mapStateToProps = (state: AppState) => ({
   loading: retrievePersonalSourcesLoadingSelector(state),
@@ -24,4 +24,4 @@ export const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ViewSourcesPage);
+)(SourcesLayout);

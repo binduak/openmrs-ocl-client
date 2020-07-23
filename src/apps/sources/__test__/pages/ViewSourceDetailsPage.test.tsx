@@ -6,11 +6,11 @@ import {APISource} from "../../types";
 import {render} from "@testing-library/react";
 import {Provider} from "react-redux";
 import store from "../../../../redux";
-import {ViewSourcePage} from "../../pages";
+import {ViewSourceDetailsPage} from "../../pages";
 import {APIOrg, APIProfile} from "../../../authentication";
 import * as React from "react";
 
-type viewSourcePageProps = React.ComponentProps<typeof ViewSourcePage>;
+type viewSourcePageProps = React.ComponentProps<typeof ViewSourceDetailsPage>;
 const apiProfile: APIProfile = {
     email: "", organizations_url: "", url: "", username: ""
 };
@@ -50,13 +50,13 @@ const baseProps: viewSourcePageProps = {
 function renderUI(props: Partial<viewSourcePageProps> = {}) {
     return render(<Provider store={store}>
             <Router>
-                <ViewSourcePage {...baseProps} {...props}  />
+                <ViewSourceDetailsPage {...baseProps} {...props}  />
             </Router>
         </Provider>
     );
 }
 
-describe('ViewSourcePage', () => {
+describe('ViewSourceDetailsPage', () => {
     it('viewSourcePage snapshot test', () => {
         const {container} = renderUI();
         expect(container).toMatchSnapshot();

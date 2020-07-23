@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
-import {ViewSourcePage} from "./pages";
+import {ViewSourceDetailsPage} from "./pages";
 
 
 interface Props {
@@ -15,7 +15,7 @@ const Routes: React.FC<Props> = ({
         <Switch>
             {!viewSource ? null : (
                 <Route path={`${path}/:source/`}>
-                    <ViewSourcePage />
+                    <ViewSourceDetailsPage />
                 </Route>
             )}
         </Switch>

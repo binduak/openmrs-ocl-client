@@ -34,7 +34,7 @@ interface Props {
     retrieveSourceErrors?: {};
 }
 
-const ViewSourcePage: React.FC<Props> = ({
+const ViewSourceDetailsPage: React.FC<Props> = ({
                                                  profile,
                                                  usersOrgs = [],
                                                  sourceLoading,
@@ -93,4 +93,4 @@ const mapDispatchToProps = {
     retrieveSourceAndDetails: retrieveSourceAndDetailsAction,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ViewSourcePage);
+export default connect(mapStateToProps, mapDispatchToProps)(ViewSourceDetailsPage);
