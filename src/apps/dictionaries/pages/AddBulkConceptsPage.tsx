@@ -48,6 +48,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
 
   const dictionaryUrl = url.replace("/add", "");
   const [conceptsToAdd, setConceptsToAdd] = useState<string[]>([]);
+  const [showMessage, setShowMessage] = useState(false);
 
   return (
     <Header
@@ -110,6 +111,7 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
             size="medium"
             disabled={conceptsToAdd.length < 1}
             onClick={() => {
+              setShowMessage(true);
               setConceptsToAdd([]);
               addConceptsToDictionary(
                 PREFERRED_SOURCES[fromSource],
@@ -121,6 +123,10 @@ const AddBulkConceptsPage: React.FC<Props> = ({ addConceptsToDictionary }) => {
           >
             Add concepts
           </Button>
+            {!showMessage ? <br/> :
+                <Typography variant="caption" component="div">
+                    Bulk import is initiated. You can track the progress in 'Progress Notification' page.
+                </Typography>}
         </div>
       </Grid>
     </Header>
