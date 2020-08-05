@@ -101,6 +101,11 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+  const clearStorage = () => {
+    localStorage.removeItem("notification");
+    logout();
+
+  };
 
   return (
     <div className={classes.root}>
@@ -223,7 +228,7 @@ export const NavDrawer: React.FC<Props> = ({ children, logout }) => {
               >
                 Cancel
               </Button>
-              <Button onClick={() => logout()} color='secondary'>
+              <Button onClick={clearStorage} color='secondary'>
                 Logout
               </Button>
             </DialogActions>

@@ -15,7 +15,8 @@ const doNotPersist = ["dictionaries", "concepts", "status", "sources"].reduce(
   {}
 );
 
-const saveState = (appState: any) => {
+let saveState: (appState: any) => (undefined);
+saveState = (appState: any) => {
   const state = {
     ...appState,
     ...doNotPersist
