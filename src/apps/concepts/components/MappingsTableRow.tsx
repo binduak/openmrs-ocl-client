@@ -83,7 +83,6 @@ const fetchSourceOptions = async (
       return (source.owner !== "OCL");
     }).map((filteredSource: APISource) =>  filteredSource);
 
-    console.log(data);
     return {
       options: actualSources.map((source: APISource) => {
         const { name, url } = source;
