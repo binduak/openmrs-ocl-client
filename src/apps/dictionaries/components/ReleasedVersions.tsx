@@ -85,7 +85,7 @@ const ReleasedVersions: React.FC<Props> = ({
 
     return (
     <Paper className="fieldsetParent">
-      <fieldset>
+      <fieldset style={{minWidth: "0"}}>
         <Typography component="legend" variant="h5" gutterBottom>
           Releases
         </Typography>
@@ -105,7 +105,7 @@ const ReleasedVersions: React.FC<Props> = ({
                 {versionsToDisplay.map((row: APIDictionaryVersion) => (
                   <TableRow key={row.id}>
                     <TableCell>{row.id}</TableCell>
-                    <TableCell>{row.description || "None"}</TableCell>
+                    <TableCell style={{wordBreak: 'break-all'}}>{row.description || "None"}</TableCell>
                     <TableCell>
                       <Button
                         // not row.url because the response immediately after creating a new version is missing the url attribute for some reason

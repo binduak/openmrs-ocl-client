@@ -107,6 +107,8 @@ const SourceForm: React.FC<Props> = ({
                             name="short_code"
                             label="Short Code"
                             margin="normal"
+                            multiline
+                            rowsMax={4}
                             component={TextField}
                         />
                         <Field
@@ -117,6 +119,8 @@ const SourceForm: React.FC<Props> = ({
                             name="name"
                             label="Source Name"
                             margin="normal"
+                            multiline
+                            rowsMax={4}
                             component={TextField}
                         />
                         <Field
