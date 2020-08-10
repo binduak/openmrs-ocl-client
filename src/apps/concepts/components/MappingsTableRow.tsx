@@ -81,7 +81,7 @@ const fetchSourceOptions = async (
 
     const actualSources: APISource[] = data.filter((source: APISource) => {
       return (source.owner !== "OCL");
-    }).map((filteredSource: APISource) =>  filteredSource);
+    });
 
     return {
       options: actualSources.map((source: APISource) => {
