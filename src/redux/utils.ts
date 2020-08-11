@@ -140,14 +140,28 @@ export const createActionThunk = <T extends any[]>(
           result = response.data;
         } catch (error) {
           debug(error, "redux/utils/#createActionThunk#:catch");
+
           const genericErrorMessage =
             "Action could not be completed. Please retry.";
 
           const response = error.response;
-          const errorMessage: string | {} | [] =
+
+          let errorMsgResponse = [];
+
+          for (let key in response.data) {
+            errorMsgResponse.push(
+              Array.isArray(response.data[key])
+                  ? response.data[key].join(',')
+                  : response.data[key]
+            )
+          };
+
+          let errorMsg = errorMsgResponse.length > 0 ? errorMsgResponse.join('\n') : genericErrorMessage;
+
+          const errorMessage: string | undefined | {} | [] =
             response?.data || response
-              ? STATUS_CODES_TO_MESSAGES[response.status] || genericErrorMessage
-              : genericErrorMessage;
+              ? STATUS_CODES_TO_MESSAGES[response.status] || errorMsg
+              : errorMsg;
 
           dispatch({
             type: `${actionType}_${FAILURE}`,
