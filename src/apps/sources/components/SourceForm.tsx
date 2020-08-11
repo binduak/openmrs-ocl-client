@@ -87,6 +87,20 @@ const SourceForm: React.FC<Props> = ({
         });
     }, [errors]);
 
+    const supportedLocalesLabel = (values: any) => {
+        const labels: Array<JSX.Element> = [];
+        {LOCALES.filter(
+            ({ value }) => value !== values.default_locale
+        ).map(({ value, label }) => (
+            labels.push(
+                <MenuItem key={value} value={value} style={{whiteSpace: 'normal'}}>
+                    { label }
+                </MenuItem>
+            )
+        ))}
+        return labels;
+    };
+
     return (
         <div id="source-form" className={classes.sourceForm}>
             <Formik
@@ -205,13 +219,7 @@ const SourceForm: React.FC<Props> = ({
                                 id="supported_locales"
                                 component={Select}
                             >
-                                {LOCALES.filter(
-                                    ({ value }) => value !== values.default_locale
-                                ).map(({ value, label }) => (
-                                    <MenuItem key={value} value={value}>
-                                        {label}
-                                    </MenuItem>
-                                ))}
+                                {supportedLocalesLabel(values)}
                             </Field>
                             <Typography color="error" variant="caption" component="div">
                                 <ErrorMessage name="supported_locales" component="span" />
