@@ -28,9 +28,7 @@ interface Props {
   successList?: ({ payload: {} } | undefined)[];
   dictionary?: APIDictionary;
 }
-
 const SEPARATOR = "--";
-
 const useStyles = makeStyles({
   card: {
     width: "100%"
@@ -46,33 +44,30 @@ const ActionsInProgressPage: React.FC<Props> = ({
   erroredList = [],
   successList = [],
   dictionary
-
 }) => {
-
-  const dictionaryName = dictionary?.name+"-" || "";
-
-  let inProgressListLocalStorage = inProgressList?.length > 0 ? updateLocalStorageArray({
+  const dictionaryName = dictionary?.name+SEPARATOR || "";
+  const inProgressListLocalStorage = inProgressList?.length > 0 ? updateLocalStorageArray({
     name:'notification',
     key: 'inProgressList',
     value: dictionaryName + inProgressList[inProgressList.length - 1] ,
     list: inProgressList
   }) : getLocalStorageObject({name:'notification', key:'inProgressList', value: inProgressList});
 
-  let loadingListLocalStorage = loadingList?.length > 0 ? updateLocalStorageArray({
+  const loadingListLocalStorage = loadingList?.length > 0 ? updateLocalStorageArray({
       name:'notification',
       key: 'loadingList',
       value: loadingList[loadingList.length - 1],
       list: loadingList
     }) : getLocalStorageObject({name:'notification', key:'loadingList', value: loadingList});
 
-  let erroredListLocalStorage = erroredList?.length > 0 ? updateLocalStorageArray({
+  const erroredListLocalStorage = erroredList?.length > 0 ? updateLocalStorageArray({
     name:'notification',
     key: 'erroredList',
     value: erroredList[erroredList.length - 1],
     list: erroredList
   }) : getLocalStorageObject({name:'notification', key:'erroredList', value: erroredList});
 
-  let successListLocalStorage = successList?.length > 0 ? updateLocalStorageArray({
+  const successListLocalStorage = successList?.length > 0 ? updateLocalStorageArray({
     name:'notification',
     key: 'successList',
     value: successList[successList.length - 1],

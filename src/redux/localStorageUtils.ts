@@ -1,6 +1,6 @@
 export function createLocalStorageObject(name: string){
     try {
-        let existing = localStorage.getItem(name);
+        const existing = localStorage.getItem(name);
         if (!existing) {
             setLocalStorageObject('notification', 'inProgressList', []);
             setLocalStorageObject('notification', 'loadingList', []);
@@ -14,22 +14,22 @@ export function createLocalStorageObject(name: string){
 };
 
 function setLocalStorageObject(name: string, key: string, value: any) {
-    let existing = localStorage.getItem(name);
-    let existingOne = existing ? JSON.parse(existing) : {};
-    existingOne[key] = value;
-    localStorage.setItem(name, JSON.stringify(existingOne));
+    const existing = localStorage.getItem(name);
+    let existingObject = existing ? JSON.parse(existing) : {};
+    existingObject[key] = value;
+    localStorage.setItem(name, JSON.stringify(existingObject));
 };
 
 export function addToLocalStorageObject(name: string, key: string, value: string) {
     try {
-        let existing = localStorage.getItem(name);
-        let existingOne = existing ? JSON.parse(existing) : {};
-        if (existingOne[key]) {
-            if (existingOne[key].length >= 3)
-                existingOne[key].shift();
-            existingOne[key].push(value);
+        const existing = localStorage.getItem(name);
+        let existingObject = existing ? JSON.parse(existing) : {};
+        if (existingObject[key]) {
+            if (existingObject[key].length >= 10)
+                existingObject[key].shift();
+            existingObject[key].push(value);
         }
-        localStorage.setItem(name, JSON.stringify(existingOne));
+        localStorage.setItem(name, JSON.stringify(existingObject));
     } catch(error){
         console.log(error);
     }
@@ -37,19 +37,19 @@ export function addToLocalStorageObject(name: string, key: string, value: string
 
 export function updateLocalStorageArray({name,key, value, list}: { name: string, key: string, value: any, list: any }) {
     try {
-        let retrievedData = localStorage.getItem(name);
-        let jsonObject = retrievedData ? JSON.parse(retrievedData) : {};
+        const retrievedData = localStorage.getItem(name);
+        let retrievedDataJsonObject = retrievedData ? JSON.parse(retrievedData) : {};
 
-        if (!jsonObject[key]) {
+        if (!retrievedDataJsonObject[key]) {
             return list;
         }
 
         if (getLocalStorageObject({name: 'notification', key: 'isUpdate', value: 'false'}) === "false") {
-            return jsonObject[key];
+            return retrievedDataJsonObject[key];
         }
-        jsonObject[key][jsonObject[key].length - 1] = value;
-        localStorage.setItem(name, JSON.stringify(jsonObject));
-        return jsonObject[key];
+        retrievedDataJsonObject[key][retrievedDataJsonObject[key].length - 1] = value;
+        localStorage.setItem(name, JSON.stringify(retrievedDataJsonObject));
+        return retrievedDataJsonObject[key];
     } catch(error){
         console.log(error);
         return list;
@@ -59,12 +59,12 @@ export function updateLocalStorageArray({name,key, value, list}: { name: string,
 
 export function getLocalStorageObject({name,key, value}: { name: string, key: string, value: any }) {
    try {
-       let retrievedData = localStorage.getItem(name);
-       let jsonObject = retrievedData ? JSON.parse(retrievedData) : {};
-       if (!jsonObject[key]) {
+       const retrievedData = localStorage.getItem(name);
+       let retrievedDataJsonObject = retrievedData ? JSON.parse(retrievedData) : {};
+       if (!retrievedDataJsonObject[key]) {
            return value;
        }
-       return jsonObject[key];
+       return retrievedDataJsonObject[key];
    } catch(error){
        console.log(error);
        return value;
@@ -73,13 +73,13 @@ export function getLocalStorageObject({name,key, value}: { name: string, key: st
 
 export function setUpdate(name: string, key: string, value: any ) {
     try {
-        let retrievedData = localStorage.getItem(name);
-        let jsonObject = retrievedData ? JSON.parse(retrievedData) : {};
-        if (!jsonObject[key]) {
+        const retrievedData = localStorage.getItem(name);
+        let retrievedDataJsonObject = retrievedData ? JSON.parse(retrievedData) : {};
+        if (!retrievedDataJsonObject[key]) {
             return "false";
         }
-        jsonObject['isUpdate'] = value;
-        localStorage.setItem(name, JSON.stringify(jsonObject));
+        retrievedDataJsonObject['isUpdate'] = value;
+        localStorage.setItem(name, JSON.stringify(retrievedDataJsonObject));
     } catch(error){
         console.log(error);
     }
