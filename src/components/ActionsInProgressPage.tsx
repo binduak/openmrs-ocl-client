@@ -45,7 +45,7 @@ const ActionsInProgressPage: React.FC<Props> = ({
   successList = [],
   dictionary
 }) => {
-  const dictionaryName = dictionary?.name+SEPARATOR || "";
+  const dictionaryName = dictionary?.name+"-" || "";
   const inProgressListLocalStorage = inProgressList?.length > 0 ? updateLocalStorageArray({
     name:'notification',
     key: 'inProgressList',
