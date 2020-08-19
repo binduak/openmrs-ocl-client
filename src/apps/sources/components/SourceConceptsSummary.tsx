@@ -28,10 +28,10 @@ const SourceConceptsSummary: React.FC<Props> = ({ source }) => {
         <Typography component='legend' variant='h5' gutterBottom>
           Concepts
         </Typography>
-        <Typography variant='h6' gutterBottom>
+        <Typography variant='h6' data-testid='active-concepts' gutterBottom>
           <b>{`Total Concepts: ${source?.active_concepts}`}</b>
         </Typography>
-        <Typography variant='h6' gutterBottom>
+        <Typography variant='h6' data-testid='active-mappings' gutterBottom>
           <b>{`Total Mappings: ${source?.active_mappings}`}</b>
         </Typography>
         <ButtonGroup variant='text' fullWidth>
