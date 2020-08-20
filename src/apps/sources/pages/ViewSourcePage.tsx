@@ -34,7 +34,7 @@ interface Props {
   retrieveConceptsSummary: (
     ...args: Parameters<typeof retrieveConceptsAction>
   ) => void;
-  meta?: { num_found?: number };
+  metaConceptsCount?: { num_found?: number };
 }
 
 const ViewSourcePage: React.FC<Props> = ({
@@ -45,7 +45,7 @@ const ViewSourcePage: React.FC<Props> = ({
   retrieveSourceAndDetails,
   retrieveSourceErrors,
   retrieveConceptsSummary,
-  meta = {},
+  metaConceptsCount = {},
 }: Props) => {
   const { pathname: url, state } = useLocation();
   const previousPath = state ? state.prevPath : "";
@@ -89,7 +89,7 @@ const ViewSourcePage: React.FC<Props> = ({
         </Grid>
         <Grid item xs={5} container spacing={2}>
           <Grid item xs={12} component='div'>
-            <SourceDetails source={source} count={meta.num_found || 0} />
+            <SourceDetails source={source} totalConceptCount={metaConceptsCount.num_found || 0} />
           </Grid>
         </Grid>
       </ProgressOverlay>
@@ -102,7 +102,7 @@ const mapStateToProps = (state: AppState) => ({
   usersOrgs: orgsSelector(state),
   sourceLoading: retrieveSourceLoadingSelector(state),
   source: sourceSelector(state),
-  meta: state.concepts.concepts
+  metaConceptsCount: state.concepts.concepts
     ? state.concepts.concepts.responseMeta
     : undefined,
   retrieveSourceErrors: retrieveSourceErrorSelector(state),

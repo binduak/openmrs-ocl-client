@@ -24,7 +24,6 @@ export const testSource: APISource = {
   supported_locales: ["en", "fr"],
   custom_validation_schema: "Dictionary",
   active_concepts: 2,
-  active_mappings: 1,
   concepts_url: "",
 };
 

@@ -3,7 +3,6 @@ import { APISource } from "../../sources";
 import {
   Button,
   ButtonGroup,
-  makeStyles,
   Paper,
   Typography,
   List,
@@ -12,26 +11,18 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { retrieveConceptsAction } from "../../concepts/redux";
 import { StarBorder, DeleteForever } from "@material-ui/icons";
 
 interface Props {
   source?: APISource;
-  count: number;
+  totalConceptCount: number;
 }
 
-const useStyles = makeStyles({
-  conceptCountBreakDown: {
-    marginLeft: "3vw",
-  },
-});
+const SourceConceptsSummary: React.FC<Props> = ({ source, totalConceptCount }) => {
 
-const SourceConceptsSummary: React.FC<Props> = ({ source, count }) => {
-  const classes = useStyles();
-
-  const total_concepts: number = count;
+  const total_concepts: number = totalConceptCount;
   const active_concepts: number = source?.active_concepts || 0;
-  const retire_concepts: number = count - active_concepts;
+  const retire_concepts: number = totalConceptCount - active_concepts;
 
   return (
     <Paper className='fieldsetParent'>
@@ -39,7 +30,7 @@ const SourceConceptsSummary: React.FC<Props> = ({ source, count }) => {
         <Typography component='legend' variant='h5' gutterBottom>
           Concepts
         </Typography>
-        <Typography variant='h6' data-testid='active-mappings' gutterBottom>
+        <Typography variant='h6' data-testid='concepts-summary' gutterBottom>
           <b>{`Total Concepts: ${total_concepts}`}</b>
           <List component='div' disablePadding>
             <ListItem>

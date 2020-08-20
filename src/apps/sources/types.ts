@@ -28,7 +28,6 @@ export interface APISource extends BaseAPISource {
   source_type: string;
   url: string;
   active_concepts: number;
-  active_mappings: number;
   concepts_url: string;
   extras?: {};
   supported_locales: string[];
