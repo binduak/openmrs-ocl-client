@@ -6,6 +6,7 @@ import { APISource } from "../../types";
 
 type sourceDetailsProps = React.ComponentProps<typeof SourceDetails>;
 
+const totalConcepts = 3;
 const msfSource: APISource = {
   id: "MSF-SOURCE",
   short_code: "MSF-SRC",
@@ -26,11 +27,11 @@ const msfSource: APISource = {
   supported_locales: ["en", "fr"],
   custom_validation_schema: "Dictionary",
   active_concepts: 2,
-  active_mappings: 1,
   concepts_url: "",
 };
 const baseProps: sourceDetailsProps = {
   source: msfSource,
+  totalConceptCount: totalConcepts,
 };
 
 function renderUI(props: Partial<sourceDetailsProps> = {}) {
@@ -39,38 +40,43 @@ function renderUI(props: Partial<sourceDetailsProps> = {}) {
 
 describe("SourceDetails", () => {
   it("should match snapshot", () => {
-    const { container } = renderUI({
-      source: msfSource,
-    });
+    const { container } = renderUI(baseProps);
 
     expect(container).toMatchSnapshot();
   });
 });
 
 describe("Source Concept Summary", () => {
-  it("checks total number of active concepts", () => {
-    const { container } = renderUI({
-      source: msfSource,
-    });
+  it("checks total number of concepts", () => {
+    const { container } = renderUI(baseProps);
 
-    const activeConcepts: HTMLElement | null = container.querySelector(
-      "[data-testid='active-concepts']"
+    const conceptsSummary: HTMLElement | null = container.querySelector(
+      "[data-testid='concepts-summary']"
     );
 
-    expect(activeConcepts).not.toBeNull();
-    expect(activeConcepts).toHaveTextContent("Total Concepts: 2");
+    expect(conceptsSummary).not.toBeNull();
+    expect(conceptsSummary).toHaveTextContent("Total Concepts: 3");
   });
 
-  it("checks total number of active mappings", () => {
-    const { container } = renderUI({
-      source: msfSource,
-    });
+  it("checks total number of active concepts", () => {
+    const { container } = renderUI(baseProps);
 
-    const activeMappings: HTMLElement | null = container.querySelector(
-      "[data-testid='active-mappings']"
+    const conceptsSummary: HTMLElement | null = container.querySelector(
+        "[data-testid='concepts-summary']"
     );
 
-    expect(activeMappings).not.toBeNull();
-    expect(activeMappings).toHaveTextContent("Total Mappings: 1");
+    expect(conceptsSummary).not.toBeNull();
+    expect(conceptsSummary).toHaveTextContent("Active Concepts: 2");
+  });
+
+  it("checks total number of retired concepts", () => {
+    const { container } = renderUI(baseProps);
+
+    const conceptsSummary: HTMLElement | null = container.querySelector(
+        "[data-testid='concepts-summary']"
+    );
+
+    expect(conceptsSummary).not.toBeNull();
+    expect(conceptsSummary).toHaveTextContent("Retired Concepts: 1");
   });
 });
