@@ -1,10 +1,10 @@
 import React from "react";
-import SourceDetails from "../../../../apps/sources/components/SourceConceptsSummary";
+import SourceConceptDetails from "../../../../apps/sources/components/SourceConceptsSummary";
 import { render } from "../../../../test-utils";
 import "@testing-library/jest-dom";
 import { APISource } from "../../types";
 
-type sourceDetailsProps = React.ComponentProps<typeof SourceDetails>;
+type sourceDetailsProps = React.ComponentProps<typeof SourceConceptDetails>;
 
 const totalConcepts = 3;
 const msfSource: APISource = {
@@ -35,7 +35,7 @@ const baseProps: sourceDetailsProps = {
 };
 
 function renderUI(props: Partial<sourceDetailsProps> = {}) {
-  return render(<SourceDetails {...baseProps} {...props} />);
+  return render(<SourceConceptDetails {...baseProps} {...props} />);
 }
 
 describe("SourceDetails", () => {
