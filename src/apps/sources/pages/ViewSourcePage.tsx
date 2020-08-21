@@ -19,7 +19,7 @@ import { useLocation } from "react-router-dom";
 import { ProgressOverlay } from "../../../utils/components";
 import Header from "../../../components/Header";
 import { getSourceTypeFromPreviousPath } from "../utils";
-import { SourceDetails } from "../components";
+import { SourceConceptDetails } from "../components";
 import { retrieveConceptsAction } from "../../concepts/redux";
 
 interface Props {
@@ -89,7 +89,7 @@ const ViewSourcePage: React.FC<Props> = ({
         </Grid>
         <Grid item xs={5} container spacing={2}>
           <Grid item xs={12} component='div'>
-            <SourceDetails source={source} totalConceptCount={metaConceptsCount.num_found || 0} />
+            <SourceConceptDetails source={source} totalConceptCount={metaConceptsCount.num_found || 0} />
           </Grid>
         </Grid>
       </ProgressOverlay>
