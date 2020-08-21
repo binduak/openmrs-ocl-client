@@ -28,7 +28,7 @@ const SourceConceptsSummary: React.FC<Props> = ({ source, totalConceptCount }) =
     <Paper className='fieldsetParent'>
       <fieldset>
         <Typography component='legend' variant='h5' gutterBottom>
-          Concepts
+          Concepts(HEAD Version)
         </Typography>
         <Typography variant='h6' data-testid='concepts-summary' gutterBottom>
           <b>{`Total Concepts: ${total_concepts}`}</b>
