@@ -54,7 +54,7 @@ const ViewSourcePage: React.FC<Props> = ({
     retrieveSourceAndDetails(url);
   }, [url, retrieveSourceAndDetails]);
   useEffect(() => {
-    retrieveConceptsSummary(url + "/concepts/");
+    retrieveConceptsSummary(url + "concepts/");
   }, [url, retrieveConceptsSummary]);
 
   return (
