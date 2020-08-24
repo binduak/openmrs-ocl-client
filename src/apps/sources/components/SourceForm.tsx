@@ -1,14 +1,15 @@
 import React, { useEffect, useRef } from "react";
 import {
+    Button,
     FormControl,
-    InputLabel,
+    InputLabel, ListSubheader,
     makeStyles,
     MenuItem,
     Typography
 } from "@material-ui/core";
 import {
     getPrettyError,
-    LOCALES,
+    LOCALES, PREFERRED_SOURCES,
 } from "../../../utils";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Select, TextField } from "formik-material-ui";
@@ -16,6 +17,8 @@ import { snakeCase } from "lodash";
 
 import { Source } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";
+import * as Yup from "yup";
+import {Dictionary} from "../../dictionaries";
 
 interface Props {
     onSubmit?: Function;
@@ -41,9 +44,29 @@ const initialValues: Source = {
     external_id: ""
 };
 
+const SourceSchema = Yup.object().shape<Source>({
+    name: Yup.string().required("Source name is required"),
+    short_code: Yup.string()
+        .required("Short code is required")
+        .matches(/^[a-zA-Z0-9\-.]+$/, "Alphanumeric characters, - and . only"),
+    description: Yup.string().min(0),
+    public_access: Yup.string().required(
+        "Select who will have access to this dictionary"
+    ),
+    external_id:Yup.string(),
+    website:Yup.string(),
+    custom_validation_schema:Yup.string(),
+    source_type:Yup.string(),
+    default_locale: Yup.string().required("Select a preferred language"),
+    supported_locales: Yup.array(Yup.string())
+});
+
 const useStyles = makeStyles({
     sourceForm: {
         padding: "2vh 2vw"
+    },
+    submitButton: {
+        textAlign: "center"
     }
 });
 
@@ -107,12 +130,25 @@ const SourceForm: React.FC<Props> = ({
                 ref={formikRef}
                 initialValues={savedValues || initialValues}
                 validateOnChange={false}
+                validationSchema={SourceSchema}
                 onSubmit={(values: Source) => {
                     if (onSubmit) onSubmit(values);
                 }}
             >
-                {({values }) => (
+                {({isSubmitting,values }) => (
                     <Form>
+                        <Field
+                            // required
+                            fullWidth
+                            autoComplete="off"
+                            id="id"
+                            name="id"
+                            label="ID"
+                            margin="normal"
+                            multiline
+                            rowsMax={4}
+                            component={TextField}
+                        />
                         <Field
                             // required
                             fullWidth
@@ -147,6 +183,37 @@ const SourceForm: React.FC<Props> = ({
                             margin="normal"
                             component={TextField}
                         />
+                        <FormControl
+                            fullWidth
+                            // required
+                            margin="normal"
+                        >
+                            <InputLabel htmlFor="owner_url">Owner</InputLabel>
+                            <Field
+                                value=""
+                                disabled={isSubmitting}
+                                name="owner_url"
+                                id="owner_url"
+                                component={Select}
+                            >
+                                {profile ? (
+                                    <MenuItem value={profile.url}>
+                                        {profile.username}(You)
+                                    </MenuItem>
+                                ) : (
+                                    ""
+                                )}
+                                <ListSubheader>Your Organizations</ListSubheader>
+                                {usersOrgs.map(org => (
+                                    <MenuItem key={org.id} value={org.url}>
+                                        {org.name}
+                                    </MenuItem>
+                                ))}
+                            </Field>
+                            <Typography color="error" variant="caption" component="div">
+                                <ErrorMessage name="owner_url" component="span" />
+                            </Typography>
+                        </FormControl>
                         <Field
                             // required
                             fullWidth
@@ -247,6 +314,17 @@ const SourceForm: React.FC<Props> = ({
                             margin="normal"
                             component={TextField}
                         />
+                        <div className={classes.submitButton}>
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                size="medium"
+                                type="submit"
+                                disabled={isSubmitting}
+                            >
+                                Submit
+                            </Button>
+                        </div>
                     </Form>
                 )}
             </Formik>

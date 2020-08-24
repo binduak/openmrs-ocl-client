@@ -22,6 +22,7 @@ interface BaseAPISource extends BaseConceptContainer {
 export interface NewAPISource extends BaseAPISource {
   // api expects a comma separated string for this in create/ edit data
   supported_locales: string;
+  owner_url: string;
 }
 
 export interface APISource extends BaseAPISource {
