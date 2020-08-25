@@ -43,6 +43,7 @@ const CreateSourcePage: React.FC<Props> = ({
         return <Redirect to={newSource.url} />;
     }
 
+
     const onSubmitButton = (values: NewAPISource ) => {
         // Both ID and short_code are required fields for create source API.
         // short_code field gets overriden by ID from backend. So hardcoding the same from UI.
@@ -51,6 +52,7 @@ const CreateSourcePage: React.FC<Props> = ({
         values.custom_validation_schema = CUSTOM_VALIDATION_SCHEMA;
         createSourceAction(values.owner_url, values);
     };
+
     return (
         <Grid id="create-dictionary-page" item xs={6} component="div">
             <Paper>
