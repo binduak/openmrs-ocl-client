@@ -227,6 +227,7 @@ const ViewConceptsPage: React.FC<Props> = ({
           containerType={containerType}
           containerUrl={containerUrl}
           gimmeAUrl={gimmeAUrl}
+          addConceptToDictionary={dictionaryToAddTo}
       />
         <Grid
             container

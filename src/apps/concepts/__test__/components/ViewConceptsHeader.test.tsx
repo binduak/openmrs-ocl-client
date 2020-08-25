@@ -10,7 +10,8 @@ type viewConceptsHeaderProps = React.ComponentProps<typeof ViewConceptsHeader>;
 const baseProps: viewConceptsHeaderProps = {
     containerType: "source",
     containerUrl: undefined,
-    gimmeAUrl: function(arg1: string , arg2: string) { return arg2;}
+    gimmeAUrl: function(arg1: string , arg2: string) { return arg2;},
+    addConceptToDictionary: undefined
 };
 
 function renderUI(props: Partial<viewConceptsHeaderProps> = {}) {
@@ -37,17 +38,31 @@ describe("Header Title", () => {
         expect(header).toHaveTextContent("Concepts in undefined");
     });
 
-    it("should show desired title based on containerUrl when containerType is source", () => {
+    it("should show desired title when addToDictionary param is present and containerType is source", () => {
 
         const { getByTestId } = renderUI({
             containerType: SOURCE_CONTAINER,
-            containerUrl: "/ownerType/owner/sources/sourceName/"
+            containerUrl: "/ownerType/owner/sources/sourceName/",
+            addConceptToDictionary: "addConceptToDictionary"
         });
 
         const header = getByTestId('header');
 
         expect(header).not.toBeNull();
         expect(header).toHaveTextContent("Import existing concept from sourceName");
+    });
+
+    it("should show desired title when addToDictionary param is absent and containerType is source", () => {
+
+        const { getByTestId } = renderUI({
+            containerType: SOURCE_CONTAINER,
+            containerUrl: "/ownerType/owner/sources/sourceName/",
+        });
+
+        const header = getByTestId('header');
+
+        expect(header).not.toBeNull();
+        expect(header).toHaveTextContent("Concepts in sourceName");
     });
 
     it("should show desired title based on containerUrl when containerType is dictionary", () => {
@@ -89,17 +104,31 @@ describe("Switch Source", () => {
         expect(header).not.toHaveTextContent("Switch source");
     });
 
-    it("should show switch source when containerType is source", () => {
+    it("should show switch source when addToDictionary param is present and containerType is source", () => {
 
         const { getByTestId } = renderUI({
             containerType: SOURCE_CONTAINER,
-            containerUrl: "/ownerType/owner/sources/sourceName/"
+            containerUrl: "/ownerType/owner/sources/sourceName/",
+            addConceptToDictionary: "addConceptToDictionary"
         });
 
         const header = getByTestId('header');
 
         expect(header).not.toBeNull();
         expect(header).toHaveTextContent("Switch source (Currently sourceName)");
+    });
+
+    it("should not show switch source when addToDictionary param is absent and containerType is source", () => {
+
+        const { getByTestId } = renderUI({
+            containerType: SOURCE_CONTAINER,
+            containerUrl: "/ownerType/owner/sources/sourceName/",
+        });
+
+        const header = getByTestId('header');
+
+        expect(header).not.toBeNull();
+        expect(header).not.toHaveTextContent("Switch source (Currently sourceName)");
     });
 
     it("should not show switch source when containerType is dictionary", () => {
@@ -132,7 +161,8 @@ describe("Switch Source", () => {
 
         const { getByTestId } = renderUI({
             containerType: SOURCE_CONTAINER,
-            containerUrl: "/ownerType/owner/sources/sourceName/"
+            containerUrl: "/ownerType/owner/sources/sourceName/",
+            addConceptToDictionary: "addConceptToDictionary"
         });
 
         const header = getByTestId('header');
