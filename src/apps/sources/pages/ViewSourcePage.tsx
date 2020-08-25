@@ -37,7 +37,7 @@ interface Props {
   metaConceptsCount?: { num_found?: number };
 }
 
-const ViewSourcePage: React.FC<Props> = ({
+export const ViewSourcePage: React.FC<Props> = ({
   profile,
   usersOrgs = [],
   sourceLoading,
