@@ -10,6 +10,7 @@ interface Props {
     containerType: string;
     containerUrl?: string;
     gimmeAUrl: Function;
+    addConceptToDictionary?: string;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -23,11 +24,12 @@ const useStyles = makeStyles((theme: Theme) =>
 const ViewConceptsHeader: React.FC<Props> = ({
                                                  containerType,
                                                  containerUrl,
-                                                 gimmeAUrl
+                                                 gimmeAUrl,
+                                                 addConceptToDictionary
                                              }) => {
     const classes = useStyles();
-
-    const showHeaderComponent = containerType === SOURCE_CONTAINER;
+    const isSourceContainer = containerType === SOURCE_CONTAINER;
+    const isAddToDictionary = isSourceContainer && !!addConceptToDictionary;
 
     const [
         switchSourceAnchor,
@@ -38,7 +40,7 @@ const ViewConceptsHeader: React.FC<Props> = ({
     return (
         <Header
             title={
-                containerType === SOURCE_CONTAINER
+                isAddToDictionary
                     ? `Import existing concept from ${getContainerIdFromUrl(
                     containerUrl
                     )}`
@@ -47,7 +49,7 @@ const ViewConceptsHeader: React.FC<Props> = ({
                     }${getContainerIdFromUrl(containerUrl)}`
             }
             headerComponent={
-                !showHeaderComponent ? null : (
+                !isAddToDictionary ? null : (
                     <>
                         <Button data-testid='switch-source'
                             className={classes.lightColour}
