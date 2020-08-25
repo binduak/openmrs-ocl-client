@@ -39,9 +39,7 @@ const initialValues: Source = {
     description: "",
     public_access: "",
     default_locale: "",
-    supported_locales: [],
-    custom_validation_schema: "",
-    external_id: ""
+    supported_locales: []
 };
 
 const SourceSchema = Yup.object().shape<Source>({
@@ -53,9 +51,7 @@ const SourceSchema = Yup.object().shape<Source>({
     public_access: Yup.string().required(
         "Select who will have access to this dictionary"
     ),
-    external_id:Yup.string(),
     website:Yup.string(),
-    custom_validation_schema:Yup.string(),
     source_type:Yup.string(),
     default_locale: Yup.string().required("Select a preferred language"),
     supported_locales: Yup.array(Yup.string())
@@ -141,18 +137,6 @@ const SourceForm: React.FC<Props> = ({
                             // required
                             fullWidth
                             autoComplete="off"
-                            id="id"
-                            name="id"
-                            label="ID"
-                            margin="normal"
-                            multiline
-                            rowsMax={4}
-                            component={TextField}
-                        />
-                        <Field
-                            // required
-                            fullWidth
-                            autoComplete="off"
                             id="short_code"
                             name="short_code"
                             label="Short Code"
@@ -224,16 +208,22 @@ const SourceForm: React.FC<Props> = ({
                             margin="normal"
                             component={TextField}
                         />
-                        <Field
-                            // required
+                        <FormControl
                             fullWidth
-                            autoComplete="off"
-                            id="source_type"
-                            name="source_type"
-                            label="Source type"
+                            // required
                             margin="normal"
-                            component={TextField}
-                        />
+                        >
+                        <InputLabel htmlFor="source_type">Source type</InputLabel>
+                        <Field name="source_type" id="source_type" component={Select}>
+                            <MenuItem value="Dictionary">Dictionary</MenuItem>
+                            <MenuItem value="Interface Terminology">Interface Terminology</MenuItem>
+                            <MenuItem value="Indicator Registry">Indicator Registry</MenuItem>
+                            <MenuItem value="External">External</MenuItem>
+                        </Field>
+                            <Typography color="error" variant="caption" component="div">
+                                <ErrorMessage name="source_type" component="span" />
+                            </Typography>
+                        </FormControl>
                         <FormControl
                             fullWidth
                             // required
@@ -292,28 +282,6 @@ const SourceForm: React.FC<Props> = ({
                                 <ErrorMessage name="supported_locales" component="span" />
                             </Typography>
                         </FormControl>
-                        <Field
-                            // required
-                            fullWidth
-                            multiline
-                            rowsMax={4}
-                            autoComplete="off"
-                            id="custom_validation_schema"
-                            name="custom_validation_schema"
-                            label="Custom Validation Schema"
-                            margin="normal"
-                            component={TextField}
-                        />
-                        <Field
-                            // required
-                            fullWidth
-                            autoComplete="off"
-                            id="external_id"
-                            name="external_id"
-                            label="External Id"
-                            margin="normal"
-                            component={TextField}
-                        />
                         <div className={classes.submitButton}>
                             <Button
                                 variant="outlined"

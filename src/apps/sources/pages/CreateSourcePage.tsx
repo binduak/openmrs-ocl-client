@@ -14,7 +14,7 @@ import {
     profileSelector
 } from "../../authentication/redux/reducer";
 import { APIOrg, APIProfile } from "../../authentication";
-import { usePrevious } from "../../../utils";
+import {CUSTOM_VALIDATION_SCHEMA, usePrevious} from "../../../utils";
 import { CONTEXT } from "../constants";
 import SourceForm from "../components/SourceForm";
 
@@ -38,6 +38,19 @@ const CreateSourcePage: React.FC<Props> = ({
                                                    newSource
                                                }: Props) => {
     const previouslyLoading = usePrevious(loading);
+
+    if (!loading && previouslyLoading && newSource) {
+        return <Redirect to={newSource.url} />;
+    }
+
+    const onSubmitButton = (values: NewAPISource ) => {
+        // Both ID and short_code are required fields for create source API.
+        // short_code field gets overriden by ID from backend. So hardcoding the same from UI.
+        // This needs to be handled if API accepts different values for short_code and ID
+        values.id = values.short_code;
+        values.custom_validation_schema = CUSTOM_VALIDATION_SCHEMA;
+        createSourceAction(values.owner_url, values);
+    };
     return (
         <Grid id="create-dictionary-page" item xs={6} component="div">
             <Paper>
@@ -47,7 +60,7 @@ const CreateSourcePage: React.FC<Props> = ({
                     profile={profile}
                     usersOrgs={usersOrgs ? usersOrgs : []}
                     loading={loading}
-                    onSubmit={(values: NewAPISource ) => createSourceAction(values.owner_url, values)}
+                    onSubmit={onSubmitButton}
                 />
             </Paper>
         </Grid>
