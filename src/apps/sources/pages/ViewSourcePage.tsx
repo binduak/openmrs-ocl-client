@@ -36,7 +36,9 @@ interface Props {
   ) => void;
   metaConceptsCount?: { num_found?: number };
 }
-
+interface UseLocation {
+  prevPath: string;
+}
 export const ViewSourcePage: React.FC<Props> = ({
   profile,
   usersOrgs = [],
@@ -47,7 +49,7 @@ export const ViewSourcePage: React.FC<Props> = ({
   retrieveConceptsSummary,
   metaConceptsCount = {},
 }: Props) => {
-  const { pathname: url, state } = useLocation();
+  const { pathname: url, state } = useLocation<UseLocation>();
   const previousPath = state ? state.prevPath : "";
 
   useEffect(() => {
@@ -89,7 +91,10 @@ export const ViewSourcePage: React.FC<Props> = ({
         </Grid>
         <Grid item xs={5} container spacing={2}>
           <Grid item xs={12} component='div'>
-            <SourceConceptDetails source={source} totalConceptCount={metaConceptsCount.num_found || 0} />
+            <SourceConceptDetails
+              source={source}
+              totalConceptCount={metaConceptsCount.num_found || 0}
+            />
           </Grid>
         </Grid>
       </ProgressOverlay>
