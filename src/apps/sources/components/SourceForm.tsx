@@ -8,8 +8,9 @@ import {
     Typography
 } from "@material-ui/core";
 import {
+    getCustomErrorMessage,
     getPrettyError,
-    LOCALES, PREFERRED_SOURCES,
+    LOCALES,
 } from "../../../utils";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Select, TextField } from "formik-material-ui";
@@ -18,7 +19,7 @@ import { snakeCase } from "lodash";
 import { Source } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";
 import * as Yup from "yup";
-import {Dictionary} from "../../dictionaries";
+import { CONTEXT } from "../constants";
 
 interface Props {
     onSubmit?: Function;
@@ -73,6 +74,7 @@ const SourceForm: React.FC<Props> = ({
                                              profile,
                                              usersOrgs,
                                              errors,
+                                             context = CONTEXT.view,
                                              savedValues
                                          }) => {
     const classes = useStyles();
@@ -119,6 +121,13 @@ const SourceForm: React.FC<Props> = ({
         ))
         return labels;
     };
+    const apiErrorStatusCode = {
+        403: `You don't have permission to ${context} a source in this Organisation`
+    };
+    let error: string | undefined = getCustomErrorMessage(
+        getPrettyError(errors),
+        apiErrorStatusCode
+    );
 
     return (
         <div id="source-form" className={classes.sourceForm}>
@@ -283,6 +292,14 @@ const SourceForm: React.FC<Props> = ({
                             </Typography>
                         </FormControl>
                         <div className={classes.submitButton}>
+                            {!error ? (
+                                <br />
+                            ) : (
+                                <Typography color="error" variant="caption" component="span">
+                                    {error}
+                                </Typography>
+                            )}
+                            <br />
                             <Button
                                 variant="outlined"
                                 color="primary"

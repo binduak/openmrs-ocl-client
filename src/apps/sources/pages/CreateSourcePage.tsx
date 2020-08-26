@@ -54,7 +54,7 @@ const CreateSourcePage: React.FC<Props> = ({
     };
 
     return (
-        <Grid id="create-dictionary-page" item xs={6} component="div">
+        <Grid id="create-source-page" item xs={6} component="div">
             <Paper>
                 <SourceForm
                     context={CONTEXT.create}

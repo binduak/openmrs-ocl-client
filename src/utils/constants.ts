@@ -297,5 +297,3 @@ export const PREFERRED_SOURCES_VIEW_ONLY: { [key: string]: string } = {
   "Public Sources": ALL_PUBLIC_SOURCES_URL,
   ...PREFERRED_SOURCES,
 };
-
-export const limit = 50;
