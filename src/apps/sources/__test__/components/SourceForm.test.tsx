@@ -60,8 +60,6 @@ describe('View SourceForm ', () => {
        const {getByLabelText} = renderUI();
        // @ts-ignore
        expect(getByLabelText('Description').value).toBe('Testing Description');
-       // @ts-ignore
-       expect(getByLabelText('Website').value).toBe('website');
    });
 });
 

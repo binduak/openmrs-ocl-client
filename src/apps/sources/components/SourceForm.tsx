@@ -10,7 +10,7 @@ import {
 import {
     getCustomErrorMessage,
     getPrettyError,
-    LOCALES, PREFERRED_SOURCES,
+    LOCALES,
 } from "../../../utils";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Select, TextField } from "formik-material-ui";
@@ -19,7 +19,6 @@ import { snakeCase } from "lodash";
 import { Source } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";
 import * as Yup from "yup";
-import {Dictionary} from "../../dictionaries";
 import {CONTEXT} from "../../dictionaries/constants";
 
 interface Props {
@@ -36,7 +35,6 @@ interface Props {
 const initialValues: Source = {
     name: "",
     short_code: "",
-    website: "",
     source_type: "",
     description: "",
     public_access: "",
@@ -54,7 +52,6 @@ const SourceSchema = Yup.object().shape<Source>({
     public_access: Yup.string().required(
         "Select who will have access to this dictionary"
     ),
-    website:Yup.string(),
     source_type:Yup.string(),
     default_locale: Yup.string().required("Select a preferred language"),
     supported_locales: Yup.array(Yup.string())
@@ -148,9 +145,9 @@ const SourceForm: React.FC<Props> = ({
                             // required
                             fullWidth
                             autoComplete="off"
-                            id="short_code"
-                            name="short_code"
-                            label="Short Code"
+                            id="name"
+                            name="name"
+                            label="Source Name"
                             margin="normal"
                             multiline
                             rowsMax={4}
@@ -160,9 +157,9 @@ const SourceForm: React.FC<Props> = ({
                             // required
                             fullWidth
                             autoComplete="off"
-                            id="name"
-                            name="name"
-                            label="Source Name"
+                            id="short_code"
+                            name="short_code"
+                            label="Short Code"
                             margin="normal"
                             multiline
                             rowsMax={4}
@@ -209,22 +206,12 @@ const SourceForm: React.FC<Props> = ({
                                 <ErrorMessage name="owner_url" component="span" />
                             </Typography>
                         </FormControl>
-                        <Field
-                            // required
-                            fullWidth
-                            autoComplete="off"
-                            id="website"
-                            name="website"
-                            label="Website"
-                            margin="normal"
-                            component={TextField}
-                        />
                         <FormControl
                             fullWidth
                             // required
                             margin="normal"
                         >
-                        <InputLabel htmlFor="source_type">Source type</InputLabel>
+                        <InputLabel htmlFor="source_type">Source Type</InputLabel>
                         <Field name="source_type" id="source_type" component={Select}>
                             <MenuItem value="Dictionary">Dictionary</MenuItem>
                             <MenuItem value="Interface Terminology">Interface Terminology</MenuItem>
@@ -255,7 +242,7 @@ const SourceForm: React.FC<Props> = ({
                             margin="normal"
                         >
                             <InputLabel htmlFor="default_locale">
-                                Default Locale
+                                Preferred Language
                             </InputLabel>
                             <Field
                                 name="default_locale"
@@ -278,7 +265,7 @@ const SourceForm: React.FC<Props> = ({
                             margin="normal"
                         >
                             <InputLabel htmlFor="supported_locales">
-                                Supported Locale
+                                Other Languages
                             </InputLabel>
                             <Field
                                 multiple

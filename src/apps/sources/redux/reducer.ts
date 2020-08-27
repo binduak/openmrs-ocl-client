@@ -3,7 +3,6 @@ import {Action} from "../../../redux";
 import {SourceState} from "../types";
 import {CREATE_SOURCE_ACTION, RETRIEVE_SOURCE_ACTION, RETRIEVE_SOURCES_ACTION} from "./actionTypes";
 import {LOGOUT_ACTION} from "../../authentication/redux/actionTypes";
-import {CREATE_DICTIONARY_ACTION} from "../../dictionaries/redux/actionTypes";
 
 const initialState: SourceState = {
     sources: []

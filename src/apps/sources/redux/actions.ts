@@ -59,7 +59,6 @@ export const createSourceDispatchAction = (sourceData: APISource) => {
             default_locale,
             short_code,
             owner_url,
-            website,
             source_type
         } = sourceData;
 
@@ -76,7 +75,6 @@ export const createSourceDispatchAction = (sourceData: APISource) => {
             id: short_code,
             source_type:source_type,
             supported_locales: supported_locales.join(","),
-            website: website,
             owner_url: owner_url
         };
 

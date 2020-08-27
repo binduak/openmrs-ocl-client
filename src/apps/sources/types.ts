@@ -6,7 +6,7 @@ interface BaseSource extends BaseConceptContainer {
 
 export interface Source extends BaseSource {
   supported_locales: string[];
-  website: string;
+  website?: string;
   source_type: string;
   owner_url?:string;
 }
@@ -14,7 +14,7 @@ interface BaseAPISource extends BaseConceptContainer {
   external_id: string;
   id: string;
   full_name: string;
-  website: string;
+  website?: string;
   custom_validation_schema: string;
 }
 
