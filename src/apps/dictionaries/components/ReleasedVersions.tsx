@@ -132,7 +132,7 @@ const ReleasedVersions: React.FC<Props> = ({
       <Paper className='fieldsetParent'>
         <fieldset style={{ minWidth: "0" }}>
           <Typography component='legend' variant='h5' gutterBottom>
-            Releases
+            Versions
           </Typography>
           {versionsToDisplay.length > 0 ? (
               <TableContainer className={classes.container}>
@@ -229,12 +229,12 @@ const ReleasedVersions: React.FC<Props> = ({
             </Table>
           </TableContainer>
         ) : (
-          <Typography align='center'>No released versions</Typography>
+          <Typography align='center'>No versions created</Typography>
         )}
         <br />
         {!showCreateVersionButton ? null : (
           <ButtonGroup fullWidth variant='text' color='primary'>
-            <Button onClick={handleClickOpen}>Release new version</Button>
+            <Button onClick={handleClickOpen}>Create new version</Button>
           </ButtonGroup>
         )}
       </fieldset>
