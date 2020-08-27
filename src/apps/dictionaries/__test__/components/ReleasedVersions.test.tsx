@@ -1,5 +1,5 @@
 import React from 'react';
-import ReleasedVersions from '../../../../apps/dictionaries/components/ReleasedVersions';
+import ReleasedVersions from '../../components/ReleasedVersions';
 import {render, fireEvent, getByText} from '../../../../test-utils';
 import '@testing-library/jest-dom'
 import {APIDictionaryVersion} from "../../types";
@@ -54,6 +54,7 @@ describe("Dictionary release version table", () => {
     it('checks if table headers are as expected', () => {
         const headerRow: Array<string> = [
             "ID",
+            "Date Created",
             "Description",
             "Release Status",
             "Actions"
@@ -181,7 +182,6 @@ describe('when user is not the owner of sources', () => {
         const toggleButton: HTMLElement | null = getByTestId('2').closest('span');
         expect(toggleButton).not.toBeNull();
         toggleButton !== null && fireEvent.mouseMove(toggleButton);
-        console.log(getByTestId('2'));
         expect(toggleButton).toHaveAttribute("title", "You don't have permission to change the status");
     });
 });

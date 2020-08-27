@@ -30,6 +30,7 @@ import { APIDictionaryVersion, DictionaryVersion } from "../types";
 import DictionaryVersionForm from "./DictionaryVersionForm";
 import { BASE_URL } from "../../../utils";
 import ConfirmationDialog from "../../../utils/components/ConfirmationDialog";
+import moment from 'moment';
 
 interface Props {
   versions: APIDictionaryVersion[];
@@ -139,6 +140,7 @@ const ReleasedVersions: React.FC<Props> = ({
                   <TableHead>
                     <TableRow>
                       <TableCell>ID</TableCell>
+                      <TableCell>Date Created</TableCell>
                       <TableCell>Description</TableCell>
                       <TableCell>Release Status</TableCell>
                       <TableCell>Actions</TableCell>
@@ -148,6 +150,7 @@ const ReleasedVersions: React.FC<Props> = ({
                     {versionsToDisplay.map((row: APIDictionaryVersion) => (
                         <TableRow key={row.id}>
                           <TableCell>{row.id}</TableCell>
+                          <TableCell>{row.created_on ? moment(row.created_on).format("DD MMM YYYY") : ""}</TableCell>
                           <TableCell style={{ wordBreak: "break-all" }}>
                             {row.description || "None"}
                           </TableCell>
