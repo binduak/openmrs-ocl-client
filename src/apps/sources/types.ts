@@ -21,6 +21,7 @@ export interface NewAPISource extends BaseAPISource {
   // api expects a comma separated string for this in create/ edit data
   supported_locales: string;
   owner_url: string;
+  source_type?:string;
 }
 
 export interface APISource extends BaseAPISource {

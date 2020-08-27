@@ -3,18 +3,18 @@ import { Grid, Paper } from "@material-ui/core";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import {
-    createSourceAction,
+    createSourceDispatchAction,
     createSourceErrorsSelector,
     createSourceLoadingSelector,
     createSourceProgressSelector
 } from "../redux";
-import {APISource, NewAPISource} from "../types";
+import {APISource} from "../types";
 import {
     orgsSelector,
     profileSelector
 } from "../../authentication/redux/reducer";
 import { APIOrg, APIProfile } from "../../authentication";
-import {CUSTOM_VALIDATION_SCHEMA, usePrevious} from "../../../utils";
+import {usePrevious} from "../../../utils";
 import { CONTEXT } from "../constants";
 import SourceForm from "../components/SourceForm";
 
@@ -23,7 +23,7 @@ interface Props {
     profile?: APIProfile;
     usersOrgs?: APIOrg[];
     createSourceAction: (
-        ...args: Parameters<typeof createSourceAction>
+        ...args: Parameters<typeof createSourceDispatchAction>
     ) => void;
     loading: boolean;
     newSource?: APISource;
@@ -43,16 +43,6 @@ const CreateSourcePage: React.FC<Props> = ({
         return <Redirect to={newSource.url} />;
     }
 
-
-    const onSubmitButton = (values: NewAPISource ) => {
-        // Both ID and short_code are required fields for create source API.
-        // short_code field gets overriden by ID from backend. So hardcoding the same from UI.
-        // This needs to be handled if API accepts different values for short_code and ID
-        values.id = values.short_code;
-        values.custom_validation_schema = CUSTOM_VALIDATION_SCHEMA;
-        createSourceAction(values.owner_url, values);
-    };
-
     return (
         <Grid id="create-source-page" item xs={6} component="div">
             <Paper>
@@ -62,7 +52,7 @@ const CreateSourcePage: React.FC<Props> = ({
                     profile={profile}
                     usersOrgs={usersOrgs ? usersOrgs : []}
                     loading={loading}
-                    onSubmit={onSubmitButton}
+                        onSubmit={(values: APISource) => createSourceAction(values)}
                 />
             </Paper>
         </Grid>
@@ -78,7 +68,7 @@ const mapStateToProps = (state: any) => ({
     errors: createSourceErrorsSelector(state)
 });
 const mapActionsToProps = {
-    createSourceAction: createSourceAction
+    createSourceAction: createSourceDispatchAction
 };
 
 export default connect(

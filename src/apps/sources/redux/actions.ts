@@ -1,8 +1,10 @@
-import {createActionThunk, indexedAction} from "../../../redux";
+import { createActionThunk, indexedAction} from "../../../redux";
 import {CREATE_SOURCE_ACTION, EDIT_SOURCE_ACTION, RETRIEVE_SOURCE_ACTION, RETRIEVE_SOURCES_ACTION} from "./actionTypes";
 import api from "../api";
 import {ORG_SOURCES_ACTION_INDEX, PERSONAL_SOURCES_ACTION_INDEX, PUBLIC_SOURCES_ACTION_INDEX} from "./constants";
-import {APISource} from "../types";
+import {APISource, NewAPISource} from "../types";
+import {CUSTOM_VALIDATION_SCHEMA} from "../../../utils";
+import uuid from "uuid/v4";
 
 export const createSourceAction = createActionThunk(
     CREATE_SOURCE_ACTION,
@@ -48,5 +50,40 @@ export const retrievePublicSourcesAction = createActionThunk(
     ),
     api.sources.retrieve.public
 );
+export const createSourceDispatchAction = (sourceData: APISource) => {
+
+        const {
+            description,
+            name,
+            supported_locales,
+            default_locale,
+            short_code,
+            owner_url,
+            website,
+            source_type
+        } = sourceData;
+
+
+        const source: NewAPISource = {
+            custom_validation_schema: CUSTOM_VALIDATION_SCHEMA,
+            default_locale,
+            description,
+            external_id: uuid(),
+            full_name: name,
+            name: name,
+            public_access: "None",
+            short_code: short_code,
+            id: short_code,
+            source_type:source_type,
+            supported_locales: supported_locales.join(","),
+            website: website,
+            owner_url: owner_url
+        };
+
+     return async (dispatch: Function) => {
+         dispatch(createSourceAction<APISource>(owner_url, source))
+     };
+};
+
 
 
