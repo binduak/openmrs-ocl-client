@@ -41,7 +41,8 @@ const initialValues: Source = {
     description: "",
     public_access: "",
     default_locale: "",
-    supported_locales: []
+    supported_locales: [],
+    owner_url:""
 };
 
 const SourceSchema = Yup.object().shape<Source>({

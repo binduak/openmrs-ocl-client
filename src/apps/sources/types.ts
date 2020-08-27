@@ -8,6 +8,7 @@ export interface Source extends BaseSource {
   supported_locales: string[];
   website: string;
   source_type: string;
+  owner_url?:string;
 }
 interface BaseAPISource extends BaseConceptContainer {
   external_id: string;
