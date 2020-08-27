@@ -5,8 +5,7 @@ import { Redirect } from "react-router-dom";
 import {
     createSourceDispatchAction,
     createSourceErrorsSelector,
-    createSourceLoadingSelector,
-    createSourceProgressSelector
+    createSourceLoadingSelector
 } from "../redux";
 import {APISource} from "../types";
 import {
@@ -63,7 +62,6 @@ const mapStateToProps = (state: any) => ({
     profile: profileSelector(state),
     usersOrgs: orgsSelector(state),
     loading: createSourceLoadingSelector(state),
-    progress: createSourceProgressSelector(state),
     newSource: state.sources.newSource,
     errors: createSourceErrorsSelector(state)
 });

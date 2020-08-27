@@ -1,6 +1,8 @@
 import {AppState, errorSelector, indexedAction, loadingSelector, progressSelector} from "../../../redux";
 import {ORG_SOURCES_ACTION_INDEX, PERSONAL_SOURCES_ACTION_INDEX, PUBLIC_SOURCES_ACTION_INDEX} from "./constants";
 import {CREATE_SOURCE_ACTION, EDIT_SOURCE_ACTION, RETRIEVE_SOURCE_ACTION, RETRIEVE_SOURCES_ACTION} from "./actionTypes";
+import {CREATE_SOURCE_AND_DICTIONARY_ACTION} from "../../dictionaries/redux/actionTypes";
+import {createDictionaryErrorSelector} from "../../dictionaries/redux";
 
 export const createSourceErrorSelector = errorSelector(
     CREATE_SOURCE_ACTION);
@@ -38,10 +40,6 @@ export const retrievePublicSourcesLoadingSelector = loadingSelector(
 );
 
 export const createSourceLoadingSelector = loadingSelector(
-    CREATE_SOURCE_ACTION
-);
-
-export const createSourceProgressSelector = progressSelector(
     CREATE_SOURCE_ACTION
 );
 

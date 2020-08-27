@@ -10,7 +10,7 @@ import {
 import {
     getCustomErrorMessage,
     getPrettyError,
-    LOCALES,
+    LOCALES, PREFERRED_SOURCES,
 } from "../../../utils";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { Select, TextField } from "formik-material-ui";
@@ -19,7 +19,8 @@ import { snakeCase } from "lodash";
 import { Source } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";
 import * as Yup from "yup";
-import { CONTEXT } from "../constants";
+import {Dictionary} from "../../dictionaries";
+import {CONTEXT} from "../../dictionaries/constants";
 
 interface Props {
     onSubmit?: Function;
@@ -78,7 +79,7 @@ const SourceForm: React.FC<Props> = ({
                                              savedValues
                                          }) => {
     const classes = useStyles();
-
+    const viewing = context === CONTEXT.view;
     const formikRef: any = useRef(null);
 
     useEffect(() => {
@@ -291,6 +292,9 @@ const SourceForm: React.FC<Props> = ({
                                 <ErrorMessage name="supported_locales" component="span" />
                             </Typography>
                         </FormControl>
+                        {viewing ? (
+                            ""
+                        ) : (
                         <div className={classes.submitButton}>
                             {!error ? (
                                 <br />
@@ -310,6 +314,7 @@ const SourceForm: React.FC<Props> = ({
                                 Submit
                             </Button>
                         </div>
+                      )}
                     </Form>
                 )}
             </Formik>

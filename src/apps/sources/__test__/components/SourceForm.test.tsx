@@ -2,40 +2,37 @@ import React from "react";
 import SourceForm from "../../components/SourceForm";
 import {APIOrg, APIProfile} from "../../../authentication";
 import {Source} from "../../types";
-import {render} from "@testing-library/react";
+import {render, fireEvent, act, wait, waitFor} from "@testing-library/react";
 import {BrowserRouter as Router} from "react-router-dom";
+import {CONTEXT} from "../../constants";
 
 type sourcesFormProps = React.ComponentProps<typeof SourceForm>;
-
+let onSubmit = jest.fn();
 const apiProfile :APIProfile = {
     email: "", organizations_url: "", url: "", username: ""
 };
 const apiOrg :APIOrg = {
     id: "", name: "", url: ""
 };
-
-const testSource : Source ={
-    custom_validation_schema: "",
+const testSource : Source = {
     default_locale: "en",
     description: "Testing Description",
-    external_id: "12",
     name: "Test",
     public_access: "View",
     short_code: "12",
-    source_type: "MSF",
+    source_type: "Dictionary",
     supported_locales: ["fr","es"],
     website: "website"
 };
-
 const baseProps: sourcesFormProps = {
-    onSubmit: function onSubmit(){
-    },
+    onSubmit: onSubmit,
     loading: true,
     status: "",
     profile: apiProfile,
     usersOrgs: [apiOrg],
     errors: [],
     savedValues: testSource,
+    context: CONTEXT.view
 };
 
 function renderUI(props: Partial<sourcesFormProps> = {}) {
@@ -46,7 +43,7 @@ function renderUI(props: Partial<sourcesFormProps> = {}) {
     );
 }
 
-describe('SourceForm', () => {
+describe('View SourceForm ', () => {
    it('snapshot test', () => {
        const {container} = renderUI();
        expect(container).toMatchSnapshot();
@@ -65,7 +62,25 @@ describe('SourceForm', () => {
        expect(getByLabelText('Description').value).toBe('Testing Description');
        // @ts-ignore
        expect(getByLabelText('Website').value).toBe('website');
-       // @ts-ignore
-        expect(getByLabelText('Source type').value).toBe('MSF');
    });
+});
+
+describe('Create SourceForm', () => {
+
+    it('should show Source name is required if we dont enter', async () => {
+        const {container, getByLabelText, getByText, debug} = renderUI({
+            context: CONTEXT.create
+        });
+        let shortCode: HTMLInputElement = getByLabelText(/Short Code/) as HTMLInputElement;
+        let sourceName: HTMLInputElement = getByLabelText(/Source Name/) as HTMLInputElement;
+        let submitButton: HTMLInputElement = getByText('Submit') as HTMLInputElement;
+        await act(async () => {
+            fireEvent.change(shortCode, {target: {value: '10'}});
+            fireEvent.change(sourceName, {target: {value: 'Tustin'}});
+            fireEvent.click(submitButton);
+        });
+        expect(shortCode.value).toBe('10');
+        expect(sourceName.value).toBe('Tustin');
+    });
+
 });

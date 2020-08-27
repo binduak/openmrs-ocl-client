@@ -1,10 +1,10 @@
-import { createActionThunk, indexedAction} from "../../../redux";
+import {createActionThunk, indexedAction} from "../../../redux";
 import {CREATE_SOURCE_ACTION, EDIT_SOURCE_ACTION, RETRIEVE_SOURCE_ACTION, RETRIEVE_SOURCES_ACTION} from "./actionTypes";
 import api from "../api";
 import {ORG_SOURCES_ACTION_INDEX, PERSONAL_SOURCES_ACTION_INDEX, PUBLIC_SOURCES_ACTION_INDEX} from "./constants";
 import {APISource, NewAPISource} from "../types";
 import {CUSTOM_VALIDATION_SCHEMA} from "../../../utils";
-import uuid from "uuid/v4";
+import uuid from "uuid";
 
 export const createSourceAction = createActionThunk(
     CREATE_SOURCE_ACTION,
