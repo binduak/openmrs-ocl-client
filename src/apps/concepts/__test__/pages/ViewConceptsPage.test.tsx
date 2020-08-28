@@ -55,20 +55,15 @@ function renderUI(props: Partial<viewConceptsPageProps> = {}) {
 }
 
 describe('ViewConceptsPage', () => {
-    it('should contain header', () => {
+
+    it('should contain all the main component in page', () => {
         const {getByTestId} = renderUI(baseProps);
+
         expect(getByTestId("header")).not.toBeNull();
-    });
-
-    it('should contain conceptsTable', () => {
-        const {getByTestId} = renderUI(baseProps);
         expect(getByTestId("conceptsTableHeader")).not.toBeNull();
-    });
-
-    it('should contain filterOptions', () => {
-        const {getByTestId} = renderUI(baseProps);
         expect(getByTestId("filterOptions")).not.toBeNull();
     });
+
 });
 
 

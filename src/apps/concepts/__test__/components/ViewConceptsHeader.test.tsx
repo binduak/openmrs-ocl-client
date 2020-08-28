@@ -34,7 +34,6 @@ describe("Header Title", () => {
 
         const header = getByTestId('header');
 
-        expect(header).not.toBeNull();
         expect(header).toHaveTextContent("Concepts in undefined");
     });
 
@@ -48,7 +47,6 @@ describe("Header Title", () => {
 
         const header = getByTestId('header');
 
-        expect(header).not.toBeNull();
         expect(header).toHaveTextContent("Import existing concept from sourceName");
     });
 
@@ -61,7 +59,6 @@ describe("Header Title", () => {
 
         const header = getByTestId('header');
 
-        expect(header).not.toBeNull();
         expect(header).toHaveTextContent("Concepts in sourceName");
     });
 
@@ -74,7 +71,6 @@ describe("Header Title", () => {
 
         const header = getByTestId('header');
 
-        expect(header).not.toBeNull();
         expect(header).toHaveTextContent("Concepts in collectionName");
     });
 
@@ -87,7 +83,6 @@ describe("Header Title", () => {
 
         const header = getByTestId('header');
 
-        expect(header).not.toBeNull();
         expect(header).toHaveTextContent("Concepts in vversion");
     });
 });
@@ -100,7 +95,6 @@ describe("Switch Source", () => {
 
         const header = getByTestId('header');
 
-        expect(header).not.toBeNull();
         expect(header).not.toHaveTextContent("Switch source");
     });
 
@@ -114,7 +108,6 @@ describe("Switch Source", () => {
 
         const header = getByTestId('header');
 
-        expect(header).not.toBeNull();
         expect(header).toHaveTextContent("Switch source (Currently sourceName)");
     });
 
@@ -127,7 +120,6 @@ describe("Switch Source", () => {
 
         const header = getByTestId('header');
 
-        expect(header).not.toBeNull();
         expect(header).not.toHaveTextContent("Switch source (Currently sourceName)");
     });
 
@@ -140,7 +132,6 @@ describe("Switch Source", () => {
 
         const header = getByTestId('header');
 
-        expect(header).not.toBeNull();
         expect(header).not.toHaveTextContent("Switch source");
     });
 
@@ -153,7 +144,6 @@ describe("Switch Source", () => {
 
         const header = getByTestId('header');
 
-        expect(header).not.toBeNull();
         expect(header).not.toHaveTextContent("Switch source");
     });
 
@@ -167,7 +157,6 @@ describe("Switch Source", () => {
 
         const header = getByTestId('header');
 
-        expect(header).not.toBeNull();
         expect(header).toHaveTextContent("Switch source (Currently sourceName)");
 
         getByTestId("switch-source").click();

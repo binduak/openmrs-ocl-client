@@ -37,53 +37,61 @@ const ViewConceptsHeader: React.FC<Props> = ({
         handleSwitchSourceClose
     ] = useAnchor();
 
+    const getTitleBasedOnContainerType = () => {
+        return isAddToDictionary
+            ? `Import existing concept from ${getContainerIdFromUrl(
+                containerUrl
+            )}`
+            : `Concepts in ${
+                containerType === DICTIONARY_VERSION_CONTAINER ? "v" : ""
+            }${getContainerIdFromUrl(containerUrl)}`;
+    };
+
+    const showSwitchSourceBasedOnContainerType = () => {
+        return !isAddToDictionary ? null : (
+            <>
+                <Button data-testid='switch-source'
+                        className={classes.lightColour}
+                        variant="text"
+                        size="large"
+                        aria-haspopup="true"
+                        onClick={handleSwitchSourceClick}
+                >
+                    Switch source (Currently {getContainerIdFromUrl(containerUrl)})
+                </Button>
+                <Menu
+                    anchorEl={switchSourceAnchor}
+                    keepMounted
+                    open={Boolean(switchSourceAnchor)}
+                    onClose={handleSwitchSourceClose}
+                >
+                    {Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(
+                        ([preferredSourceName, preferredSourceUrl]) => (
+                            <MenuItem
+                                // replace because we want to keep the back button useful
+                                replace
+                                to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
+                                key={preferredSourceName}
+                                component={Link}
+                                onClick={handleSwitchSourceClose}
+                                data-testid={preferredSourceName}
+                            >
+                                {preferredSourceName}
+                            </MenuItem>
+                        )
+                    )}
+                </Menu>
+            </>
+        );
+    };
+
     return (
         <Header
             title={
-                isAddToDictionary
-                    ? `Import existing concept from ${getContainerIdFromUrl(
-                    containerUrl
-                    )}`
-                    : `Concepts in ${
-                        containerType === DICTIONARY_VERSION_CONTAINER ? "v" : ""
-                    }${getContainerIdFromUrl(containerUrl)}`
+                getTitleBasedOnContainerType()
             }
             headerComponent={
-                !isAddToDictionary ? null : (
-                    <>
-                        <Button data-testid='switch-source'
-                            className={classes.lightColour}
-                            variant="text"
-                            size="large"
-                            aria-haspopup="true"
-                            onClick={handleSwitchSourceClick}
-                        >
-                            Switch source (Currently {getContainerIdFromUrl(containerUrl)})
-                        </Button>
-                        <Menu
-                            anchorEl={switchSourceAnchor}
-                            keepMounted
-                            open={Boolean(switchSourceAnchor)}
-                            onClose={handleSwitchSourceClose}
-                        >
-                            {Object.entries(PREFERRED_SOURCES_VIEW_ONLY).map(
-                                ([preferredSourceName, preferredSourceUrl]) => (
-                                    <MenuItem
-                                        // replace because we want to keep the back button useful
-                                        replace
-                                        to={gimmeAUrl({}, `${preferredSourceUrl}concepts/`)}
-                                        key={preferredSourceName}
-                                        component={Link}
-                                        onClick={handleSwitchSourceClose}
-                                        data-testid={preferredSourceName}
-                                    >
-                                        {preferredSourceName}
-                                    </MenuItem>
-                                )
-                            )}
-                        </Menu>
-                    </>
-                )
+                showSwitchSourceBasedOnContainerType()
             }
             // we can only be confident about the back url when viewing a collection's concepts
             allowImplicitNavigation
