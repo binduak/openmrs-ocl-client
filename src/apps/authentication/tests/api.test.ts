@@ -15,15 +15,16 @@ jest.mock("../../../api", () => ({
 describe('api', () => {
 
     it('should make authenticated get call with given url and params', async () => {
-        const url: string = "/user/orgs/?limit=0";
-        const response = api.getUserOrgs();
+        const url: string = "/users/root/orgs/?limit=0";
+        const username: string = "root";
+        const response = api.getUserOrgs(username);
 
         expect(authenticatedInstance.get).toHaveBeenCalledWith(url);
         expect(response).toStrictEqual({userOrgs: [{id: "OCL", name: "Open Concept Lab", url: "/orgs/OCL/"}]});
     });
 
     it('should make unauthenticated get call with given url and params', async () => {
-        const url: string = "/user/orgs/?limit=0";
+        const url: string = "/users/root/orgs/?limit=0";
         const response = unAuthenticatedInstance.get(url);
 
         expect(unAuthenticatedInstance.get).toHaveBeenCalledWith(url);
