@@ -16,7 +16,7 @@ describe('api', () => {
 
     it('should make authenticated get call with given url and params', async () => {
         const url: string = "/users/root/orgs/?limit=0";
-        const username:string = "root";
+        const username: string = "root";
         const response = api.getUserOrgs(username);
 
         expect(authenticatedInstance.get).toHaveBeenCalledWith(url);
