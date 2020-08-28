@@ -55,21 +55,22 @@ function renderUI(props: Partial<viewConceptsPageProps> = {}) {
 }
 
 describe('ViewConceptsPage', () => {
+    let getByTestId: Function;
+    beforeEach(() => {
+         getByTestId = () => {renderUI(baseProps)};
+    });
+
     it('should contain header', () => {
-        const {getByTestId} = renderUI(baseProps);
         expect(getByTestId("header")).not.toBeNull();
     });
 
     it('should contain conceptsTable', () => {
-        const {getByTestId} = renderUI(baseProps);
         expect(getByTestId("conceptsTableHeader")).not.toBeNull();
     });
 
     it('should contain filterOptions', () => {
-        const {getByTestId} = renderUI(baseProps);
         expect(getByTestId("filterOptions")).not.toBeNull();
     });
 });
-
 
 
