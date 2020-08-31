@@ -35,7 +35,7 @@ const source: APISource = {
     owner_url: "",
     public_access: "",
     short_code: "MSF01",
-    source_type: "MSF",
+    source_type: "Dictionary",
     supported_locales: [],
     url: "url",
     website: ""

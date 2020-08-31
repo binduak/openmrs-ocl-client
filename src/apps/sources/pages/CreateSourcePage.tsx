@@ -58,14 +58,14 @@ const CreateSourcePage: React.FC<Props> = ({
     );
 };
 
-const mapStateToProps = (state: any) => ({
+export const mapStateToProps = (state: any) => ({
     profile: profileSelector(state),
     usersOrgs: orgsSelector(state),
     loading: createSourceLoadingSelector(state),
     newSource: state.sources.newSource,
     errors: createSourceErrorsSelector(state)
 });
-const mapActionsToProps = {
+export const mapActionsToProps = {
     createSourceAction: createSourceDispatchAction
 };
 

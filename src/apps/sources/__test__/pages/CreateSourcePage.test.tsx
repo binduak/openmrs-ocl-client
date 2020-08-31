@@ -1,14 +1,15 @@
 import * as React from "react";
-import CreateSourcePage from "../../pages/CreateSourcePage";
+import CreateSourcePage, {mapActionsToProps, mapStateToProps} from "../../pages/CreateSourcePage";
 import {APIOrg, APIProfile} from "../../../authentication";
 import {APISource, Source} from "../../types";
-import {createSourceAction} from "../../redux";
+import {createSourceAction, createSourceDispatchAction} from "../../redux";
 import {act, fireEvent, render} from "@testing-library/react";
 import {Provider} from "react-redux";
 import store from "../../../../redux";
 import {BrowserRouter as Router} from "react-router-dom";
 import {ViewSourcePage} from "../../pages";
 import {CONTEXT} from "../../constants";
+import {currentState, personalSources, testSource} from "../test_data";
 
 type createSourcePageProps = React.ComponentProps<typeof CreateSourcePage>;
 const apiProfile: APIProfile = {
@@ -56,11 +57,25 @@ function renderUI(props: Partial<createSourcePageProps> = {}) {
         </Provider>
     );
 }
-
+const state = currentState(personalSources);
 describe('CreateSourcePage', () => {
-   it('createSourcePage snapshot test', () => {
-       const {container} = renderUI();
-       expect(container).toMatchSnapshot();
-   });
+    it('createSourcePage snapshot test', () => {
+        const {container} = renderUI();
+        expect(container).toMatchSnapshot();
+    });
+    it('should list down all the props of the state', () => {
+        expect(mapStateToProps(state).loading).not.toBeNull();
+        expect(mapStateToProps(state).profile).not.toBeNull();
+        expect(mapStateToProps(state).usersOrgs).not.toBeNull();
+        expect(mapStateToProps(state).newSource).not.toBeNull();
+        expect(mapStateToProps(state).errors).not.toBeNull();
+    });
+    it('should update the loading status with current state', () => {
+        expect(mapStateToProps(state).loading).toEqual(false);
+    });
+
+    it('should point to correct dispatch action', () => {
+        expect(mapActionsToProps.createSourceAction).toBe(createSourceDispatchAction);
+    });
 });
 
