@@ -2,7 +2,7 @@ import React from "react";
 import SourceForm from "../../components/SourceForm";
 import {APIOrg, APIProfile} from "../../../authentication";
 import {Source} from "../../types";
-import {render, fireEvent, act, wait, waitFor} from "@testing-library/react";
+import {render, fireEvent, act} from "@testing-library/react";
 import {BrowserRouter as Router} from "react-router-dom";
 import {CONTEXT} from "../../constants";
 
@@ -63,22 +63,45 @@ describe('View SourceForm ', () => {
    });
 });
 
-describe('Create SourceForm', () => {
+describe('Create SourceForm',  () => {
 
-    it('should show Source name is required if we dont enter', async () => {
-        const {container, getByLabelText, getByText, debug} = renderUI({
+    it('should be able to enter values for Short Code ', async () => {
+        const { getByLabelText, getByText} = renderUI({
             context: CONTEXT.create
         });
         let shortCode: HTMLInputElement = getByLabelText(/Short Code/) as HTMLInputElement;
-        let sourceName: HTMLInputElement = getByLabelText(/Source Name/) as HTMLInputElement;
         let submitButton: HTMLInputElement = getByText('Submit') as HTMLInputElement;
         await act(async () => {
             fireEvent.change(shortCode, {target: {value: '10'}});
-            fireEvent.change(sourceName, {target: {value: 'Tustin'}});
             fireEvent.click(submitButton);
         });
         expect(shortCode.value).toBe('10');
+    });
+
+    it('should be able to enter values for Source Name ', async () => {
+        const { getByLabelText, getByText} = renderUI({
+            context: CONTEXT.create
+        });
+        let sourceName: HTMLInputElement = getByLabelText(/Source Name/) as HTMLInputElement;
+        let submitButton: HTMLInputElement = getByText('Submit') as HTMLInputElement;
+        await act(async () => {
+            fireEvent.change(sourceName, {target: {value: 'Tustin'}});
+            fireEvent.click(submitButton);
+        });
         expect(sourceName.value).toBe('Tustin');
+    });
+
+    it('should be able to enter values for Description ', async () => {
+        const { getByLabelText, getByText} = renderUI({
+            context: CONTEXT.create
+        });
+        let description: HTMLInputElement = getByLabelText(/Description/) as HTMLInputElement;
+        let submitButton: HTMLInputElement = getByText('Submit') as HTMLInputElement;
+        await act(async () => {
+            fireEvent.change(description, {target: {value: 'sample desc'}});
+            fireEvent.click(submitButton);
+        });
+        expect(description.value).toBe('sample desc');
     });
 
 });

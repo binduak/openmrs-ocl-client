@@ -1,15 +1,10 @@
 import * as React from "react";
 import CreateSourcePage, {mapActionsToProps, mapStateToProps} from "../../pages/CreateSourcePage";
 import {APIOrg, APIProfile} from "../../../authentication";
-import {APISource, Source} from "../../types";
-import {createSourceAction, createSourceDispatchAction} from "../../redux";
-import {act, fireEvent, render} from "@testing-library/react";
-import {Provider} from "react-redux";
-import store from "../../../../redux";
-import {BrowserRouter as Router} from "react-router-dom";
-import {ViewSourcePage} from "../../pages";
-import {CONTEXT} from "../../constants";
-import {currentState, personalSources, testSource} from "../test_data";
+import {APISource} from "../../types";
+import {createSourceDispatchAction} from "../../redux";
+import {currentState, personalSources} from "../test_data";
+import {render} from "../../../../test-utils";
 
 type createSourcePageProps = React.ComponentProps<typeof CreateSourcePage>;
 const apiProfile: APIProfile = {
@@ -50,12 +45,7 @@ const baseProps: createSourcePageProps = {
 };
 
 function renderUI(props: Partial<createSourcePageProps> = {}) {
-    return render(<Provider store={store}>
-            <Router>
-                <CreateSourcePage {...baseProps} {...props}  />
-            </Router>
-        </Provider>
-    );
+    return render(<CreateSourcePage {...baseProps} {...props}  /> );
 }
 const state = currentState(personalSources);
 describe('CreateSourcePage', () => {
@@ -63,12 +53,17 @@ describe('CreateSourcePage', () => {
         const {container} = renderUI();
         expect(container).toMatchSnapshot();
     });
-    it('should list down all the props of the state', () => {
+    it('should list down loading props of the state', () => {
         expect(mapStateToProps(state).loading).not.toBeNull();
+    });
+    it('should list down profile props of the state', () => {
         expect(mapStateToProps(state).profile).not.toBeNull();
-        expect(mapStateToProps(state).usersOrgs).not.toBeNull();
-        expect(mapStateToProps(state).newSource).not.toBeNull();
+    });
+    it('should list down errors props of the state', () => {
         expect(mapStateToProps(state).errors).not.toBeNull();
+    });
+    it('should list down userOrgs props of the state', () => {
+        expect(mapStateToProps(state).usersOrgs).not.toBeNull();
     });
     it('should update the loading status with current state', () => {
         expect(mapStateToProps(state).loading).toEqual(false);
