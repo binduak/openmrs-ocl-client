@@ -68,7 +68,9 @@ describe('CreateSourcePage', () => {
     it('should update the loading status with current state', () => {
         expect(mapStateToProps(state).loading).toEqual(false);
     });
-
+    it('should update newSource value with current state', () => {
+        expect(mapStateToProps(state).newSource).not.toBeNull();
+    });
     it('should point to correct dispatch action', () => {
         expect(mapActionsToProps.createSourceAction).toBe(createSourceDispatchAction);
     });

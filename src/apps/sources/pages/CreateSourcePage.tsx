@@ -29,13 +29,13 @@ interface Props {
 }
 
 const CreateSourcePage: React.FC<Props> = ({
-                                                   profile,
-                                                   usersOrgs,
-                                                   errors,
-                                                   createSourceAction,
-                                                   loading,
-                                                   newSource
-                                               }: Props) => {
+  profile,
+  usersOrgs,
+  errors,
+  createSourceAction,
+  loading,
+  newSource
+  }: Props) => {
     const previouslyLoading = usePrevious(loading);
 
     if (!loading && previouslyLoading && newSource) {
@@ -51,7 +51,7 @@ const CreateSourcePage: React.FC<Props> = ({
                     profile={profile}
                     usersOrgs={usersOrgs ? usersOrgs : []}
                     loading={loading}
-                        onSubmit={(values: APISource) => createSourceAction(values)}
+                    onSubmit={(values: APISource) => createSourceAction(values)}
                 />
             </Paper>
         </Grid>

@@ -19,7 +19,7 @@ import { snakeCase } from "lodash";
 import { Source } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";
 import * as Yup from "yup";
-import {CONTEXT} from "../../dictionaries/constants";
+import {CONTEXT} from "../constants";
 
 interface Props {
     onSubmit?: Function;
@@ -127,6 +127,30 @@ const SourceForm: React.FC<Props> = ({
         getPrettyError(errors),
         apiErrorStatusCode
     );
+    const anyError = () =>{
+        return error ? (
+            <Typography color="error" variant="caption" component="span">
+                {error}
+            </Typography>
+        ) :  <br />
+    };
+    const isViewing = (isSubmitting: boolean) => {
+        return viewing ? "": (
+            <div className={classes.submitButton}>
+                {anyError()}
+                <br />
+                <Button
+                    variant="outlined"
+                    color="primary"
+                    size="medium"
+                    type="submit"
+                    disabled={isSubmitting}
+                >
+                    Submit
+                </Button>
+            </div>
+        )
+    };
 
     return (
         <div id="source-form" className={classes.sourceForm}>
@@ -284,29 +308,7 @@ const SourceForm: React.FC<Props> = ({
                                 <ErrorMessage name="supported_locales" component="span" />
                             </Typography>
                         </FormControl>
-                        {viewing ? (
-                            ""
-                        ) : (
-                        <div className={classes.submitButton}>
-                            {!error ? (
-                                <br />
-                            ) : (
-                                <Typography color="error" variant="caption" component="span">
-                                    {error}
-                                </Typography>
-                            )}
-                            <br />
-                            <Button
-                                variant="outlined"
-                                color="primary"
-                                size="medium"
-                                type="submit"
-                                disabled={isSubmitting}
-                            >
-                                Submit
-                            </Button>
-                        </div>
-                      )}
+                        {isViewing(isSubmitting)}
                     </Form>
                 )}
             </Formik>
