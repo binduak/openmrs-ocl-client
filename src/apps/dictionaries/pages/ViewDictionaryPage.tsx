@@ -32,7 +32,7 @@ import {
 } from "../redux";
 import { AppState } from "../../../redux";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { CONTEXT } from "../constants";
+import { CONTEXT } from "../../../utils";
 import { ProgressOverlay } from "../../../utils/components";
 
 interface Props {

@@ -18,8 +18,7 @@ import {
   profileSelector
 } from "../../authentication/redux/reducer";
 import { APIOrg, APIProfile } from "../../authentication";
-import { debug, useAnchor, usePrevious, useQueryParams } from "../../../utils";
-import { CONTEXT } from "../constants";
+import { debug, useAnchor, usePrevious, useQueryParams, CONTEXT } from "../../../utils"
 import { ProgressOverlay } from "../../../utils/components";
 import {
   editSourceAndDictionaryAction,

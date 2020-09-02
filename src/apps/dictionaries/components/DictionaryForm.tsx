@@ -12,7 +12,8 @@ import {
   getCustomErrorMessage,
   getPrettyError,
   LOCALES,
-  PREFERRED_SOURCES
+  PREFERRED_SOURCES,
+  CONTEXT
 } from "../../../utils";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
@@ -21,7 +22,6 @@ import { snakeCase } from "lodash";
 
 import { Dictionary } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";
-import { CONTEXT } from "../constants";
 
 interface Props {
   onSubmit?: Function;

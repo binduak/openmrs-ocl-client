@@ -21,8 +21,7 @@ import {
   profileSelector
 } from "../../authentication";
 import { orgsSelector } from "../../authentication/redux/reducer";
-import { CONTEXT } from "../constants";
-import { ProgressOverlay, useQueryParams } from "../../../utils";
+import { ProgressOverlay, useQueryParams, CONTEXT } from "../../../utils";
 
 interface Props {
   loading: boolean;
