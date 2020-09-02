@@ -4,19 +4,25 @@ import {
   Grid,
   makeStyles,
   Theme,
+  Tooltip,
 } from "@material-ui/core";
-import { ConceptsTable, ViewConceptsHeader, AddConceptsIcon } from "../components";
+import { ConceptsTable, AddConceptsIcon } from "../components";
 import { connect } from "react-redux";
 import {
   removeConceptsFromDictionaryLoadingSelector,
   retrieveConceptsAction,
+  viewConceptsLoadingSelector,
   viewConceptsErrorsSelector,
-  viewConceptsLoadingSelector
 } from "../redux";
 import { AppState } from "../../../redux";
 import { APIConcept, OptionalQueryParams as QueryParams } from "../types";
 import { useHistory, useLocation, useParams } from "react-router";
-import { useQueryParams } from "../../../utils";
+import {
+  CONCEPT_CLASSES,
+  PREFERRED_SOURCES_VIEW_ONLY,
+  useAnchor,
+  useQueryParams,
+} from "../../../utils";
 import qs from "qs";
 import { ProgressOverlay } from "../../../utils/components";
 import FilterOptions from "../components/FilterOptions";
@@ -24,27 +30,35 @@ import {
   APIOrg,
   APIProfile,
   canModifyContainer,
-  profileSelector
+  profileSelector,
 } from "../../authentication";
 import { orgsSelector } from "../../authentication/redux/reducer";
 import {
   DICTIONARY_CONTAINER,
   FILTER_SOURCE_IDS,
-  SOURCE_CONTAINER
+  SOURCE_CONTAINER,
 } from "../constants";
 import {
   dictionarySelector,
   recursivelyAddConceptsToDictionaryAction,
   removeReferencesFromDictionaryAction,
   makeRetrieveDictionaryAction,
-  retrieveDictionaryLoadingSelector
+  retrieveDictionaryLoadingSelector,
 } from "../../dictionaries/redux";
 import { canModifyConcept, getContainerIdFromUrl } from "../utils";
 import { APIDictionary } from "../../dictionaries";
+import {
+  sourceSelector,
+  retrieveSourceLoadingSelector,
+  retrieveSourceAndDetailsAction,
+} from "../../sources/redux";
+import { APISource } from "../../sources";
+import ViewConceptsHeader from "../components/ViewConceptsHeader";
 
 export interface StateProps {
   concepts?: APIConcept[];
   dictionary?: APIDictionary;
+  source?: APISource;
   loading: boolean;
   errors?: {};
   meta?: { num_found?: number };
@@ -65,6 +79,9 @@ export type ActionProps = {
   removeConceptsFromDictionary: (
     ...args: Parameters<typeof removeReferencesFromDictionaryAction>
   ) => void;
+  retrieveSource: (
+    ...args: Parameters<typeof retrieveSourceAndDetailsAction>
+  ) => void;
 };
 
 export interface OwnProps {
@@ -78,14 +95,14 @@ const useStyles = makeStyles((theme: Theme) =>
     link: {
       textDecoration: "none",
       color: "inherit",
-      width: "100%"
+      width: "100%",
     },
     largerTooltip: {
-      fontSize: "larger"
+      fontSize: "larger",
     },
     content: {
-      height: "100%"
-    }
+      height: "100%",
+    },
   })
 );
 
@@ -94,16 +111,18 @@ const INITIAL_LIMIT = 10; // todo get limit from settings
 const ViewConceptsPage: React.FC<Props> = ({
   concepts,
   dictionary,
+  source,
   loading,
   errors,
   retrieveConcepts,
   retrieveDictionary,
+  retrieveSource,
   meta = {},
   profile,
   usersOrgs,
   containerType,
   addConceptsToDictionary,
-  removeConceptsFromDictionary
+  removeConceptsFromDictionary,
 }) => {
   const classes = useStyles();
 
@@ -117,8 +136,19 @@ const ViewConceptsPage: React.FC<Props> = ({
 
   // only relevant with the collection container
   const preferredSource = dictionary?.preferred_source || "Public Sources";
-  const linkedSource = dictionary?.extras?.source;
+  const linkedSource =
+    containerType === SOURCE_CONTAINER
+      ? source?.url
+      : dictionary?.extras?.source;
   // end only relevant with the collection container
+
+  const [addNewAnchor, handleAddNewClick, handleAddNewClose] = useAnchor();
+  const [customAnchor, handleCustomClick, handleCustomClose] = useAnchor();
+  const [
+    importExistingAnchor,
+    handleImportExistingClick,
+    handleImportExistingClose,
+  ] = useAnchor();
 
   const queryParams: QueryParams = useQueryParams();
   const {
@@ -130,7 +160,7 @@ const ViewConceptsPage: React.FC<Props> = ({
     classFilters: initialClassFilters = [],
     dataTypeFilters: initialDataTypeFilters = [],
     sourceFilters: initialSourceFilters = [],
-    addToDictionary: dictionaryToAddTo
+    addToDictionary: dictionaryToAddTo,
   } = queryParams;
 
   const [showOptions, setShowOptions] = useState(true);
@@ -156,9 +186,9 @@ const ViewConceptsPage: React.FC<Props> = ({
         dataTypeFilters: dataTypeFilters,
         sourceFilters: sourceFilters,
         page: 1,
-        q
+        q,
       },
-      ...params
+      ...params,
     };
     return `${conceptsUrl}?${qs.stringify(newParams)}`;
   };
@@ -166,7 +196,10 @@ const ViewConceptsPage: React.FC<Props> = ({
   useEffect(() => {
     // we don't make this reactive(only depend on the initial values), because the requirement
     // was only trigger queries on user search(enter or apply filters, or change page)
-    retrieveDictionary(containerUrl);
+    containerType === SOURCE_CONTAINER
+      ? retrieveSource(containerUrl)
+      : retrieveDictionary(containerUrl);
+
     retrieveConcepts(
       url,
       page,
@@ -195,7 +228,7 @@ const ViewConceptsPage: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     initialClassFilters.toString(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    initialSourceFilters.toString()
+    initialSourceFilters.toString(),
   ]);
 
   const canModifyDictionary =
@@ -203,25 +236,25 @@ const ViewConceptsPage: React.FC<Props> = ({
     canModifyContainer(ownerType, owner, profile, usersOrgs);
 
   const canModifySource =
-      containerType === SOURCE_CONTAINER &&
-      canModifyContainer(ownerType, owner, profile, usersOrgs) && !dictionaryToAddTo;
+    containerType === SOURCE_CONTAINER &&
+    canModifyContainer(ownerType, owner, profile, usersOrgs) && !dictionaryToAddTo;
 
   return (
     <>
       <ViewConceptsHeader
-          containerType={containerType}
-          containerUrl={containerUrl}
-          gimmeAUrl={gimmeAUrl}
-          addConceptToDictionary={dictionaryToAddTo}
+        containerType={containerType}
+        containerUrl={containerUrl}
+        gimmeAUrl={gimmeAUrl}
+        addConceptToDictionary={dictionaryToAddTo}
       />
-        <Grid
-            container
-            className={classes.content}
-            component="div"
-            // @ts-ignore
-            justify="space-around"
-            alignItems="flex-start"
-        >
+      <Grid
+        container
+        className={classes.content}
+        component='div'
+        // @ts-ignore
+        justify='space-around'
+        alignItems='flex-start'
+      >
         <ProgressOverlay
           loading={loading}
           error={
@@ -231,17 +264,17 @@ const ViewConceptsPage: React.FC<Props> = ({
           }
         >
           <Grid
-            id="viewConceptsPage"
+            id='viewConceptsPage'
             item
             xs={showOptions ? 9 : 12}
-            component="div"
+            component='div'
           >
             <ConceptsTable
               concepts={concepts || []}
               buttons={{
-                edit: canModifyDictionary, // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
+                edit: (canModifyDictionary || canModifySource), // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
                 addToDictionary:
-                  containerType === SOURCE_CONTAINER && !!dictionaryToAddTo // relevant for SOURCE_CONTAINER
+                  containerType === SOURCE_CONTAINER && !!dictionaryToAddTo, // relevant for SOURCE_CONTAINER
               }}
               q={q}
               setQ={setQ}
@@ -274,7 +307,7 @@ const ViewConceptsPage: React.FC<Props> = ({
           {!showOptions ? (
             ""
           ) : (
-            <Grid item xs={2} component="div">
+            <Grid item xs={2} component='div'>
               <FilterOptions
                 checkedClasses={classFilters}
                 setCheckedClasses={setClassFilters}
@@ -287,15 +320,15 @@ const ViewConceptsPage: React.FC<Props> = ({
                 sourceOptions={
                   [
                     getContainerIdFromUrl(linkedSource),
-                    ...FILTER_SOURCE_IDS
-                  ].filter(source => source !== undefined) as string[]
+                    ...FILTER_SOURCE_IDS,
+                  ].filter((source) => source !== undefined) as string[]
                 }
                 url={gimmeAUrl()}
               />
             </Grid>
           )}
         </ProgressOverlay>
-        </Grid>
+      </Grid>
 
       <AddConceptsIcon
           canModifyDictionary={canModifyDictionary}
@@ -314,21 +347,24 @@ const mapStateToProps = (state: AppState) => ({
   usersOrgs: orgsSelector(state),
   concepts: state.concepts.concepts ? state.concepts.concepts.items : undefined,
   dictionary: dictionarySelector(state),
+  source: sourceSelector(state),
   meta: state.concepts.concepts
     ? state.concepts.concepts.responseMeta
     : undefined,
   loading:
     viewConceptsLoadingSelector(state) ||
     retrieveDictionaryLoadingSelector(state) ||
-    removeConceptsFromDictionaryLoadingSelector(state),
-  errors: viewConceptsErrorsSelector(state)
+    removeConceptsFromDictionaryLoadingSelector(state) ||
+    retrieveSourceLoadingSelector(state),
+  errors: viewConceptsErrorsSelector(state),
 });
 
 const mapActionsToProps = {
   retrieveConcepts: retrieveConceptsAction,
   retrieveDictionary: makeRetrieveDictionaryAction(true),
+  retrieveSource: retrieveSourceAndDetailsAction,
   addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
-  removeConceptsFromDictionary: removeReferencesFromDictionaryAction
+  removeConceptsFromDictionary: removeReferencesFromDictionaryAction,
 };
 
 export default connect<StateProps, ActionProps, OwnProps, AppState>(
