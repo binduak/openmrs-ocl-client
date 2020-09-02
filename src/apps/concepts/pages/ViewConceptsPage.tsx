@@ -52,10 +52,13 @@ import {
 } from "../../dictionaries/redux";
 import { canModifyConcept, getContainerIdFromUrl } from "../utils";
 import { APIDictionary } from "../../dictionaries";
+import {sourceSelector} from "../../sources/redux";
+import {APISource} from "../../sources";
 
 export interface StateProps {
   concepts?: APIConcept[];
   dictionary?: APIDictionary;
+  source?:APISource;
   loading: boolean;
   errors?: {};
   meta?: { num_found?: number };
@@ -105,6 +108,7 @@ const INITIAL_LIMIT = 10; // todo get limit from settings
 const ViewConceptsPage: React.FC<Props> = ({
   concepts,
   dictionary,
+  source,
   loading,
   errors,
   retrieveConcepts,
@@ -128,7 +132,7 @@ const ViewConceptsPage: React.FC<Props> = ({
 
   // only relevant with the collection container
   const preferredSource = dictionary?.preferred_source || "Public Sources";
-  const linkedSource = dictionary?.extras?.source;
+  const linkedSource = containerType === 'source' ? source?.url : dictionary?.extras?.source;
   // end only relevant with the collection container
 
   const [addNewAnchor, handleAddNewClick, handleAddNewClose] = useAnchor();
@@ -425,6 +429,7 @@ const mapStateToProps = (state: AppState) => ({
   usersOrgs: orgsSelector(state),
   concepts: state.concepts.concepts ? state.concepts.concepts.items : undefined,
   dictionary: dictionarySelector(state),
+  source: sourceSelector(state),
   meta: state.concepts.concepts
     ? state.concepts.concepts.responseMeta
     : undefined,
