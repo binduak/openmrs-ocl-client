@@ -78,6 +78,7 @@ const SourceForm: React.FC<Props> = ({
                                          }) => {
     const classes = useStyles();
     const viewing = context === CONTEXT.view;
+    const editing = context === CONTEXT.edit;
     const formikRef: any = useRef(null);
 
     useEffect(() => {
@@ -182,6 +183,7 @@ const SourceForm: React.FC<Props> = ({
                             fullWidth
                             autoComplete="off"
                             id="short_code"
+                            disabled={editing || isSubmitting}
                             name="short_code"
                             label="Short Code"
                             margin="normal"
@@ -207,7 +209,7 @@ const SourceForm: React.FC<Props> = ({
                             <InputLabel htmlFor="owner_url">Owner</InputLabel>
                             <Field
                                 value=""
-                                disabled={isSubmitting}
+                                disabled={editing || isSubmitting}
                                 name="owner_url"
                                 id="owner_url"
                                 component={Select}
