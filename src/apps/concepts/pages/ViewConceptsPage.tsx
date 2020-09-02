@@ -9,13 +9,13 @@ import {
   Theme,
   Tooltip,
 } from "@material-ui/core";
-import { ConceptsTable, ViewConceptsHeader } from "../components";
+import { ConceptsTable } from "../components";
 import { connect } from "react-redux";
 import {
   removeConceptsFromDictionaryLoadingSelector,
   retrieveConceptsAction,
-  viewConceptsErrorsSelector,
   viewConceptsLoadingSelector,
+  viewConceptsErrorsSelector,
 } from "../redux";
 import { AppState } from "../../../redux";
 import { APIConcept, OptionalQueryParams as QueryParams } from "../types";
@@ -52,13 +52,18 @@ import {
 } from "../../dictionaries/redux";
 import { canModifyConcept, getContainerIdFromUrl } from "../utils";
 import { APIDictionary } from "../../dictionaries";
-import {sourceSelector} from "../../sources/redux";
-import {APISource} from "../../sources";
+import {
+  sourceSelector,
+  retrieveSourceLoadingSelector,
+  makeRetrieveSourceAction,
+} from "../../sources/redux";
+import { APISource } from "../../sources";
+import ViewConceptsHeader from "../components/ViewConceptsHeader";
 
 export interface StateProps {
   concepts?: APIConcept[];
   dictionary?: APIDictionary;
-  source?:APISource;
+  source?: APISource;
   loading: boolean;
   errors?: {};
   meta?: { num_found?: number };
@@ -78,6 +83,9 @@ export type ActionProps = {
   ) => void;
   removeConceptsFromDictionary: (
     ...args: Parameters<typeof removeReferencesFromDictionaryAction>
+  ) => void;
+  retrieveSource: (
+    ...args: Parameters<ReturnType<typeof makeRetrieveSourceAction>>
   ) => void;
 };
 
@@ -113,6 +121,7 @@ const ViewConceptsPage: React.FC<Props> = ({
   errors,
   retrieveConcepts,
   retrieveDictionary,
+  retrieveSource,
   meta = {},
   profile,
   usersOrgs,
@@ -132,7 +141,10 @@ const ViewConceptsPage: React.FC<Props> = ({
 
   // only relevant with the collection container
   const preferredSource = dictionary?.preferred_source || "Public Sources";
-  const linkedSource = containerType === 'source' ? source?.url : dictionary?.extras?.source;
+  const linkedSource =
+    containerType === SOURCE_CONTAINER
+      ? source?.url
+      : dictionary?.extras?.source;
   // end only relevant with the collection container
 
   const [addNewAnchor, handleAddNewClick, handleAddNewClose] = useAnchor();
@@ -189,7 +201,10 @@ const ViewConceptsPage: React.FC<Props> = ({
   useEffect(() => {
     // we don't make this reactive(only depend on the initial values), because the requirement
     // was only trigger queries on user search(enter or apply filters, or change page)
-    retrieveDictionary(containerUrl);
+    containerType === SOURCE_CONTAINER
+      ? retrieveSource(containerUrl)
+      : retrieveDictionary(containerUrl);
+
     retrieveConcepts(
       url,
       page,
@@ -436,13 +451,15 @@ const mapStateToProps = (state: AppState) => ({
   loading:
     viewConceptsLoadingSelector(state) ||
     retrieveDictionaryLoadingSelector(state) ||
-    removeConceptsFromDictionaryLoadingSelector(state),
+    removeConceptsFromDictionaryLoadingSelector(state) ||
+    retrieveSourceLoadingSelector(state),
   errors: viewConceptsErrorsSelector(state),
 });
 
 const mapActionsToProps = {
   retrieveConcepts: retrieveConceptsAction,
   retrieveDictionary: makeRetrieveDictionaryAction(true),
+  retrieveSource: makeRetrieveSourceAction(true),
   addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
   removeConceptsFromDictionary: removeReferencesFromDictionaryAction,
 };
