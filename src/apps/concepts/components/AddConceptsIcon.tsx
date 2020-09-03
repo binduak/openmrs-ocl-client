@@ -64,81 +64,105 @@ const AddConceptsIcon: React.FC<Props> = ({
         handleImportExistingClose
     ] = useAnchor();
 
-    return (
-        <>
-            {!(canModifyDictionary || canModifySource) ? null : (
-                <>
-                    {canModifyDictionary ?
-                        <Tooltip title="Add concepts">
-                            <Fab onClick={handleAddNewClick} color="primary" className="fab">
-                                <AddIcon/>
-                            </Fab>
-                        </Tooltip>
-                        : <Tooltip title="Create custom concept">
-                            <Fab onClick={e => {
-                                handleCustomClick(e);
-                                handleAddNewClose();
-                            }} color="primary" className="fab">
-                                <AddIcon/>
-                            </Fab>
-                        </Tooltip>
-                    }
-                    {!canModifyDictionary ? null : (
-                        <Menu
-                            anchorEl={addNewAnchor}
-                            keepMounted
-                            open={Boolean(addNewAnchor)}
-                            onClose={handleAddNewClose}
-                        >
+    const getAddConceptIcon = () => {
+        if(canModifyDictionary) {
+            return (
+                <Tooltip title="Add concepts" data-testid="addConceptsIcon">
+                    <Fab onClick={handleAddNewClick} color="primary" className="fab">
+                        <AddIcon/>
+                    </Fab>
+                </Tooltip>
+            )
+        } else {
+            return (
+                <Tooltip title="Create custom concept" data-testid="addCustomConceptIcon">
+                    <Fab onClick={e => {
+                        handleCustomClick(e);
+                        handleAddNewClose();
+                    }} color="primary" className="fab">
+                        <AddIcon/>
+                    </Fab>
+                </Tooltip>
+            )
+        }
+    };
+
+    const getMenuForAddConceptIcon = () => {
+        if(canModifyDictionary) {
+            return (
+                <Menu
+                    anchorEl={addNewAnchor}
+                    keepMounted
+                    open={Boolean(addNewAnchor)}
+                    onClose={handleAddNewClose}
+                >
+                    <MenuItem
+                        onClick={e => {
+                            handleImportExistingClick(e);
+                            handleAddNewClose();
+                        }}
+                    >
+                        Import existing concept
+                    </MenuItem>
+                    <Tooltip
+                        interactive
+                        title={
+                            linkedSource ? (
+                                ""
+                            ) : (
+                                <span className={classes.largerTooltip}>
+                                            This dictionary doesn't have a linked source attached to it.
+                                            You'll need to{" "}
+                                    <Link
+                                        to={`${containerUrl}edit/?createLinkedSource=true&next=${gimmeAUrl()}`}
+                                    >
+                                            create one
+                                            </Link>{" "}
+                                    to keep your custom concepts.
+                                        </span>
+                            )
+                        }
+                    >
+                        <span>
                             <MenuItem
+                                disabled={!linkedSource}
                                 onClick={e => {
-                                    handleImportExistingClick(e);
+                                    handleCustomClick(e);
                                     handleAddNewClose();
                                 }}
                             >
-                                Import existing concept
+                                Create custom concept
                             </MenuItem>
-                            <Tooltip
-                                interactive
-                                title={
-                                    linkedSource ? (
-                                        ""
-                                    ) : (
-                                        <span className={classes.largerTooltip}>
-                    This dictionary doesn't have a linked source attached to it.
-                    You'll need to{" "}
-                                            <Link
-                                                to={`${containerUrl}edit/?createLinkedSource=true&next=${gimmeAUrl()}`}
-                                            >
-                      create one
-                    </Link>{" "}
-                                            to keep your custom concepts.
-                  </span>
-                                    )
-                                }
-                            >
-              <span>
-                <MenuItem
-                    disabled={!linkedSource}
-                    onClick={e => {
-                        handleCustomClick(e);
-                        handleAddNewClose();
-                    }}
-                >
-                  Create custom concept
-                </MenuItem>
-              </span>
-                            </Tooltip>
-                        </Menu>
-                    )}
+                        </span>
+                    </Tooltip>
+                </Menu>
+            )
+        }
+        return null;
+    };
+
+    const getAddConceptsIconWithMenu = () => {
+        if(canModifyDictionary || canModifySource) {
+            return (
+                <>
+                    {getAddConceptIcon()}
+                    {getMenuForAddConceptIcon()}
                 </>
-            )}
+            )
+        }
+        return null;
+    };
+
+    return (
+        <>
+            {getAddConceptsIconWithMenu()}
 
             <Menu
                 anchorEl={customAnchor}
                 keepMounted
                 open={Boolean(customAnchor)}
                 onClose={handleCustomClose}
+                data-testid="createCustomConceptMenu"
             >
                 {CONCEPT_CLASSES.slice(0, 9).map((conceptClass, index) => (
                     <MenuItem onClick={handleCustomClose} key={index}>
@@ -164,6 +188,7 @@ const AddConceptsIcon: React.FC<Props> = ({
                 keepMounted
                 open={Boolean(importExistingAnchor)}
                 onClose={handleImportExistingClose}
+                data-testid="importExistingConceptMenu"
             >
                 <MenuItem onClick={handleImportExistingClose}>
                     <Link
