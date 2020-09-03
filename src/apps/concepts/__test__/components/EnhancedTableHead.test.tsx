@@ -2,6 +2,7 @@ import React from "react";
 import { EnhancedTableHead } from "../../components/EnhancedTableHead";
 import { render } from "../../../../test-utils";
 import "@testing-library/jest-dom";
+import Table from "@material-ui/core/Table"
 
 type enhancedTableHeadProps = React.ComponentProps<typeof EnhancedTableHead>;
 const baseProps: enhancedTableHeadProps = {
@@ -23,10 +24,14 @@ const baseProps: enhancedTableHeadProps = {
 };
 
 function renderUI(props: Partial<enhancedTableHeadProps> = {}) {
-  return render(<EnhancedTableHead {...baseProps} {...props} />);
+  return render(
+    <Table>
+      <EnhancedTableHead {...baseProps} {...props} />
+    </Table>
+  );
 }
 
-describe("ViewConceptHeader", () => {
+describe("EnhancedTableHead", () => {
   it("should match snapshot", () => {
     const { container } = renderUI();
 
