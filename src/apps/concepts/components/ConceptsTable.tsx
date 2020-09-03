@@ -25,6 +25,7 @@ import {
 import { Menu, MenuItem } from "@material-ui/core";
 import { EnhancedTableHead } from "./EnhancedTableHead";
 import { EnhancedTableToolbar } from "./EnhancedTableToolbar";
+import { canModifyConcept } from "../utils";
 
 interface Props extends QueryParams {
   concepts: APIConcept[];
@@ -139,6 +140,23 @@ function showRemoveFromDictionaryMenuItem(
   // only allow manual removal of imported/ non custom concepts
   return (
     showingEditButtons && linkedSource && !concept.url.includes(linkedSource)
+  );
+}
+
+/*
+  Show the action icon only when the concept has 
+  atleast one of the 3 options - edit, remove or add to Dictionary
+  */
+function showActionIcon(
+  concept: APIConcept,
+  buttons: { [key: string]: boolean },
+  linkedSource: string | undefined,
+  canModifyConcept: (concept: APIConcept) => boolean
+) {
+  return (
+    showEditMenuItem(concept, buttons.edit, linkedSource, canModifyConcept) ||
+    showRemoveFromDictionaryMenuItem(concept, buttons.edit, linkedSource) ||
+    buttons.addToDictionary
   );
 }
 
@@ -330,16 +348,23 @@ const ConceptsTable: React.FC<Props> = ({
                       {row.id}
                     </TableCell>
                     <TableCell padding='checkbox'>
-                      <Tooltip title='More actions' enterDelay={700}>
-                        <IconButton
-                          id={`${index}.menu-icon`}
-                          aria-controls={`${index}.menu`}
-                          aria-haspopup='true'
-                          onClick={(event) => toggleMenu(index, event)}
-                        >
-                          <MoreVertIcon />
-                        </IconButton>
-                      </Tooltip>
+                      {!showActionIcon(
+                        row,
+                        buttons,
+                        linkedSource,
+                        canModifyConcept
+                      ) ? null : (
+                        <Tooltip title='More actions' enterDelay={700}>
+                          <IconButton
+                            id={`${index}.menu-icon`}
+                            aria-controls={`${index}.menu`}
+                            aria-haspopup='true'
+                            onClick={(event) => toggleMenu(index, event)}
+                          >
+                            <MoreVertIcon />
+                          </IconButton>
+                        </Tooltip>
+                      )}
                       <Menu
                         anchorEl={menu.anchor}
                         id={`${index}.menu`}
