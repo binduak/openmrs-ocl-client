@@ -65,16 +65,15 @@ const AddConceptsIcon: React.FC<Props> = ({
     ] = useAnchor();
 
     const getAddConceptIcon = () => {
-        if(canModifyDictionary) {
-            return (
+        return canModifyDictionary ?
+             (
                 <Tooltip title="Add concepts" data-testid="addConceptsIcon">
                     <Fab onClick={handleAddNewClick} color="primary" className="fab">
                         <AddIcon/>
                     </Fab>
                 </Tooltip>
-            )
-        } else {
-            return (
+            ) :
+             (
                 <Tooltip title="Create custom concept" data-testid="addCustomConceptIcon">
                     <Fab onClick={e => {
                         handleCustomClick(e);
@@ -84,12 +83,11 @@ const AddConceptsIcon: React.FC<Props> = ({
                     </Fab>
                 </Tooltip>
             )
-        }
     };
 
     const getMenuForAddConceptIcon = () => {
-        if(canModifyDictionary) {
-            return (
+        return canModifyDictionary ?
+           (
                 <Menu
                     anchorEl={addNewAnchor}
                     keepMounted
@@ -136,21 +134,17 @@ const AddConceptsIcon: React.FC<Props> = ({
                         </span>
                     </Tooltip>
                 </Menu>
-            )
-        }
-        return null;
+           ) : null;
     };
 
     const getAddConceptsIconWithMenu = () => {
-        if(canModifyDictionary || canModifySource) {
-            return (
+        return (canModifyDictionary || canModifySource) ?
+             (
                 <>
                     {getAddConceptIcon()}
                     {getMenuForAddConceptIcon()}
                 </>
-            )
-        }
-        return null;
+            ) : null ;
     };
 
     return (

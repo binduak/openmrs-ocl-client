@@ -18,6 +18,12 @@ const baseProps: addConceptsIconProps = {
 function renderUI(props: Partial<addConceptsIconProps> = {}) {
     return render(<AddConceptsIcon {...baseProps} {...props} />);
 }
+describe('AddConceptsIcon Snapshot test', () =>{
+    it('Snapshot', () => {
+        const render = renderUI();
+        expect(render).toMatchSnapshot();
+    });
+});
 
 describe("AddConceptsIcon", () => {
 
