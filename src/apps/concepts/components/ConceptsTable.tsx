@@ -25,7 +25,6 @@ import {
 import { Menu, MenuItem } from "@material-ui/core";
 import { EnhancedTableHead } from "./EnhancedTableHead";
 import { EnhancedTableToolbar } from "./EnhancedTableToolbar";
-import { canModifyConcept } from "../utils";
 
 interface Props extends QueryParams {
   concepts: APIConcept[];
@@ -423,7 +422,7 @@ const ConceptsTable: React.FC<Props> = ({
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, 50, 100]}
           component='div'
-          count={count}
+          count={Number(count)}
           rowsPerPage={limit}
           page={page - 1}
           backIconButtonProps={{
