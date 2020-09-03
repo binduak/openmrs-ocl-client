@@ -55,7 +55,7 @@ import { APIDictionary } from "../../dictionaries";
 import {
   sourceSelector,
   retrieveSourceLoadingSelector,
-  makeRetrieveSourceAction,
+  retrieveSourceAndDetailsAction,
 } from "../../sources/redux";
 import { APISource } from "../../sources";
 import ViewConceptsHeader from "../components/ViewConceptsHeader";
@@ -85,7 +85,7 @@ export type ActionProps = {
     ...args: Parameters<typeof removeReferencesFromDictionaryAction>
   ) => void;
   retrieveSource: (
-    ...args: Parameters<ReturnType<typeof makeRetrieveSourceAction>>
+    ...args: Parameters<typeof retrieveSourceAndDetailsAction>
   ) => void;
 };
 
@@ -459,7 +459,7 @@ const mapStateToProps = (state: AppState) => ({
 const mapActionsToProps = {
   retrieveConcepts: retrieveConceptsAction,
   retrieveDictionary: makeRetrieveDictionaryAction(true),
-  retrieveSource: makeRetrieveSourceAction(true),
+  retrieveSource: retrieveSourceAndDetailsAction,
   addConceptsToDictionary: recursivelyAddConceptsToDictionaryAction,
   removeConceptsFromDictionary: removeReferencesFromDictionaryAction,
 };
