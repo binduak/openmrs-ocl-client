@@ -85,6 +85,22 @@ const AddConceptsIcon: React.FC<Props> = ({
             )
     };
 
+    const getTitleBasedOnLinkedSource = () => {
+        return linkedSource ? (
+            ""
+        ) : (
+            <span className={classes.largerTooltip}>
+                This dictionary doesn't have a linked source attached to it.
+                You'll need to
+                <Link
+                    to={`${containerUrl}edit/?createLinkedSource=true&next=${gimmeAUrl()}`}
+                >
+                    create one
+                </Link> to keep your custom concepts.
+            </span>
+        );
+    };
+
     const getMenuForAddConceptIcon = () => {
         return canModifyDictionary ?
            (
@@ -104,22 +120,7 @@ const AddConceptsIcon: React.FC<Props> = ({
                     </MenuItem>
                     <Tooltip
                         interactive
-                        title={
-                            linkedSource ? (
-                                ""
-                            ) : (
-                                <span className={classes.largerTooltip}>
-                                            This dictionary doesn't have a linked source attached to it.
-                                            You'll need to{" "}
-                                    <Link
-                                        to={`${containerUrl}edit/?createLinkedSource=true&next=${gimmeAUrl()}`}
-                                    >
-                                            create one
-                                            </Link>{" "}
-                                    to keep your custom concepts.
-                                        </span>
-                            )
-                        }
+                        title={getTitleBasedOnLinkedSource()}
                     >
                         <span>
                             <MenuItem
