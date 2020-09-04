@@ -25,7 +25,7 @@ const api = {
       data: BaseConcept
     ): Promise<AxiosResponse<any>> =>
       authenticatedInstance.post(`${sourceUrl}concepts/`, data),
-    retrieve: async (
+    retrieve: (
       conceptsUrl: string,
       page: number = 1,
       limit: number = 10,
