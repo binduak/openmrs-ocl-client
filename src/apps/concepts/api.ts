@@ -25,7 +25,7 @@ const api = {
       data: BaseConcept
     ): Promise<AxiosResponse<any>> =>
       authenticatedInstance.post(`${sourceUrl}concepts/`, data),
-    retrieve: (
+    retrieve: async (
       conceptsUrl: string,
       page: number = 1,
       limit: number = 10,
@@ -36,20 +36,48 @@ const api = {
       classFilters = [] as string[],
       sourceFilters = [] as string[],
       includeRetired = false
-    ) =>
-      authenticatedInstance.get(conceptsUrl, {
-        params: {
-          page,
-          limit,
-          q: buildPartialSearchQuery(q),
-          [sortDirection]: sortBy,
-          ...optionallyIncludeList("datatype", dataTypeFilters),
-          ...optionallyIncludeList("conceptClass", classFilters),
-          ...optionallyIncludeList("source", sourceFilters),
-          includeRetired,
-          timestamp: new Date().getTime()
+    ) => {
+        let params = {
+            page,
+            limit,
+            q: buildPartialSearchQuery(q),
+            [sortDirection]: sortBy,
+            ...optionallyIncludeList("datatype", dataTypeFilters),
+            ...optionallyIncludeList("conceptClass", classFilters),
+            ...optionallyIncludeList("source", sourceFilters),
+            timestamp: new Date().getTime()
+        };
+        if(includeRetired) {
+            // @ts-ignore
+            params.includeRetired = true;
         }
-      })
+        return authenticatedInstance.get(conceptsUrl, {
+            params: params
+        })
+      },
+    retrieveActive: (
+        conceptsUrl: string,
+        page: number = 1,
+        limit: number = 10,
+        q = "",
+        sortDirection = "sortAsc",
+        sortBy = "bestMatch",
+        dataTypeFilters = [] as string[],
+        classFilters = [] as string[],
+        sourceFilters = [] as string[],
+    ) =>
+        authenticatedInstance.get(conceptsUrl, {
+          params: {
+            page,
+            limit,
+            q: buildPartialSearchQuery(q),
+            [sortDirection]: sortBy,
+            ...optionallyIncludeList("datatype", dataTypeFilters),
+            ...optionallyIncludeList("conceptClass", classFilters),
+            ...optionallyIncludeList("source", sourceFilters),
+            timestamp: new Date().getTime()
+          }
+        })
   },
   concept: {
     retrieve: (conceptUrl: string): Promise<AxiosResponse<any>> =>
