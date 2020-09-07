@@ -236,10 +236,13 @@ const ViewConceptsPage: React.FC<Props> = ({
     initialSourceFilters.toString(),
   ]);
 
-  const canModifyDictionaryOrSource =
-    (containerType === DICTIONARY_CONTAINER ||
-      containerType === SOURCE_CONTAINER) &&
+  const canModifyDictionary =
+    containerType === DICTIONARY_CONTAINER &&
     canModifyContainer(ownerType, owner, profile, usersOrgs);
+
+  const canModifySource =
+    containerType === SOURCE_CONTAINER &&
+    canModifyContainer(ownerType, owner, profile, usersOrgs) && !dictionaryToAddTo;
 
   return (
     <>
@@ -274,7 +277,7 @@ const ViewConceptsPage: React.FC<Props> = ({
             <ConceptsTable
               concepts={concepts || []}
               buttons={{
-                edit: canModifyDictionaryOrSource, // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
+                edit: (canModifyDictionary || canModifySource), // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
                 addToDictionary:
                   containerType === SOURCE_CONTAINER && !!dictionaryToAddTo, // relevant for SOURCE_CONTAINER
               }}
@@ -332,7 +335,7 @@ const ViewConceptsPage: React.FC<Props> = ({
         </ProgressOverlay>
       </Grid>
 
-      {!canModifyDictionaryOrSource ? null : (
+      {!canModifyDictionary ? null : (
         <>
           <Tooltip title='Add concepts'>
             <Fab onClick={handleAddNewClick} color='primary' className='fab'>
