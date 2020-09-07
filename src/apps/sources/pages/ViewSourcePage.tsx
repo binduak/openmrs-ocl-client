@@ -119,7 +119,7 @@ export const ViewSourcePage: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
+export const mapStateToProps = (state: AppState) => ({
   profile: profileSelector(state),
   usersOrgs: orgsSelector(state),
   sourceLoading: retrieveSourceLoadingSelector(state)
@@ -136,7 +136,7 @@ const mapStateToProps = (state: AppState) => ({
                       || viewConceptsErrorsSelector(state)
                       || viewActiveConceptsErrorsSelector(state),
 });
-const mapDispatchToProps = {
+export const mapDispatchToProps = {
   retrieveSourceAndDetails: retrieveSourceAndDetailsAction,
   retrieveConceptsSummary: retrieveConceptsAction,
   retrieveActiveConceptsSummary: retrieveActiveConceptsAction
