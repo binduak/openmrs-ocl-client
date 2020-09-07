@@ -3,17 +3,17 @@ import { USER_TYPE, ORG_TYPE } from "../../../utils";
 
 describe('canModifyContainer', () => {
     const profile: any = {
-        username: 'user'
+        username: 'Foo'
     };
 
     const usersOrgs: any = {
-        id: 'user'
+        id: 'Foo'
     };
 
     it(' when owner type is user and \n profile username matches owner name, should return true', () => {
         expect(canModifyContainer(
             USER_TYPE,
-            "user",
+            "Foo",
             profile,
             [] 
         )).toBe(true);
@@ -22,7 +22,7 @@ describe('canModifyContainer', () => {
     it('when owner type is user and \n profile username doesn`t matches owner name, should return true', () => {
         expect(canModifyContainer(
             USER_TYPE,
-            "user1",
+            "Foo1",
             profile,
             [] 
         )).toBe(false);
@@ -31,7 +31,7 @@ describe('canModifyContainer', () => {
     it('when owner type is org and \n current signed in user ia part of that org, should return true', () => {
         expect(canModifyContainer(
             ORG_TYPE,
-            "user",
+            "Foo",
             profile,
             [usersOrgs]
         )).toBe(true);
@@ -40,7 +40,7 @@ describe('canModifyContainer', () => {
     it('when owner type is org and \n current signed in user ia part of that org, should return true', () => {
         expect(canModifyContainer(
             ORG_TYPE,
-            "user1",
+            "Foo1",
             profile,
             [usersOrgs]
         )).toBe(false);
