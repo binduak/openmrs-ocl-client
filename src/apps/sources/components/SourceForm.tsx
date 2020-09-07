@@ -210,6 +210,8 @@ const SourceForm: React.FC<Props> = ({
                                 disabled={isSubmitting}
                                 name="owner_url"
                                 id="owner_url"
+                                multiline
+                                rowsMax={4}
                                 component={Select}
                             >
                                 {profile ? (
@@ -300,6 +302,8 @@ const SourceForm: React.FC<Props> = ({
                                 value={[]}
                                 name="supported_locales"
                                 id="supported_locales"
+                                multiline
+                                rowsMax={4}
                                 component={Select}
                             >
                                 {supportedLocalesLabel(values)}
