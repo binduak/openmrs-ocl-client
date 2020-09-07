@@ -6,25 +6,17 @@ import {
   Theme,
 } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
+
 import TablePagination from "@material-ui/core/TablePagination";
-import TableRow from "@material-ui/core/TableRow";
+
 import Paper from "@material-ui/core/Paper";
-import Checkbox from "@material-ui/core/Checkbox";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
+
 import { APIConcept, QueryParams, SortableField } from "../types";
-import { Link } from "react-router-dom";
-import {
-  Add as AddIcon,
-  DeleteSweepOutlined as DeleteIcon,
-  EditOutlined as EditIcon,
-  MoreVert as MoreVertIcon,
-} from "@material-ui/icons";
-import { Menu, MenuItem } from "@material-ui/core";
+
 import { EnhancedTableHead } from "./EnhancedTableHead";
 import { EnhancedTableToolbar } from "./EnhancedTableToolbar";
+import { ConceptsTableRow } from "./ConceptsTableRow";
+import { TableBody } from "@material-ui/core";
 
 interface Props extends QueryParams {
   concepts: APIConcept[];
@@ -115,51 +107,7 @@ export const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-function showEditMenuItem(
-  concept: APIConcept,
-  showingEditButtons: boolean,
-  linkedSource: string | undefined,
-  canModifyConcept: (concept: APIConcept) => boolean
-) {
-  // only allow edit of a concept we can modify and belongs to our linked source
-  // the second condition prevents us editing non custom concepts in a collection
-  return (
-    showingEditButtons &&
-    canModifyConcept(concept) &&
-    linkedSource &&
-    concept.url.includes(linkedSource)
-  );
-}
-
-function showRemoveFromDictionaryMenuItem(
-  concept: APIConcept,
-  showingEditButtons: boolean,
-  linkedSource: string | undefined
-) {
-  // only allow manual removal of imported/ non custom concepts
-  return (
-    showingEditButtons && linkedSource && !concept.url.includes(linkedSource)
-  );
-}
-
-/*
-  Show the action icon only when the concept has 
-  atleast one of the 3 options - edit, remove or add to Dictionary
-  */
-function showActionIcon(
-  concept: APIConcept,
-  buttons: { [key: string]: boolean },
-  linkedSource: string | undefined,
-  canModifyConcept: (concept: APIConcept) => boolean
-) {
-  return (
-    showEditMenuItem(concept, buttons.edit, linkedSource, canModifyConcept) ||
-    showRemoveFromDictionaryMenuItem(concept, buttons.edit, linkedSource) ||
-    buttons.addToDictionary
-  );
-}
-
-const ConceptsTable: React.FC<Props> = ({
+export const ConceptsTable: React.FC<Props> = ({
   concepts,
   buildUrl,
   goTo,
@@ -297,123 +245,25 @@ const ConceptsTable: React.FC<Props> = ({
               {concepts.map((row, index) => {
                 const isItemSelected = isSelected(row.id);
                 const labelId = `enhanced-table-checkbox-${index}`;
-
                 return (
-                  <TableRow
-                    hover
-                    data-testrowclass='conceptRow'
-                    role='checkbox'
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
+                  <ConceptsTableRow
                     key={`${row.id}-${index}`}
-                    selected={isItemSelected}
-                  >
-                    {selected.length <= 0 ? null : (
-                      <TableCell padding='checkbox'>
-                        <Checkbox
-                          // ideally, we would have made this apply to the entire row, but there
-                          // seems to be a problem with an implicit click when the row popup closes
-                          onClick={(event) => toggleSelect(event, row.id)}
-                          checked={isItemSelected}
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      </TableCell>
-                    )}
-                    <TableCell
-                      onClick={(event) => toggleSelect(event, row.id)}
-                      data-testclass='name'
-                      className={row.retired ? classes.retired : ""}
-                    >
-                      <Link
-                        onClick={(e) => e.stopPropagation()}
-                        to={`${row.version_url}?linkedDictionary=${linkedDictionary}`}
-                      >
-                        {row.display_name}
-                      </Link>
-                    </TableCell>
-                    <TableCell
-                      onClick={(event) => toggleSelect(event, row.id)}
-                      data-testclass='conceptClass'
-                    >
-                      {row.concept_class}
-                    </TableCell>
-                    <TableCell
-                      onClick={(event) => toggleSelect(event, row.id)}
-                      data-testclass='datatype'
-                    >
-                      {row.datatype}
-                    </TableCell>
-                    <TableCell onClick={(event) => toggleSelect(event, row.id)}>
-                      {row.id}
-                    </TableCell>
-                    <TableCell padding='checkbox'>
-                      {!showActionIcon(
-                        row,
-                        buttons,
-                        linkedSource,
-                        canModifyConcept
-                      ) ? null : (
-                        <Tooltip title='More actions' enterDelay={700}>
-                          <IconButton
-                            id={`${index}.menu-icon`}
-                            aria-controls={`${index}.menu`}
-                            aria-haspopup='true'
-                            onClick={(event) => toggleMenu(index, event)}
-                          >
-                            <MoreVertIcon />
-                          </IconButton>
-                        </Tooltip>
-                      )}
-                      <Menu
-                        anchorEl={menu.anchor}
-                        id={`${index}.menu`}
-                        open={index === menu.index}
-                        onClose={() => toggleMenu(index)}
-                      >
-                        {!showEditMenuItem(
-                          row,
-                          buttons.edit,
-                          linkedSource,
-                          canModifyConcept
-                        ) ? null : (
-                          <MenuItem onClick={() => toggleMenu(index)}>
-                            <Link
-                              className={classes.buttonLink}
-                              to={`${row.version_url}edit/?linkedDictionary=${linkedDictionary}`}
-                            >
-                              <EditIcon /> Edit
-                            </Link>
-                          </MenuItem>
-                        )}
-                        {!showRemoveFromDictionaryMenuItem(
-                          row,
-                          buttons.edit,
-                          linkedSource
-                        ) ? null : (
-                          <MenuItem
-                            onClick={() => {
-                              if (removeConceptsFromDictionary)
-                                removeConceptsFromDictionary([row.version_url]);
-                              toggleMenu(index);
-                            }}
-                          >
-                            <DeleteIcon /> Remove
-                          </MenuItem>
-                        )}
-                        {!buttons.addToDictionary ? null : (
-                          <MenuItem
-                            onClick={() => {
-                              if (addConceptsToDictionary)
-                                addConceptsToDictionary([row]);
-                              toggleMenu(index);
-                            }}
-                          >
-                            <AddIcon /> Add to dictionary
-                          </MenuItem>
-                        )}
-                      </Menu>
-                    </TableCell>
-                  </TableRow>
+                    row={row}
+                    index={index}
+                    selected={selected}
+                    toggleSelect={toggleSelect}
+                    classes={classes}
+                    linkedDictionary={linkedDictionary}
+                    buttons={buttons}
+                    linkedSource={linkedSource}
+                    canModifyConcept={canModifyConcept}
+                    toggleMenu={toggleMenu}
+                    menu={menu}
+                    removeConceptsFromDictionary={removeConceptsFromDictionary}
+                    addConceptsToDictionary={addConceptsToDictionary}
+                    isItemSelected={isItemSelected}
+                    labelId={labelId}
+                  />
                 );
               })}
             </TableBody>
