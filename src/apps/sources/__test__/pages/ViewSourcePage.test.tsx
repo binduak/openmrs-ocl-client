@@ -45,10 +45,9 @@ const baseProps: viewSourcePageProps = {
     usersOrgs: [apiOrg],
     sourceLoading: false,
     source: source,
-    retrieveSourceAndDetails: function retrieveSourceAndDetails() {
-    },
-    retrieveConceptsSummary: function retrieveConceptsSummary() {
-    },
+    retrieveSourceAndDetails: jest.fn(),
+    retrieveConceptsSummary: jest.fn(),
+    retrieveActiveConceptsSummary: jest.fn(),
     retrieveSourceErrors: false
 };
 
