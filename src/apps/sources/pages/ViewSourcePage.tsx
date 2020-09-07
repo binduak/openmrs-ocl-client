@@ -69,10 +69,10 @@ export const ViewSourcePage: React.FC<Props> = ({
     retrieveSourceAndDetails(url);
   }, [url, retrieveSourceAndDetails]);
   useEffect(() => {
-    retrieveConceptsSummary(url + "concepts/", undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, true);
+    retrieveConceptsSummary(url + "concepts/", 1, 1, undefined, undefined, undefined, undefined, undefined, undefined, true);
   }, [url, retrieveConceptsSummary]);
   useEffect(() => {
-    retrieveActiveConceptsSummary(url + "concepts/");
+    retrieveActiveConceptsSummary(url + "concepts/", 1, 1);
   }, [url, retrieveActiveConceptsSummary]);
 
   return (
@@ -138,8 +138,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 const mapDispatchToProps = {
   retrieveSourceAndDetails: retrieveSourceAndDetailsAction,
-  retrieveConceptsSummary: retrieveConceptsAction
-  ,
+  retrieveConceptsSummary: retrieveConceptsAction,
   retrieveActiveConceptsSummary: retrieveActiveConceptsAction
 };
 

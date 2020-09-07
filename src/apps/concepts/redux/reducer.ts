@@ -48,7 +48,7 @@ export const reducer = createReducer<ConceptsState>(initialState, {
   [RETRIEVE_ACTIVE_CONCEPTS_ACTION]: (state, action) => ({
     ...state,
     activeConcepts: {
-      items: action.payload as APIConcept[],
+      items: action.payload as APIConcept[] || [],
       responseMeta: action.responseMeta
     }
   }),
