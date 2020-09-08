@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  createStyles,
-  Grid,
-  makeStyles,
-  Theme,
-  Tooltip,
-} from "@material-ui/core";
+import { createStyles, Grid, makeStyles, Theme } from "@material-ui/core";
 import { ConceptsTable, AddConceptsIcon } from "../components";
 import { connect } from "react-redux";
 import {
@@ -17,12 +11,7 @@ import {
 import { AppState } from "../../../redux";
 import { APIConcept, OptionalQueryParams as QueryParams } from "../types";
 import { useHistory, useLocation, useParams } from "react-router";
-import {
-  CONCEPT_CLASSES,
-  PREFERRED_SOURCES_VIEW_ONLY,
-  useAnchor,
-  useQueryParams,
-} from "../../../utils";
+import { useQueryParams } from "../../../utils";
 import qs from "qs";
 import { ProgressOverlay } from "../../../utils/components";
 import FilterOptions from "../components/FilterOptions";
@@ -142,14 +131,6 @@ const ViewConceptsPage: React.FC<Props> = ({
       : dictionary?.extras?.source;
   // end only relevant with the collection container
 
-  const [addNewAnchor, handleAddNewClick, handleAddNewClose] = useAnchor();
-  const [customAnchor, handleCustomClick, handleCustomClose] = useAnchor();
-  const [
-    importExistingAnchor,
-    handleImportExistingClick,
-    handleImportExistingClose,
-  ] = useAnchor();
-
   const queryParams: QueryParams = useQueryParams();
   const {
     page = 1,
@@ -237,7 +218,8 @@ const ViewConceptsPage: React.FC<Props> = ({
 
   const canModifySource =
     containerType === SOURCE_CONTAINER &&
-    canModifyContainer(ownerType, owner, profile, usersOrgs) && !dictionaryToAddTo;
+    canModifyContainer(ownerType, owner, profile, usersOrgs) &&
+    !dictionaryToAddTo;
 
   return (
     <>
@@ -272,7 +254,7 @@ const ViewConceptsPage: React.FC<Props> = ({
             <ConceptsTable
               concepts={concepts || []}
               buttons={{
-                edit: (canModifyDictionary || canModifySource), // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
+                edit: canModifyDictionary || canModifySource, // relevant for DICTIONARY_CONTAINER, condition already includes isDictionary condition
                 addToDictionary:
                   containerType === SOURCE_CONTAINER && !!dictionaryToAddTo, // relevant for SOURCE_CONTAINER
               }}
@@ -331,12 +313,12 @@ const ViewConceptsPage: React.FC<Props> = ({
       </Grid>
 
       <AddConceptsIcon
-          canModifyDictionary={canModifyDictionary}
-          canModifySource={canModifySource}
-          containerUrl={containerUrl}
-          gimmeAUrl={gimmeAUrl}
-          linkedSource={linkedSource}
-          preferredSource={preferredSource}
+        canModifyDictionary={canModifyDictionary}
+        canModifySource={canModifySource}
+        containerUrl={containerUrl}
+        gimmeAUrl={gimmeAUrl}
+        linkedSource={linkedSource}
+        preferredSource={preferredSource}
       />
     </>
   );
