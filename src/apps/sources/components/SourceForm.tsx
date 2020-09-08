@@ -302,8 +302,6 @@ const SourceForm: React.FC<Props> = ({
                                 value={[]}
                                 name="supported_locales"
                                 id="supported_locales"
-                                multiline
-                                rowsMax={4}
                                 component={Select}
                             >
                                 {supportedLocalesLabel(values)}

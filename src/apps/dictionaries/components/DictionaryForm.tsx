@@ -292,8 +292,6 @@ const DictionaryForm: React.FC<Props> = ({
               <Field
                 multiple
                 fullWidth
-                multiline
-                rowsMax={4}
                 value={[]}
                 name="supported_locales"
                 id="supported_locales"
