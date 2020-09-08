@@ -50,10 +50,10 @@ const testDescription: ConceptDescription = {
 const testMapping: APIMapping = {
   map_type: "test",
   external_id: "79787",
-  from_concept_url: "sdsdsd",
-  url: "khkjhj",
+  from_concept_url: "from_concept_url",
+  url: "concept_url",
   retired: false,
-  to_concept_code: "string",
+  to_concept_code: "concept_code",
 };
 const testConcept: APIConcept = {
   id: "123",
@@ -63,25 +63,17 @@ const testConcept: APIConcept = {
   names: [testConceptName],
   descriptions: [testDescription],
   url: "abcd",
-  version_url: "string",
+  version_url: "version_url",
   extras: {},
-  display_name: "string",
+  display_name: "display_name",
   mappings: [testMapping],
   retired: false,
-  source_url: "sdsd",
+  source_url: "source_url",
 };
 
 function renderUI(props: Partial<conceptsTableProps> = {}) {
   return render(<ConceptsTable {...baseProps} {...props} />);
 }
-
-// describe("ConceptTable", () => {
-//   it("should match snapshot", () => {
-//     const { container } = renderUI();
-
-//     expect(container).toMatchSnapshot();
-//   });
-// });
 
 describe("Action Icon for the Concepts in Concepts Table", () => {
   it("should show the action icon if the user  has the edit access", () => {
@@ -150,16 +142,4 @@ describe("Action Icon for the Concepts in Concepts Table", () => {
 
     expect(actionIcon).toBeNull();
   });
-  // it("should show the action icon if the user has the edit access", () => {
-  //   const mockMyFunction = showActionIcon as jest.MockedFunction<
-  //     typeof showActionIcon
-  //   >;
-
-  //   mockMyFunction.mockReturnValueOnce(true);
-
-  //   const { container } = renderUI({});
-  //   const actionIcon = container.querySelector("[data-testid='action-icon']");
-
-  //   expect(actionIcon).toBeNull();
-  // });
 });
