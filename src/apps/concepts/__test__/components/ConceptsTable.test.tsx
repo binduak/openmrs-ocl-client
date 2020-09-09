@@ -33,17 +33,17 @@ const baseProps: conceptsTableProps = {
 };
 
 const testConceptName: ConceptName = {
-  name: "test",
+  name: "test concept",
   locale: "en",
-  external_id: "3434",
+  external_id: "1234",
   locale_preferred: true,
-  name_type: "test",
+  name_type: "Fully Specified",
 };
 
 const testDescription: ConceptDescription = {
-  description: "desc",
+  description: "concept description",
   locale: "en",
-  external_id: "345345345",
+  external_id: "3456",
   locale_preferred: true,
 };
 
@@ -58,8 +58,8 @@ const testMapping: APIMapping = {
 const testConcept: APIConcept = {
   id: "123",
   external_id: "234234",
-  concept_class: "test",
-  datatype: "test",
+  concept_class: "Diagnosis",
+  datatype: "Numeric",
   names: [testConceptName],
   descriptions: [testDescription],
   url: "abcd",
@@ -76,7 +76,7 @@ function renderUI(props: Partial<conceptsTableProps> = {}) {
 }
 
 describe("Action Icon for the Concepts in Concepts Table", () => {
-  it("should show the action icon if the user  has the edit access", () => {
+  it("should show the action icon if the user has the edit access", () => {
     const { container } = renderUI({
       buttons: { edit: true },
       canModifyConcept: () => {
@@ -101,7 +101,7 @@ describe("Action Icon for the Concepts in Concepts Table", () => {
     expect(actionIcon).toBeNull();
   });
 
-  it("should not show the action icon if the user  has the edit access but edit button is false", () => {
+  it("should not show the action icon if the user has the edit access but edit button is false", () => {
     const { container } = renderUI({
       buttons: { edit: false },
       canModifyConcept: () => {
