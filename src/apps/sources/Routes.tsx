@@ -1,7 +1,6 @@
 import React from "react";
 import {Route, Switch, useRouteMatch} from "react-router-dom";
-import {ViewSourcePage} from "./pages";
-import EditSourcePage from "./pages/EditSourcePage";
+import {ViewSourcePage, EditSourcePage} from "./pages";
 
 interface Props {
     viewSource?: boolean;

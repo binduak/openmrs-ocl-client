@@ -1,20 +1,20 @@
 import React, {useEffect} from "react";
-import {Fab, Grid, Menu, MenuItem, Paper, Tooltip} from "@material-ui/core";
+import {Grid, Paper} from "@material-ui/core";
 import {connect} from "react-redux";
-import {Link, Redirect, useLocation} from "react-router-dom";
+import {Redirect, useLocation} from "react-router-dom";
 import {
     editSourceDispatchAction,
     editSourceErrorsSelector,
     editSourceLoadingSelector,
-    makeRetrieveSourceAction
+    retrieveSourceAndDetailsAction
 } from "../redux";
 import {APISource, apiSourceToSource} from "../types";
 import {orgsSelector, profileSelector} from "../../authentication/redux/reducer";
 import {APIOrg, APIProfile} from "../../authentication";
-import {CONTEXT, ProgressOverlay, useAnchor, usePrevious} from "../../../utils";
+import {CONTEXT, ProgressOverlay, usePrevious} from "../../../utils";
 import SourceForm from "../components/SourceForm";
 import Header from "../../../components/Header";
-import {MoreVert as MenuIcon} from "@material-ui/icons";
+import {EditMenu} from "../../containers/components/EditMenu";
 
 
 export interface StateProps {
@@ -31,7 +31,7 @@ export interface ActionProps {
         ...args: Parameters<typeof editSourceDispatchAction>
     ) => void;
     retrieveSourceAction: (
-        ...args: Parameters<ReturnType<typeof makeRetrieveSourceAction>>
+        ...args: Parameters<typeof retrieveSourceAndDetailsAction>
     ) => void;
 }
 
@@ -50,7 +50,7 @@ const EditSourcePage: React.FC<Props> = ({
     const previouslyLoading = usePrevious(loading);
     const {pathname: url} = useLocation();
     const sourceUrl = url.replace("edit/", "");
-    const [menuAnchor, handleMenuClick, handleMenuClose] = useAnchor();
+
 
     useEffect(() => {
         retrieveSourceAction(sourceUrl);
@@ -83,25 +83,7 @@ const EditSourcePage: React.FC<Props> = ({
                         />
                     </Paper>
                 </Grid>
-                <>
-                    <Tooltip title="Menu">
-                        <Fab onClick={handleMenuClick} color="primary" className="fab">
-                            <MenuIcon />
-                        </Fab>
-                    </Tooltip>
-                    <Menu
-                        anchorEl={menuAnchor}
-                        keepMounted
-                        open={Boolean(menuAnchor)}
-                        onClose={handleMenuClose}
-                    >
-                        <MenuItem>
-                            <Link replace className="link" to={sourceUrl}>
-                                Discard changes and view
-                            </Link>
-                        </MenuItem>
-                    </Menu>
-                </>
+                <EditMenu backUrl={sourceUrl}/>
             </ProgressOverlay>
         </Header>
     );
@@ -117,7 +99,7 @@ export const mapStateToProps = (state: any) => ({
 });
 export const mapActionsToProps = {
     editSourceAction: editSourceDispatchAction,
-    retrieveSourceAction: makeRetrieveSourceAction(false)
+    retrieveSourceAction: retrieveSourceAndDetailsAction
 };
 
 export default connect(

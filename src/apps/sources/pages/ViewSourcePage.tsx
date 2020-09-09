@@ -1,27 +1,25 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import SourceForm from "../components/SourceForm";
-import {Fab, Grid, Paper, Tooltip, Typography} from "@material-ui/core";
-import { connect } from "react-redux";
-import { APISource, apiSourceToSource } from "../types";
-import {
-  orgsSelector,
-  profileSelector,
-} from "../../authentication/redux/reducer";
+import {Grid, Paper, Typography} from "@material-ui/core";
+import {connect} from "react-redux";
+import {APISource, apiSourceToSource} from "../types";
+import {orgsSelector, profileSelector,} from "../../authentication/redux/reducer";
 import {APIOrg, APIProfile, canModifyContainer} from "../../authentication";
 import {
-  sourceSelector,
   retrieveSourceAndDetailsAction,
   retrieveSourceErrorSelector,
   retrieveSourceLoadingSelector,
+  sourceSelector
 } from "../redux";
-import { AppState } from "../../../redux";
-import {Link, useLocation, useParams} from "react-router-dom";
-import { ProgressOverlay } from "../../../utils/components";
+import {AppState} from "../../../redux";
+import {useLocation, useParams} from "react-router-dom";
+import {ProgressOverlay} from "../../../utils/components";
 import Header from "../../../components/Header";
-import { getSourceTypeFromPreviousPath } from "../utils";
-import { SourceConceptDetails } from "../components";
-import { retrieveConceptsAction } from "../../concepts/redux";
-import { EditOutlined as EditIcon } from "@material-ui/icons";
+import {getSourceTypeFromPreviousPath} from "../utils";
+import {SourceConceptDetails} from "../components";
+import {retrieveConceptsAction} from "../../concepts/redux";
+import {EditButton} from "../../containers/components/EditButton";
+import {EDIT_BUTTON_TITLE} from "../redux/constants";
 
 interface Props {
   profile?: APIProfile;
@@ -111,13 +109,7 @@ export const ViewSourcePage: React.FC<Props> = ({
           </Grid>
         </Grid>
         {!showEditButton ? null : (
-            <Link to={`${url}edit/`}>
-              <Tooltip title="Edit this Source">
-                <Fab color="primary" className="fab">
-                  <EditIcon />
-                </Fab>
-              </Tooltip>
-            </Link>
+            <EditButton url={`${url}edit/`} title={EDIT_BUTTON_TITLE}/>
         )}
       </ProgressOverlay>
     </Header>

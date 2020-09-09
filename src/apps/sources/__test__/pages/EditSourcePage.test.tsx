@@ -3,7 +3,7 @@ import EditSourcePage, {ActionProps, mapActionsToProps, mapStateToProps, StatePr
 import {APIOrg, APIProfile} from "../../../authentication";
 import {currentState, personalSources, testSource} from "../test_data";
 import {render} from "../../../../test-utils";
-import {editSourceDispatchAction, makeRetrieveSourceAction} from "../../redux";
+import {editSourceDispatchAction, retrieveSourceAndDetailsAction} from "../../redux";
 
 type editSourcePageProps = React.ComponentProps<typeof EditSourcePage>;
 
@@ -26,7 +26,7 @@ const stateProps: StateProps = {
 const actionProps: ActionProps = {
     editSourceAction: function editSourceAction() {
     },
-    retrieveSourceAction: function makeRetrieveSourceAction() {
+    retrieveSourceAction: function retrieveSourceAction() {
     }
 };
 
@@ -35,9 +35,6 @@ const baseProps: editSourcePageProps = stateProps & actionProps;
 
 const state = currentState(personalSources);
 
-jest.mock("../../redux/actions", () => ({
-    makeRetrieveSourceAction: jest.fn()
-}));
 
 function renderUI(props: Partial<editSourcePageProps> = {}) {
     return render(<EditSourcePage {...baseProps} {...props}  />);
@@ -73,6 +70,6 @@ describe('EditSourcePage', () => {
         expect(mapActionsToProps.editSourceAction).toBe(editSourceDispatchAction);
     });
     it('should point to correct retrieve action', () => {
-        expect(makeRetrieveSourceAction).toHaveBeenCalled();
+        expect(mapActionsToProps.retrieveSourceAction).toBe(retrieveSourceAndDetailsAction);
     });
 });
