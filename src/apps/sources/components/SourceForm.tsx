@@ -20,6 +20,7 @@ import { Source } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";
 import * as Yup from "yup";
 import {CONTEXT} from "../constants";
+import OwnerDetails from "../../containers/components/OwnerDetails";
 
 interface Props {
     onSubmit?: Function;
@@ -152,35 +153,6 @@ const SourceForm: React.FC<Props> = ({
         )
     };
 
-    const showUserName = () => {
-        return <>
-            {profile ? (
-                <MenuItem value={profile.url}>
-                    {profile.username}(You)
-                </MenuItem>
-            ) : (
-                ""
-            )}
-        </>;
-    }
-
-    const showOrganisationHeader = () => {
-        return usersOrgs.length > 0 ? (
-            <ListSubheader>Your Organizations</ListSubheader>
-        ) : null;
-    }
-
-    const showUserOrganisations = () => {
-        return <>
-            {showOrganisationHeader}
-            {usersOrgs.map(org => (
-                <MenuItem key={org.id} value={org.url}>
-                    {org.name}
-                </MenuItem>
-            ))}
-        </>;
-    }
-
     return (
         <div id="source-form" className={classes.sourceForm}>
             <Formik
@@ -241,8 +213,10 @@ const SourceForm: React.FC<Props> = ({
                                 id="owner_url"
                                 component={Select}
                             >
-                                {showUserName}
-                                {showUserOrganisations}
+                                <OwnerDetails
+                                    usersOrgs={usersOrgs}
+                                    profile={profile}
+                                />
                             </Field>
                             <Typography color="error" variant="caption" component="div">
                                 <ErrorMessage name="owner_url" component="span"/>
