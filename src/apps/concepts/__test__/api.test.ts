@@ -55,7 +55,17 @@ describe('api', () => {
     const sourceFilters: string[] = [];
 
    it('should make authenticated get call with given url and params to get active concepts', async() => {
-        const response = await api.concepts.retrieveActive(conceptsUrl, page, limit, q, sortDirection, sortBy, dataTypeFilters, classFilters, sourceFilters);
+        await api.concepts.retrieveActive({
+            conceptsUrl: conceptsUrl,
+            page: page,
+            limit: limit,
+            q: q,
+            sortDirection: sortDirection,
+            sortBy: sortBy,
+            dataTypeFilters: dataTypeFilters,
+            classFilters: classFilters,
+            sourceFilters: sourceFilters
+        });
         expect(authenticatedInstance.get).toHaveBeenCalledWith(conceptsUrl, {
             "params": {
                 "limit": 1,
@@ -68,7 +78,17 @@ describe('api', () => {
     });
 
     it('should return testConcept if authenticated get call is made to get active concepts', async() => {
-        const response = await api.concepts.retrieveActive(conceptsUrl, page, limit, q, sortDirection, sortBy, dataTypeFilters, classFilters, sourceFilters);
+        const response = await api.concepts.retrieveActive({
+            conceptsUrl: conceptsUrl,
+            page: page,
+            limit: limit,
+            q: q,
+            sortDirection: sortDirection,
+            sortBy: sortBy,
+            dataTypeFilters: dataTypeFilters,
+            classFilters: classFilters,
+            sourceFilters: sourceFilters
+        });
         expect(response).toStrictEqual({activeConcepts: testConcept});
     });
 
