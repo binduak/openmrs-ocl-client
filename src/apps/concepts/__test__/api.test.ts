@@ -44,32 +44,35 @@ jest.mock("../../../api", () => ({
 }));
 
 describe('api', () => {
+    const conceptsUrl: string = "/user/concepts/";
+    const page: number = 1;
+    const limit: number = 1;
+    const q: string = "";
+    const sortDirection: string = "sortAsc";
+    const sortBy: string = "bestMatch";
+    const dataTypeFilters: string[] = [];
+    const classFilters: string[] = [];
+    const sourceFilters: string[] = [];
 
-   it('should make aunthenticated get call with given url and params to get active concepts', async() => {
-       const conceptsUrl: string = "/user/concepts/";
-       const page: number = 1;
-       const limit: number = 1;
-       const q: string = "";
-       const sortDirection: string = "sortAsc";
-       const sortBy: string = "bestMatch";
-       const dataTypeFilters: string[] = [];
-       const classFilters: string[] = [];
-       const sourceFilters: string[] = [];
-       const response = await api.concepts.retrieveActive(conceptsUrl, page, limit, q, sortDirection, sortBy, dataTypeFilters, classFilters, sourceFilters);
-       expect(authenticatedInstance.get).toHaveBeenCalledWith(conceptsUrl, {
-           "params": {
-               "limit": 1,
-               "page": 1,
-               "q": "*",
-               "sortAsc": "bestMatch",
-               "timestamp": expect.anything()
-           }
-       });
-       expect(response).toStrictEqual({activeConcepts: testConcept});
-   });
+   it('should make authenticated get call with given url and params to get active concepts', async() => {
+        const response = await api.concepts.retrieveActive(conceptsUrl, page, limit, q, sortDirection, sortBy, dataTypeFilters, classFilters, sourceFilters);
+        expect(authenticatedInstance.get).toHaveBeenCalledWith(conceptsUrl, {
+            "params": {
+                "limit": 1,
+                "page": 1,
+                "q": "*",
+                "sortAsc": "bestMatch",
+                "timestamp": expect.anything()
+            }
+        });
+    });
 
-    it('should return empty array with unaunthenticated get call with given url and params', async() => {
-        const conceptsUrl: string = "/user/concepts/";
+    it('should return testConcept if authenticated get call is made to get active concepts', async() => {
+        const response = await api.concepts.retrieveActive(conceptsUrl, page, limit, q, sortDirection, sortBy, dataTypeFilters, classFilters, sourceFilters);
+        expect(response).toStrictEqual({activeConcepts: testConcept});
+    });
+
+    it('should not be able to make unauthenticated get call to get active concepts', async() => {
         expect(unAuthenticatedInstance.get).not.toHaveBeenCalledWith(conceptsUrl);
     });
 });

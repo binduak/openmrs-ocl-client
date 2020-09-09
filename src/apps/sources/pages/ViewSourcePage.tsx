@@ -69,6 +69,7 @@ export const ViewSourcePage: React.FC<Props> = ({
     retrieveSourceAndDetails(url);
   }, [url, retrieveSourceAndDetails]);
   useEffect(() => {
+    // retrieving concepts only to get total concepts count from header. So, passing page & limit as 1, includeRetired as true and passing rest as undefined
     retrieveConceptsSummary(url + "concepts/", 1, 1, undefined, undefined, undefined, undefined, undefined, undefined, true);
   }, [url, retrieveConceptsSummary]);
   useEffect(() => {

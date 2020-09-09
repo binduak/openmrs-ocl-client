@@ -53,7 +53,8 @@ describe("RETRIEVE_ACTIVE_CONCEPTS_ACTION", () => {
         const expectedState = {
             mappings: [],
             concepts: {
-                items: []
+                items: [],
+                responseMeta: undefined
             },
             activeConcepts: {
                 items: [testConcept],
