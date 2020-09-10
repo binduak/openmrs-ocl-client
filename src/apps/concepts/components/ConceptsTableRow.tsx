@@ -79,23 +79,13 @@ const actionIcon = (
 const conceptNameCell = (
   toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void,
   row: APIConcept,
-  classes: Record<
-    | "table"
-    | "root"
-    | "paper"
-    | "tableWrapper"
-    | "visuallyHidden"
-    | "buttonLink"
-    | "retired",
-    string
-  >,
   linkedDictionary: string | undefined
 ) => {
   return (
     <TableCell
       onClick={(event) => toggleSelect(event, row.id)}
       data-testclass='name'
-      className={row.retired ? classes.retired : ""}
+      className={row.retired ? "retired" : ""}
     >
       <Link
         onClick={(e) => e.stopPropagation()}
@@ -168,16 +158,6 @@ const checkBoxCell = (
 const actionCell = (
   row: APIConcept,
   buttons: { [key: string]: boolean },
-  classes: Record<
-    | "table"
-    | "root"
-    | "paper"
-    | "tableWrapper"
-    | "visuallyHidden"
-    | "buttonLink"
-    | "retired",
-    string
-  >,
   canModifyConcept: (concept: APIConcept) => boolean,
   index: number,
   toggleMenu: (
@@ -200,7 +180,6 @@ const actionCell = (
         index={index}
         row={row}
         buttons={buttons}
-        classes={classes}
         toggleMenu={toggleMenu}
         menu={menu}
         canModifyConcept={canModifyConcept}
@@ -218,16 +197,6 @@ interface ConceptsTableRowProps {
   index: number;
   selected: string[];
   toggleSelect: (event: React.MouseEvent<unknown>, id: string) => void;
-  classes: Record<
-    | "table"
-    | "root"
-    | "paper"
-    | "tableWrapper"
-    | "visuallyHidden"
-    | "buttonLink"
-    | "retired",
-    string
-  >;
   linkedDictionary: string | undefined;
   buttons: { [key: string]: boolean };
   linkedSource: string | undefined;
@@ -249,7 +218,6 @@ export function ConceptsTableRow(props: ConceptsTableRowProps) {
     index,
     selected,
     toggleSelect,
-    classes,
     linkedDictionary,
     buttons,
     linkedSource,
@@ -274,14 +242,13 @@ export function ConceptsTableRow(props: ConceptsTableRowProps) {
       {selected.length <= 0
         ? null
         : checkBoxCell(toggleSelect, row, isItemSelected, labelId)}
-      {conceptNameCell(toggleSelect, row, classes, linkedDictionary)}
+      {conceptNameCell(toggleSelect, row, linkedDictionary)}
       {conceptClassCell(toggleSelect, row)}
       {conceptDataTypeCell(toggleSelect, row)}
       {conceptIDCell(toggleSelect, row)}
       {actionCell(
         row,
         buttons,
-        classes,
         canModifyConcept,
         index,
         toggleMenu,

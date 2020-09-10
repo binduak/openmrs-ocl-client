@@ -61,23 +61,13 @@ const editConceptMenu = (
     event?: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined
   ) => void,
   index: number,
-  classes: Record<
-    | "table"
-    | "root"
-    | "paper"
-    | "tableWrapper"
-    | "visuallyHidden"
-    | "buttonLink"
-    | "retired",
-    string
-  >,
   row: APIConcept,
   linkedDictionary: string | undefined
 ) => {
   return (
     <MenuItem onClick={() => toggleMenu(index)}>
       <Link
-        className={classes.buttonLink}
+        className='buttonLink'
         to={`${row.version_url}edit/?linkedDictionary=${linkedDictionary}`}
       >
         <EditIcon /> Edit
@@ -131,16 +121,6 @@ const editMenu = (
   index: number,
   row: APIConcept,
   buttons: { [key: string]: boolean },
-  classes: Record<
-    | "table"
-    | "root"
-    | "paper"
-    | "tableWrapper"
-    | "visuallyHidden"
-    | "buttonLink"
-    | "retired",
-    string
-  >,
   toggleMenu: (
     index: number,
     event?: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined
@@ -151,23 +131,13 @@ const editMenu = (
 ) => {
   return !showEditMenuItem(row, buttons.edit, linkedSource, canModifyConcept)
     ? null
-    : editConceptMenu(toggleMenu, index, classes, row, linkedDictionary);
+    : editConceptMenu(toggleMenu, index, row, linkedDictionary);
 };
 
 interface ConceptsActionMenuProps {
   index: number;
   row: APIConcept;
   buttons: { [key: string]: boolean };
-  classes: Record<
-    | "table"
-    | "root"
-    | "paper"
-    | "tableWrapper"
-    | "visuallyHidden"
-    | "buttonLink"
-    | "retired",
-    string
-  >;
   toggleMenu: (
     index: number,
     event?: React.MouseEvent<HTMLButtonElement, MouseEvent> | undefined
@@ -185,7 +155,6 @@ export function ConceptsActionMenu(props: ConceptsActionMenuProps) {
     index,
     row,
     buttons,
-    classes,
     toggleMenu,
     menu,
     canModifyConcept,
@@ -205,7 +174,6 @@ export function ConceptsActionMenu(props: ConceptsActionMenuProps) {
         index,
         row,
         buttons,
-        classes,
         toggleMenu,
         canModifyConcept,
         linkedSource,

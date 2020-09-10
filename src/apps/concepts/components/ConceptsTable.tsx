@@ -97,13 +97,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       top: 20,
       width: 1,
     },
-    buttonLink: {
-      textDecoration: "none",
-      color: "inherit",
-    },
-    retired: {
-      textDecoration: "line-through",
-    },
   })
 );
 
@@ -252,7 +245,6 @@ export const ConceptsTable: React.FC<Props> = ({
                     index={index}
                     selected={selected}
                     toggleSelect={toggleSelect}
-                    classes={classes}
                     linkedDictionary={linkedDictionary}
                     buttons={buttons}
                     linkedSource={linkedSource}
