@@ -12,7 +12,8 @@ import {
   getCustomErrorMessage,
   getPrettyError,
   LOCALES,
-  PREFERRED_SOURCES
+  PREFERRED_SOURCES,
+  CONTEXT
 } from "../../../utils";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
@@ -21,7 +22,6 @@ import { snakeCase } from "lodash";
 
 import { Dictionary } from "../types";
 import { APIOrg, APIProfile } from "../../authentication";
-import { CONTEXT } from "../constants";
 
 interface Props {
   onSubmit?: Function;
@@ -218,6 +218,8 @@ const DictionaryForm: React.FC<Props> = ({
                 disabled={editing || isSubmitting}
                 name="owner_url"
                 id="owner_url"
+                multiline
+                rowsMax={4}
                 component={Select}
               >
                 {profile ? (
@@ -290,8 +292,6 @@ const DictionaryForm: React.FC<Props> = ({
               <Field
                 multiple
                 fullWidth
-                multiline
-                rowsMax={4}
                 value={[]}
                 name="supported_locales"
                 id="supported_locales"
