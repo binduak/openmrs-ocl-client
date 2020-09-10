@@ -11,8 +11,6 @@ describe('canModifyConcept', () => {
     };
 
     it('should return false if CONCEPT_PATTERN doesn`t match conceptUrl', () =>{
-        //jest.spyOn(getParams, 'url-matcher').mockReturnValue({owner: "xyz"});
-        
         const conceptUrl = '/orgs/Foo/sources/Foo/';
         expect(canModifyConcept(
             conceptUrl,
