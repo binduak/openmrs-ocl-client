@@ -20,7 +20,14 @@ import { ProgressOverlay } from "../../../utils/components";
 import Header from "../../../components/Header";
 import { getSourceTypeFromPreviousPath } from "../utils";
 import { SourceConceptDetails } from "../components";
-import { retrieveConceptsAction } from "../../concepts/redux";
+import {
+  retrieveActiveConceptsAction,
+  retrieveConceptsAction,
+  viewConceptsLoadingSelector,
+  viewConceptsErrorsSelector,
+  viewActiveConceptsLoadingSelector,
+  viewActiveConceptsErrorsSelector
+} from "../../concepts/redux";
 
 interface Props {
   profile?: APIProfile;
@@ -34,7 +41,11 @@ interface Props {
   retrieveConceptsSummary: (
     ...args: Parameters<typeof retrieveConceptsAction>
   ) => void;
+  retrieveActiveConceptsSummary: (
+      ...args: Parameters<typeof retrieveActiveConceptsAction>
+  ) => void;
   metaConceptsCount?: { num_found?: number };
+  metaActiveConceptsCount?: { num_found?: number };
 }
 interface UseLocation {
   prevPath: string;
@@ -47,7 +58,9 @@ export const ViewSourcePage: React.FC<Props> = ({
   retrieveSourceAndDetails,
   retrieveSourceErrors,
   retrieveConceptsSummary,
+  retrieveActiveConceptsSummary,
   metaConceptsCount = {},
+  metaActiveConceptsCount = {}
 }: Props) => {
   const { pathname: url, state } = useLocation<UseLocation>();
   const previousPath = state ? state.prevPath : "";
@@ -56,8 +69,11 @@ export const ViewSourcePage: React.FC<Props> = ({
     retrieveSourceAndDetails(url);
   }, [url, retrieveSourceAndDetails]);
   useEffect(() => {
-    retrieveConceptsSummary(url + "concepts/");
+    retrieveConceptsSummary({conceptsUrl: `${url}concepts/`, limit: 1, includeRetired: true});
   }, [url, retrieveConceptsSummary]);
+  useEffect(() => {
+    retrieveActiveConceptsSummary({conceptsUrl: `${url}concepts/`, limit: 1});
+  }, [url, retrieveActiveConceptsSummary]);
 
   return (
     <Header
@@ -94,6 +110,7 @@ export const ViewSourcePage: React.FC<Props> = ({
             <SourceConceptDetails
               source={source}
               totalConceptCount={metaConceptsCount.num_found || 0}
+              activeConceptCount={metaActiveConceptsCount.num_found || 0}
             />
           </Grid>
         </Grid>
@@ -102,19 +119,27 @@ export const ViewSourcePage: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
+export const mapStateToProps = (state: AppState) => ({
   profile: profileSelector(state),
   usersOrgs: orgsSelector(state),
-  sourceLoading: retrieveSourceLoadingSelector(state),
+  sourceLoading: retrieveSourceLoadingSelector(state)
+                || viewConceptsLoadingSelector(state)
+                || viewActiveConceptsLoadingSelector(state),
   source: sourceSelector(state),
   metaConceptsCount: state.concepts.concepts
     ? state.concepts.concepts.responseMeta
     : undefined,
-  retrieveSourceErrors: retrieveSourceErrorSelector(state),
+  metaActiveConceptsCount: state.concepts.activeConcepts
+      ? state.concepts.activeConcepts.responseMeta
+      : undefined,
+  retrieveSourceErrors: retrieveSourceErrorSelector(state)
+                      || viewConceptsErrorsSelector(state)
+                      || viewActiveConceptsErrorsSelector(state),
 });
-const mapDispatchToProps = {
+export const mapDispatchToProps = {
   retrieveSourceAndDetails: retrieveSourceAndDetailsAction,
   retrieveConceptsSummary: retrieveConceptsAction,
+  retrieveActiveConceptsSummary: retrieveActiveConceptsAction
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewSourcePage);
