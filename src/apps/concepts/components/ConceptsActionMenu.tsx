@@ -191,3 +191,5 @@ export function ConceptsActionMenu(props: ConceptsActionMenuProps) {
     </Menu>
   );
 }
+
+export default ConceptsActionMenu;
