@@ -212,6 +212,8 @@ const SourceForm: React.FC<Props> = ({
                                 disabled={editing || isSubmitting}
                                 name="owner_url"
                                 id="owner_url"
+                                multiline
+                                rowsMax={4}
                                 component={Select}
                             >
                                 {profile ? (
