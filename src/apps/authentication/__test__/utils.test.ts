@@ -10,25 +10,25 @@ describe('canModifyContainer', () => {
         id: 'Foo'
     };
 
-    it(' when owner type is user and \n profile username matches owner name, should return true', () => {
+    it('should return true, when owner type is user and profile username matches owner name', () => {
         expect(canModifyContainer(
             USER_TYPE,
             "Foo",
             profile,
-            [] 
+            []
         )).toBe(true);
     });
 
-    it('when owner type is user and \n profile username doesn`t matches owner name, should return true', () => {
+    it('should return false, when owner type is user and profile username doesn`t matches owner name', () => {
         expect(canModifyContainer(
             USER_TYPE,
             "Foo1",
             profile,
-            [] 
+            []
         )).toBe(false);
     });
 
-    it('when owner type is org and \n current signed in user ia part of that org, should return true', () => {
+    it('should return true, when owner type is org and current signed in user is part of that org', () => {
         expect(canModifyContainer(
             ORG_TYPE,
             "Foo",
@@ -37,7 +37,7 @@ describe('canModifyContainer', () => {
         )).toBe(true);
     });
 
-    it('when owner type is org and \n current signed in user ia part of that org, should return true', () => {
+    it('should return false, when owner type is org and current signed in user is part of that org', () => {
         expect(canModifyContainer(
             ORG_TYPE,
             "Foo1",
