@@ -86,6 +86,7 @@ const conceptNameCell = (
       onClick={(event) => toggleSelect(event, row.id)}
       data-testclass='name'
       className={row.retired ? "retired" : ""}
+      style={{ wordBreak: "break-all" }}
     >
       <Link
         onClick={(e) => e.stopPropagation()}
@@ -105,6 +106,7 @@ const conceptClassCell = (
     <TableCell
       onClick={(event) => toggleSelect(event, row.id)}
       data-testclass='conceptClass'
+      style={{ wordWrap: "break-word" }}
     >
       {row.concept_class}
     </TableCell>
@@ -119,6 +121,7 @@ const conceptDataTypeCell = (
     <TableCell
       onClick={(event) => toggleSelect(event, row.id)}
       data-testclass='datatype'
+      style={{ wordWrap: "break-word" }}
     >
       {row.datatype}
     </TableCell>
@@ -130,7 +133,10 @@ const conceptIDCell = (
   row: APIConcept
 ) => {
   return (
-    <TableCell onClick={(event) => toggleSelect(event, row.id)}>
+    <TableCell
+      onClick={(event) => toggleSelect(event, row.id)}
+      style={{ wordBreak: "break-all" }}
+    >
       {row.id}
     </TableCell>
   );
