@@ -180,18 +180,20 @@ const ViewConceptsPage: React.FC<Props> = ({
     containerType === SOURCE_CONTAINER
       ? retrieveSource(containerUrl)
       : retrieveDictionary(containerUrl);
+ 
+    retrieveConcepts({
+          conceptsUrl: url,
+          page: page,
+          limit: limit,
+          q: initialQ,
+          sortDirection: sortDirection,
+          sortBy: sortBy,
+          dataTypeFilters: initialDataTypeFilters,
+          classFilters: initialClassFilters,
+          sourceFilters: initialSourceFilters,
+          includeRetired: true
+        }
 
-    retrieveConcepts(
-      url,
-      page,
-      limit,
-      initialQ,
-      sortDirection,
-      sortBy,
-      initialDataTypeFilters,
-      initialClassFilters,
-      initialSourceFilters,
-      true
     );
     // i don't know how the comparison algorithm works, but for these arrays, it fails.
     // stringify the arrays to work around that
