@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '10.x'
-      - run: touch ../../public/env-config.js && echo -n -e "var OCL_API_HOST = 'https://api.staging.openconceptlab.org';" > ../../public/env-config.js
+      - run: echo -n -e "var OCL_API_HOST = 'https://api.staging.openconceptlab.org';" > public/env-config.js
       - run: npm install
       - run: npm run test
       - run: npm run test:integration
